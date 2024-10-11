@@ -124,6 +124,6 @@ export class ClientesPage implements OnInit {
   }
 
 //ionic g page clientes
-//ionic g service services/auth
+//ionic g service services/usuarios
 
 }
