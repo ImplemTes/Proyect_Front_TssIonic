@@ -122,4 +122,8 @@ export class ClientesPage implements OnInit {
       console.error('Formulario inválido');
     }
   }
+
+//ionic g page clientes
+//ionic g service services/auth
+
 }

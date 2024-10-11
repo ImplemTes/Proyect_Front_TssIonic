@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ClienteService {
 
-  private apiUrl = environment.apiUrl+'/api/clientes';
+  private apiUrl = environment.apiUrl+'/api/cliente';
 
   constructor(private http: HttpClient) { }
   // Obtener una lista
@@ -15,24 +15,19 @@ export class ClienteService {
     return this.http.get<any>(this.apiUrl);
   }
 
-  // Obtener un cliente por ID
-  getCliente(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
-  }
-
   // Crear un nuevo cliente
   createCliente(cliente: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, cliente);
   }
 
+  // Obtener un cliente por ID
+  getCliente(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
+  }
+
   // Actualizar cliente completo
   updateCliente(id: number, cliente: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, cliente);
-  }
-
-  // Actualización parcial de cliente
-  updateClienteParcial(id: number, cliente: any): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}`, cliente);
   }
 
   // Eliminar un cliente
