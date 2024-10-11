@@ -1,0 +1,11 @@
+ion-app {
+  --ion-menu-width: 250px; /* Ancho del menú */
+}
+
+ion-router-outlet {
+  transition: margin-left 0.3s ease-in-out; /* Transición suave para el contenido */
+}
+
+ion-menu[side="start"] {
+  --width: 250px; /* Ancho del menú */
+}

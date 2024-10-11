@@ -1,0 +1,149 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ selectedPageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div style="padding: 16px;">
+    <p>Lista de clientes:</p>
+    <ion-button (click)="openModalRegistrar()">+ Registrar Cliente</ion-button>
+
+    <ng-container *ngIf="clientes.length > 0; else noClientes">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="1">ID</ion-col>
+          <ion-col size="1">Apellidos</ion-col>
+          <ion-col size="1">Nombres</ion-col>
+          <ion-col size="1">Edad</ion-col>
+          <ion-col size="1">DNI</ion-col>
+          <ion-col size="2">Estado</ion-col>
+          <ion-col size="2">Opciones</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let cliente of clientes">
+          <ion-col size="1">{{ cliente.idcliente }}</ion-col>
+          <ion-col size="1">{{ cliente.apellidos }}</ion-col>
+          <ion-col size="1">{{ cliente.nombres }}</ion-col>
+          <ion-col size="1">{{ cliente.edad }}</ion-col>
+          <ion-col size="1">{{ cliente.dni }}</ion-col>
+          <ion-col size="2">
+            <ion-icon *ngIf="cliente.estado === 1" name="checkmark-circle-outline" color="success"></ion-icon>
+            <ion-icon *ngIf="cliente.estado === 0" name="close-circle-outline" color="danger"></ion-icon>
+          </ion-col>
+          <ion-col size="2">
+            <ion-button (click)="openModalEditar(cliente)">Editar</ion-button>
+            <ion-button (click)="openModalEliminar(cliente)">Eliminar</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+
+    <!-- Mostrar un mensaje si no hay clientes -->
+    <ng-template #noClientes>
+      <p>No se encontraron clientes.</p>
+    </ng-template>
+
+
+    <!-- Modal Registrar -->
+    <ion-modal [isOpen]="isModalOpen" [backdropDismiss]="false">
+      <ng-template>
+
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Registrar Cliente</ion-title>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content>
+          <form [formGroup]="clienteForm" (ngSubmit)="createCliente()" style="padding: 16px;">
+
+            <ion-item>
+              <ion-label position="stacked">Apellidos</ion-label>
+              <ion-input formControlName="apellidos"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Nombres</ion-label>
+              <ion-input formControlName="nombres"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">Edad</ion-label>
+              <ion-input formControlName="edad" type="number"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="stacked">DNI</ion-label>
+              <ion-input formControlName="dni" maxlength="8"></ion-input>
+            </ion-item>
+
+            <div class="ion-text-center" style="margin-top: 20px;">
+              <ion-button color="medium" (click)="closeModal()">Cancelar</ion-button>
+              <ion-button color="primary" type="submit">Guardar</ion-button>
+            </div>
+          </form>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+<!-- Modal para eliminar -->
+<ion-modal [isOpen]="isModalOpenEliminar" [backdropDismiss]="false">
+  <ng-template>
+    <ion-toolbar>
+      <ion-title>Eliminar Cliente</ion-title>
+    </ion-toolbar>
+
+    <div class="modal-content">
+      <h4>¿Estás seguro que deseas eliminar el cliente {{ selectedCliente?.apellidos }}?</h4>
+      <ion-icon name="warning-outline" class="warning-icon"></ion-icon>
+    </div>
+
+    <div class="modal-actions">
+      <ion-button color="medium" (click)="closeModal()">Cancelar</ion-button>
+      <ion-button color="danger" (click)="deleteCliente(selectedCliente?.idcliente)">Eliminar</ion-button>
+    </div>
+  </ng-template>
+</ion-modal>
+<!-- Modal para Editar -->
+<ion-modal [isOpen]="isModalOpenEditar" [backdropDismiss]="false">
+  <ng-template>
+
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Editar Cliente</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <form [formGroup]="clienteForm" (ngSubmit)="editarcliente()" style="padding: 16px;">
+
+        <ion-item>
+          <ion-label position="stacked">Apellidos</ion-label>
+          <ion-input formControlName="apellidos"></ion-input>
+        </ion-item>
+        <ion-item>
+
+          <ion-label position="stacked">Nombres</ion-label>
+          <ion-input formControlName="nombres"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">Edad</ion-label>
+          <ion-input formControlName="edad" type="number"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="stacked">DNI</ion-label>
+          <ion-input formControlName="dni" maxlength="8"></ion-input>
+        </ion-item>
+
+        <div class="ion-text-center" style="margin-top: 20px;">
+          <ion-button color="medium" (click)="closeModal()">Cancelar</ion-button>
+          <ion-button color="primary" type="submit">Actualizar</ion-button>
+        </div>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+  </div>
+</ion-content>

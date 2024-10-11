@@ -25,3 +25,11 @@
 #container a {
   text-decoration: none;
 }
+ion-content {
+  transition: margin-left 0.3s ease; /* Suaviza la transición */
+  margin-left: 0; /* Inicialmente no hay margen */
+}
+
+ion-menu[side="start"].ion-menu-open ~ ion-content {
+  margin-left: 250px; /* Ajusta según el ancho del menú */
+}

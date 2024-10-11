@@ -7,10 +7,20 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
+    path: 'home/clientes',
+    loadChildren: () => import('./clientes/clientes.module').then(m => m.ClientesPageModule)
+  },
+  /*
+  {
+    path: 'home/ajustes',
+    loadChildren: () => import('./ajustes/ajustes.module').then(m => m.AjustesPageModule) // Asegúrate de tener el módulo Ajustes
+  },*/
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
   },
+ 
 ];
 
 @NgModule({
