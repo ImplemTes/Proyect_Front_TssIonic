@@ -53,27 +53,49 @@
       </ion-header>
       <ion-content>
         <form [formGroup]="clienteForm" (ngSubmit)="createCliente()" style="padding: 16px;">
-          <!-- Campos del formulario -->
+          <!-- Apellidos -->
           <ion-item>
             <ion-label position="stacked">Apellidos</ion-label>
             <ion-input formControlName="apellidos"></ion-input>
           </ion-item>
+          <ion-text color="danger" *ngIf="isFieldInvalid('apellidos')">
+            Los apellidos son requeridos.
+          </ion-text>
+  
+          <!-- Nombres -->
           <ion-item>
             <ion-label position="stacked">Nombres</ion-label>
             <ion-input formControlName="nombres"></ion-input>
           </ion-item>
+          <ion-text color="danger" *ngIf="isFieldInvalid('nombres')">
+            Los nombres son requeridos.
+          </ion-text>
+  
+          <!-- DNI -->
           <ion-item>
             <ion-label position="stacked">DNI</ion-label>
             <ion-input formControlName="dni" minlength="8" maxlength="8" (keypress)="onlyNumber($event)"></ion-input>
           </ion-item>
+          <ion-text color="danger" *ngIf="isFieldInvalid('dni')">
+            El DNI debe tener 8 caracteres.
+          </ion-text>
+  
+          <!-- Celular -->
           <ion-item>
             <ion-label position="stacked">Celular</ion-label>
             <ion-input formControlName="celular" minlength="9" maxlength="9" (keypress)="onlyNumber($event)"></ion-input>
           </ion-item>
+          <ion-text color="danger" *ngIf="isFieldInvalid('celular')">
+            El celular debe tener 9 caracteres.
+          </ion-text>
+  
+          <!-- Preferencias -->
           <ion-item>
             <ion-label position="stacked">Preferencias</ion-label>
             <ion-input formControlName="preferencias"></ion-input>
           </ion-item>
+  
+          <!-- Botones -->
           <div class="ion-text-center" style="margin-top: 20px;">
             <ion-button color="medium" (click)="closeModal()">Cancelar</ion-button>
             <ion-button color="primary" type="submit">Guardar</ion-button>
