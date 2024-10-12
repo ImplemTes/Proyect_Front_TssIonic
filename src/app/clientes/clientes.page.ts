@@ -19,17 +19,16 @@ export class ClientesPage implements OnInit {
   isModalOpenEditar: boolean = false;
 
   constructor(
-    private pageTitleService: PageTitleService,
     private clienteService: ClienteService,
-    private modalRegistroController: ModalController,
     private fb: FormBuilder
   ) {
     this.clienteForm = this.fb.group({
       apellidos: ['', Validators.required],
       nombres: ['', Validators.required],
-      edad: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
       dni: ['', [Validators.required, Validators.maxLength(8), Validators.minLength(8)]],
-      estado: [1]
+      celular: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
+      preferencias: ['---'],
+      estado: [1],
     });
   }
 
@@ -38,9 +37,9 @@ export class ClientesPage implements OnInit {
   }
 
   listarclientes(): void {
-    this.clienteService.getClientes().subscribe(
-      (resp) => {
-        this.clientes = resp.clientes;
+    this.clienteService.list().subscribe(
+      (resp: any) => {
+        this.clientes = resp;
       },
       (error) => {
         console.error('Error al mostrar los clientes', error);
@@ -50,19 +49,25 @@ export class ClientesPage implements OnInit {
 
   openModalRegistrar(): void {
     this.isModalOpen = true;
-    this.clienteForm.reset(); // Resetea el formulario al abrir el modal
   }
 
   openModalEliminar(cliente: any = null): void {
     this.isModalOpenEliminar = true;
     this.selectedCliente = cliente;
   }
-
+  closeModal(): void {
+    this.isModalOpen = false;
+    this.isModalOpenEditar = false;
+    this.isModalOpenEliminar = false;
+    this.selectedCliente = null;
+  }
+  /*
   openModalEditar(cliente: any = null): void {
     this.isModalOpenEditar = true;
     this.selectedCliente = cliente;
 
     // Usamos patchValue para cargar los datos
+
     this.clienteForm.patchValue({
       apellidos: cliente.apellidos,
       nombres: cliente.nombres,
@@ -71,17 +76,11 @@ export class ClientesPage implements OnInit {
       estado: cliente.estado
     });
   }
-
-  closeModal(): void {
-    this.isModalOpen = false;
-    this.isModalOpenEditar = false;
-    this.isModalOpenEliminar = false;
-    this.selectedCliente = null;
-  }
+*/
 
   createCliente(): void {
     if (this.clienteForm.valid) {
-      this.clienteService.createCliente(this.clienteForm.value).subscribe(
+      this.clienteService.create(this.clienteForm.value).subscribe(
         (resp: any) => {
           this.clientes.push(resp.cliente);
           this.listarclientes();
@@ -95,7 +94,7 @@ export class ClientesPage implements OnInit {
       console.error('Formulario inválido');
     }
   }
-
+/*
   deleteCliente(id: number): void {
     this.clienteService.deleteCliente(id).subscribe(() => {
       this.clientes = this.clientes.filter((clien: any) => clien.idcliente !== id);
@@ -122,7 +121,7 @@ export class ClientesPage implements OnInit {
       console.error('Formulario inválido');
     }
   }
-
+*/
 //ionic g page clientes
 //ionic g service services/usuarios
 

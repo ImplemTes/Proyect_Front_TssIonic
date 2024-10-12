@@ -7,17 +7,18 @@ import { environment } from 'src/environments/environment';
 })
 export class ClienteService {
 
-  private apiUrl = environment.apiUrl+'/api/cliente';
+  private apiUrl = environment.apiUrl + '/api/cliente';
 
   constructor(private http: HttpClient) { }
   // Obtener una lista
-  getClientes(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  // Listar todos los usuarios
+  list(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/`);
   }
 
   // Crear un nuevo cliente
-  createCliente(cliente: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, cliente);
+  create(client: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/`, client);
   }
 
   // Obtener un cliente por ID

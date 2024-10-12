@@ -1,0 +1,101 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ selectedPageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ng-container *ngIf="personas.length > 0; else noUsuarios">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="1" size-sm="2" size-md="1">ID</ion-col>
+        <ion-col size="2" size-sm="4" size-md="2">Apellidos y Nombres</ion-col>
+        <ion-col size="2" size-sm="4" size-md="2">Email</ion-col>
+        <ion-col size="1" size-sm="2" size-md="1">Rol</ion-col>
+        <ion-col size="1" size-sm="2" size-md="1">Dni</ion-col>
+        <ion-col size="1" size-sm="2" size-md="1">Estado</ion-col>
+        <ion-col size="2" size-sm="4" size-md="2">Opciones</ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let user of personas">
+        <ion-col size="1" size-sm="2" size-md="1">{{user.idusuario}}</ion-col>
+        <ion-col size="2" size-sm="4" size-md="2">{{ user.apellidos }} {{ user.nombres }}</ion-col>
+        <ion-col size="2" size-sm="4" size-md="2">{{ user.email }}</ion-col>
+        <ion-col size="1" size-sm="2" size-md="1">{{ user.nombre_rol }}</ion-col>
+        <ion-col size="1" size-sm="2" size-md="1">{{ user.dni }}</ion-col>
+        <ion-col size="1" size-sm="2" size-md="1">
+          <ion-icon *ngIf="user.estado === 1" name="checkmark-circle-outline" color="success"></ion-icon>
+          <ion-icon *ngIf="user.estado === 0" name="close-circle-outline" color="danger"></ion-icon>
+        </ion-col>
+        <ion-col size="2" size-sm="4" size-md="2">
+          <ion-button (click)="openModaleditUser(user)">Editar</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+  <!-- Mostrar un mensaje si no hay clientes -->
+  <ng-template #noUsuarios>
+    <p>No se encontraron usuarios.</p>
+  </ng-template>
+   <!--Modal para Editar -->
+  <ion-modal [isOpen]="isModalOpen" [backdropDismiss]="false">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title style="font-size: 1.5rem; color: #ffffff;">Editar Usuario</ion-title>
+          <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="closeModal()" aria-label="Cerrar">
+              <ion-icon name="close-circle" style="font-size: 1.5rem; color: #ffffff; background-color: rgb(255, 81, 0); border-radius: 50%; padding: 8px;"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form [formGroup]="userForm" (ngSubmit)="submitForm()" style="padding: 16px;">
+
+          <ion-item>
+            <ion-label position="stacked">Codigo</ion-label>
+            <ion-input formControlName="idusuario" readonly></ion-input>
+          </ion-item>
+          <ion-item>
+
+            <ion-label position="stacked">Nombres</ion-label>
+            <ion-input [value]="selectedusuario.apellidos + ' ' + selectedusuario.nombres" readonly></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Rol</ion-label>
+            <ion-select formControlName="idrol" placeholder="Seleccione una opción">
+              <ion-select-option *ngFor="let rol of roles" [value]="rol.idrol">
+                {{ rol.nombre_rol }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Estado</ion-label>
+          </ion-item>
+          <ion-radio-group formControlName="estado">
+            <ion-item>
+              <ion-label>Activo</ion-label>
+              <ion-radio slot="start" value="1"></ion-radio>
+            </ion-item>
+            <ion-item>
+              <ion-label>Bloqueado</ion-label>
+              <ion-radio slot="start" value="0"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+
+          <div class="ion-text-center" style="margin-top: 20px;">
+            <ion-button style="background-color: #4caf50; color: white;" type="submit">
+              Actualizar
+            </ion-button>
+          </div>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

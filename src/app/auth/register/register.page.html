@@ -10,4 +10,28 @@
       <ion-title size="large">register</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <form [formGroup]="usuarioform" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="stacked">Apellidos</ion-label>
+      <ion-input type="apellidos" formControlName="apellidos"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Nombres</ion-label>
+      <ion-input type="nombres" formControlName="nombres"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Dni</ion-label>
+      <ion-input type="dni" formControlName="dni"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input type="password" formControlName="password"></ion-input>
+    </ion-item>
+    <ion-button color="primary" type="submit">Registrar</ion-button>
+  </form>
 </ion-content>

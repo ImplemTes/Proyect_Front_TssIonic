@@ -11,7 +11,7 @@ export class AppComponent {
   public appPages = [
     { title: 'Inicio', url: '/home', icon: 'home-outline' },
     { title: 'Clientes', url: '/home/clientes', icon: 'people-outline' },
-    { title: 'Ajustes', url: '/home/ajustes', icon: 'settings-outline' },
+    { title: 'Usuarios', url: '/home/usuarios', icon: 'settings-outline' },
   ];
 
   constructor(private router: Router, private pageTitleService: PageTitleService) {}
@@ -19,5 +19,5 @@ export class AppComponent {
   updatePageTitle(title: string) {
     this.pageTitleService.changeTitle(title);
   }
-  
+
 }
