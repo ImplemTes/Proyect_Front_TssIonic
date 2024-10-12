@@ -19,7 +19,7 @@ export class ClientesPage implements OnInit {
 
   // Paginación
   p: number = 1; // Página actual
-  itemsPerPage: number = 5; // Elementos por página
+  itemsPerPage: number = 8; // Elementos por página
 
 
 

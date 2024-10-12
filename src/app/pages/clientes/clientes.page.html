@@ -76,9 +76,19 @@
     [backdropDismiss]="false"
   >
     <ng-template>
+
       <ion-header>
         <ion-toolbar>
           <ion-title>Registrar Cliente</ion-title>
+          <ion-buttons slot="end">
+            <ion-button 
+              (click)="closeModal()" 
+              fill="solid" 
+              aria-label="Cerrar" 
+              style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
+              <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
+            </ion-button>
+          </ion-buttons>
         </ion-toolbar>
       </ion-header>
       <ion-content>
@@ -141,9 +151,6 @@
 
           <!-- Botones -->
           <div class="ion-text-center" style="margin-top: 20px">
-            <ion-button color="medium" (click)="closeModal()"
-              >Cancelar</ion-button
-            >
             <ion-button color="primary" type="submit">Guardar</ion-button>
           </div>
         </form>
