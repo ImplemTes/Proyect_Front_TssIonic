@@ -51,17 +51,10 @@ export class ClientesPage implements OnInit {
       }
     );
   }
+
   // Método para saber si un campo es inválido y fue tocado
   openModalRegistrar(): void {
     this.isModalOpen = true;
-    this.clienteForm.reset({ // reset pero con predetermin de lo contrario son null
-      apellidos: '',
-      nombres: '',
-      dni: '',
-      celular: '',
-      preferencias: '',
-      estado: 1,  
-    });
   }
 
   openModalEliminar(cliente: any = null): void {
@@ -73,7 +66,14 @@ export class ClientesPage implements OnInit {
     this.isModalOpenEditar = false;
     this.isModalOpenEliminar = false;
     this.selectedCliente = null;
-    // Reiniciar el formulario con valores por defecto al abrir el modal
+    this.clienteForm.reset({ // reset pero con predetermin de lo contrario son null
+      apellidos: '',
+      nombres: '',
+      dni: '',
+      celular: '',
+      preferencias: '',
+      estado: 1,
+    });
   }
 
   createCliente(): void {
@@ -106,53 +106,51 @@ export class ClientesPage implements OnInit {
     }
   }
 
-
-
-  /*
   openModalEditar(cliente: any = null): void {
     this.isModalOpenEditar = true;
     this.selectedCliente = cliente;
-
     // Usamos patchValue para cargar los datos
-
     this.clienteForm.patchValue({
+      idusuario: cliente.idcliente,
       apellidos: cliente.apellidos,
       nombres: cliente.nombres,
-      edad: cliente.edad,
       dni: cliente.dni,
-      estado: cliente.estado
+      celular: cliente.celular,
+      preferencias: cliente.preferencias,
+      estado: cliente.estado ? '1' : '0', // Convertimos booleano a cadena
     });
   }
-*/
 
-  /*
-    deleteCliente(id: number): void {
-      this.clienteService.deleteCliente(id).subscribe(() => {
-        this.clientes = this.clientes.filter((clien: any) => clien.idcliente !== id);
-        this.listarclientes();
-        this.closeModal();
-      });
-    }
-  
-    editarcliente(): void {
-      if (this.clienteForm.valid) {
-        this.clienteService.updateCliente(this.selectedCliente.idcliente, this.clienteForm.value).subscribe(
-          (resp: any) => {
-            const index = this.clientes.findIndex((clien: any) => clien.idcliente === this.selectedCliente.idcliente);
-            if (index !== -1) {
-              this.clientes[index] = { ...this.clientes[index], ...this.clienteForm.value };
-            }
-            this.closeModal();
-          },
-          (error) => {
-            console.error('Error al actualizar el cliente', error);
+  editarcliente(): void {
+    if (this.clienteForm.valid) {
+      this.clienteService.updateCliente(this.selectedCliente.idcliente, this.clienteForm.value).subscribe(
+        (resp: any) => {
+          const index = this.clientes.findIndex((clien: any) => clien.idcliente === this.selectedCliente.idcliente);
+          if (index !== -1) {
+            this.clientes[index] = { ...this.clientes[index], ...this.clienteForm.value };
           }
-        );
-      } else {
-        console.error('Formulario inválido');
-      }
+          this.closeModal();
+        },
+        (error) => {
+          console.error('Error al actualizar el cliente', error);
+        }
+      );
+    } else {
+      console.error('Formulario inválido');
     }
-  */
+  }
+
+
+  deleteCliente(id: number): void {
+    this.clienteService.deleteCliente(id).subscribe(() => {
+      this.clientes = this.clientes.filter((clien: any) => clien.idcliente !== id);
+      this.listarclientes();
+      this.closeModal();
+    });
+  }
+
+
+
   //ionic g page clientes
   //ionic g service services/usuarios
 

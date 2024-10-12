@@ -30,15 +30,11 @@
           <ion-col size="1">{{ cliente.celular }}</ion-col>
           <ion-col size="1">{{ cliente.preferencias }}</ion-col>
           <ion-col size="2">
-              <!-- Opciones de editar/eliminar cliente 
-                (click)="openModaldeleteUser(user)"-->
-            <ion-button fill="solid" color="light" style="background-color: white; color: gray; justify-content: center; display: flex; flex-direction: column;">
+
+            <ion-button (click)="openModalEditar(cliente)" fill="solid" color="light" style="background-color: white; color: gray; justify-content: center; display: flex; flex-direction: column;">
               <ion-icon slot="start" name="pencil" style="color: gray;"></ion-icon> <!-- Color plomo -->
             </ion-button>
-            <!-- Botón Eliminar con ícono de tacho de basura en color rojo y fondo blanco
-              (click)="openModalDeleteUser(user)" 
-            -->
-            <ion-button fill="solid" color="light" style="background-color: white; color: red; justify-content: center; display: flex; flex-direction: column;">
+            <ion-button (click)="openModalEliminar(cliente)" fill="solid" color="light" style="background-color: white; color: red; justify-content: center; display: flex; flex-direction: column;">
               <ion-icon slot="start" name="trash" style="color: red;"></ion-icon> <!-- Color rojo -->
             </ion-button> 
           </ion-col>
@@ -59,11 +55,7 @@
     </ng-template>
   </div>
 
-  <ion-modal
-    id="modalRegistrarCliente"
-    [isOpen]="isModalOpen"
-    [backdropDismiss]="false"
-  >
+  <ion-modal id="modalRegistrarCliente" [isOpen]="isModalOpen" [backdropDismiss]="false" >
     <ng-template>
 
       <ion-header>
@@ -81,11 +73,7 @@
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <form
-          [formGroup]="clienteForm"
-          (ngSubmit)="createCliente()"
-          style="padding: 16px"
-        >
+        <form [formGroup]="clienteForm" (ngSubmit)="createCliente()" style="padding: 16px">
           <!-- Apellidos -->
           <ion-item>
             <ion-label position="stacked">Apellidos</ion-label>
@@ -147,63 +135,128 @@
     </ng-template>
   </ion-modal>
 
-  <!--
- Modal para eliminar
-<ion-modal [isOpen]="isModalOpenEliminar" [backdropDismiss]="false">
-  <ng-template>
-    <ion-toolbar>
-      <ion-title>Eliminar Cliente</ion-title>
-    </ion-toolbar>
-
-    <div class="modal-content">
-      <h4>¿Estás seguro que deseas eliminar el cliente {{ selectedCliente?.apellidos }}?</h4>
-      <ion-icon name="warning-outline" class="warning-icon"></ion-icon>
-    </div>
-
-    <div class="modal-actions">
-      <ion-button color="medium" (click)="closeModal()">Cancelar</ion-button>
-      <ion-button color="danger" (click)="deleteCliente(selectedCliente?.idcliente)">Eliminar</ion-button>
-    </div>
-  </ng-template>
-</ion-modal>
- Modal para Editar
-<ion-modal [isOpen]="isModalOpenEditar" [backdropDismiss]="false">
+<!-- Modal para Editar-->
+<ion-modal  id="modalEditCliente" [isOpen]="isModalOpenEditar" [backdropDismiss]="false">
   <ng-template>
 
     <ion-header>
       <ion-toolbar>
         <ion-title>Editar Cliente</ion-title>
+        <ion-buttons slot="end">
+          <ion-button 
+            (click)="closeModal()" 
+            fill="solid" 
+            aria-label="Cerrar" 
+            style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
+            <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
+
     <ion-content>
       <form [formGroup]="clienteForm" (ngSubmit)="editarcliente()" style="padding: 16px;">
 
-        <ion-item>
-          <ion-label position="stacked">Apellidos</ion-label>
-          <ion-input formControlName="apellidos"></ion-input>
-        </ion-item>
-        <ion-item>
+          <!-- Apellidos -->
+          <ion-item>
+            <ion-label position="stacked">Apellidos</ion-label>
+            <ion-input formControlName="apellidos"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="isFieldInvalid('apellidos')">
+            Los apellidos son requeridos.
+          </ion-text>
 
-          <ion-label position="stacked">Nombres</ion-label>
-          <ion-input formControlName="nombres"></ion-input>
-        </ion-item>
+          <!-- Nombres -->
+          <ion-item>
+            <ion-label position="stacked">Nombres</ion-label>
+            <ion-input formControlName="nombres"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="isFieldInvalid('nombres')">
+            Los nombres son requeridos.
+          </ion-text>
 
-        <ion-item>
-          <ion-label position="stacked">Edad</ion-label>
-          <ion-input formControlName="edad" type="number"></ion-input>
-        </ion-item>
+          <!-- DNI -->
+          <ion-item>
+            <ion-label position="stacked">DNI</ion-label>
+            <ion-input
+              formControlName="dni"
+              minlength="8"
+              maxlength="8"
+              (keypress)="onlyNumber($event)"
+            ></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="isFieldInvalid('dni')">
+            El DNI debe tener 8 caracteres.
+          </ion-text>
 
-        <ion-item>
-          <ion-label position="stacked">DNI</ion-label>
-          <ion-input formControlName="dni" maxlength="8"></ion-input>
-        </ion-item>
+          <!-- Celular -->
+          <ion-item>
+            <ion-label position="stacked">Celular</ion-label>
+            <ion-input
+              formControlName="celular"
+              minlength="9"
+              maxlength="9"
+              (keypress)="onlyNumber($event)"
+            ></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="isFieldInvalid('celular')">
+            El celular debe tener 9 caracteres.
+          </ion-text>
 
-        <div class="ion-text-center" style="margin-top: 20px;">
-          <ion-button color="medium" (click)="closeModal()">Cancelar</ion-button>
-          <ion-button color="primary" type="submit">Actualizar</ion-button>
+          <!-- Preferencias -->
+          <ion-item>
+            <ion-label position="stacked">Preferencias</ion-label>
+            <ion-input formControlName="preferencias"></ion-input>
+          </ion-item>
+
+          <div class="ion-text-center" style="margin-top: 20px">
+            <ion-button color="primary" type="submit">Actualizar</ion-button>
+          </div>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+  
+<!-- Modal para eliminar-->
+<ion-modal id="modalEliminarCliente" [isOpen]="isModalOpenEliminar" [backdropDismiss]="false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Eliminar Cliente</ion-title>
+        <ion-buttons slot="end">
+          <ion-button 
+            (click)="closeModal()" 
+            fill="solid" 
+            aria-label="Cerrar" 
+            class="close-button">
+            <span>X</span>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <form [formGroup]="clienteForm" (ngSubmit)="createCliente()" class="modal-content">
+        <div class="centered-content">
+          <!-- Icono de advertencia centrado -->
+          <ion-icon name="warning-outline" class="warning-icon"></ion-icon>
+
+          <!-- Pregunta centrada -->
+          <ion-label class="warning-label">
+            ¿Estás seguro que deseas eliminar el cliente
+          </ion-label>
+          <ion-label class="cliente-info">
+            {{ selectedCliente?.apellidos }} {{ selectedCliente?.nombres }} con Dni: {{ selectedCliente?.dni }}?
+          </ion-label>
+
+          <!-- Botón de eliminar centrado -->
+          <div class="button-container">
+            <ion-button color="danger" (click)="deleteCliente(selectedCliente?.idcliente)">Eliminar</ion-button>
+          </div>
         </div>
       </form>
     </ion-content>
   </ng-template>
-</ion-modal>-->
+</ion-modal>
+
 </ion-content>

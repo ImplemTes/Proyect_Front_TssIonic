@@ -21,7 +21,7 @@
       </ion-row>
 
         <ion-row *ngFor="let user of personas | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
-          <ion-col size="1" size-sm="2" size-md="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
+        <ion-col size="1" size-sm="2" size-md="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
         <ion-col size="2" size-sm="4" size-md="2">{{ user.apellidos }} {{ user.nombres }}</ion-col>
         <ion-col size="2" size-sm="4" size-md="2">{{ user.email }}</ion-col>
         <ion-col size="1" size-sm="2" size-md="1">{{ user.nombre_rol }}</ion-col>
