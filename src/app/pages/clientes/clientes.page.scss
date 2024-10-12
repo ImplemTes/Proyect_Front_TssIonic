@@ -19,7 +19,7 @@ ion-title {
 .clientes-lista {
   ion-grid {
     margin-top: 1%;
-    background-color: #dadada;
+    background-color: #dfdfdf91;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -30,7 +30,7 @@ ion-title {
   }
 
   ion-row {
-    border-bottom: 2px solid rgb(179, 179, 179);
+    border-bottom: 2px solid rgba(209, 208, 208, 0.747);
     padding: 10px 0;
     align-items: center;
     display: flex; /* Mantener las columnas alineadas en una fila */

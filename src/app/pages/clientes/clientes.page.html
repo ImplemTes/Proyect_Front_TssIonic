@@ -18,18 +18,15 @@
           <ion-col size="2">Cliente</ion-col>
           <ion-col size="1">DNI</ion-col>
           <ion-col size="1">Celular</ion-col>
-          <ion-col size="2">Estado</ion-col>
-          <ion-col size="2">Opciones</ion-col>
+          <ion-col size="1">Preferencias</ion-col>
+          <ion-col size="z">Opciones</ion-col>
         </ion-row>
         <ion-row *ngFor="let cliente of clientes">
           <ion-col size="1">{{ cliente.idcliente }}</ion-col>
           <ion-col size="2">{{ cliente.apellidos }} {{ cliente.nombres }}</ion-col>
           <ion-col size="1">{{ cliente.dni }}</ion-col>
           <ion-col size="1">{{ cliente.celular }}</ion-col>
-          <ion-col size="2">
-            <ion-icon *ngIf="cliente.estado === 1" name="checkmark-circle-outline" color="success"></ion-icon>
-            <ion-icon *ngIf="cliente.estado === 0" name="close-circle-outline" color="danger"></ion-icon>
-          </ion-col>
+          <ion-col size="1">{{ cliente.preferencias}}</ion-col>
           <ion-col size="2">
             <!-- Opciones de editar/eliminar cliente -->
           </ion-col>
