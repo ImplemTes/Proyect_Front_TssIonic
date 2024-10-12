@@ -12,6 +12,8 @@ export class LoginPage {
   loginForm: FormGroup;
   proband: string = '';
   errorMessage: string = '';
+  passwordType: string = 'password'; // Tipo de campo para contraseña
+  passwordIcon: string = 'eye-off'; // Icono por defecto
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -19,7 +21,7 @@ export class LoginPage {
   ){
 
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
@@ -44,5 +46,17 @@ export class LoginPage {
     }
 
   }
+
+  togglePasswordVisibility(): void {
+    // Cambia entre mostrar y ocultar la contraseña
+    if (this.passwordType === 'password') {
+      this.passwordType = 'text';
+      this.passwordIcon = 'eye';
+    } else {
+      this.passwordType = 'password';
+      this.passwordIcon = 'eye-off';
+    }
+  }
+
 
 }

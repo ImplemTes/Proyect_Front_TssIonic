@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class RolesService {
-  private apiUrl = environment.apiUrl + "/api/rol";
-  constructor(
-    private http: HttpClient
-  ) { }
+  private apiUrl = environment.apiUrl + '/api/rol';
+  constructor(private http: HttpClient) { }
 
   // Listar todos los roles
   listarR(): Observable<any> {
