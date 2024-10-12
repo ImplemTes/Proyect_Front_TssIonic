@@ -16,6 +16,10 @@ export class UsuariosPage implements OnInit {
   isModalOpen: boolean = false;
   selectedusuario: any = null;
   userForm: FormGroup;
+
+    // Paginación
+    p: number = 1; // Página actual
+    itemsPerPage: number = 5; // Elementos por página
   constructor(
     public userService: UsuariosService,
     public rolService: RolesService,

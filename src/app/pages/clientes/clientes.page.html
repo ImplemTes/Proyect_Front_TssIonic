@@ -21,10 +21,8 @@
           <ion-col size="1">Preferencias</ion-col>
           <ion-col size="z">Opciones</ion-col>
         </ion-row>
-        <ion-row
-          *ngFor="let cliente of clientes | paginate: { itemsPerPage: itemsPerPage, currentPage: p }"
-        >
-          <ion-col size="1">{{ cliente.idcliente }}</ion-col>
+        <ion-row *ngFor="let cliente of clientes | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+          <ion-col size="1" size-sm="2" size-md="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
           <ion-col size="2"
             >{{ cliente.apellidos }} {{ cliente.nombres }}</ion-col
           >
@@ -32,27 +30,18 @@
           <ion-col size="1">{{ cliente.celular }}</ion-col>
           <ion-col size="1">{{ cliente.preferencias }}</ion-col>
           <ion-col size="2">
-            <!-- Opciones de editar/eliminar cliente 
-              (click)="openModaldeleteUser(user)"-->
-            <ion-button 
-           
-            fill="solid" 
-            color="light" 
-            
-            style="background-color: white; color: gray; justify-content: center; display: flex; flex-direction: column;">
-            <ion-icon slot="start" name="pencil" style="color: gray;"></ion-icon> <!-- Color plomo -->
-          </ion-button>
-        
-          <!-- Botón Eliminar con ícono de tacho de basura en color rojo y fondo blanco
-             (click)="openModalDeleteUser(user)" 
-          -->
-          <ion-button 
-          
-            fill="solid" 
-            color="light" 
-            style="background-color: white; color: red; justify-content: center; display: flex; flex-direction: column;">
-            <ion-icon slot="start" name="trash" style="color: red;"></ion-icon> <!-- Color rojo -->
-          </ion-button> </ion-col>
+              <!-- Opciones de editar/eliminar cliente 
+                (click)="openModaldeleteUser(user)"-->
+            <ion-button fill="solid" color="light" style="background-color: white; color: gray; justify-content: center; display: flex; flex-direction: column;">
+              <ion-icon slot="start" name="pencil" style="color: gray;"></ion-icon> <!-- Color plomo -->
+            </ion-button>
+            <!-- Botón Eliminar con ícono de tacho de basura en color rojo y fondo blanco
+              (click)="openModalDeleteUser(user)" 
+            -->
+            <ion-button fill="solid" color="light" style="background-color: white; color: red; justify-content: center; display: flex; flex-direction: column;">
+              <ion-icon slot="start" name="trash" style="color: red;"></ion-icon> <!-- Color rojo -->
+            </ion-button> 
+          </ion-col>
         </ion-row>
       </ion-grid>
       <!-- Paginación -->
