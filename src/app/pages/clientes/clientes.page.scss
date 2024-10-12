@@ -1,0 +1,119 @@
+/* Estilos de la cabecera */
+ion-header {
+  --background: #3880ff; /* Color de fondo azul */
+  color: white;
+}
+
+ion-toolbar {
+  --background: #3880ff; /* Fondo sólido azul */
+  padding: 10px;
+}
+
+ion-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+/* Estilos del listado de clientes */
+.clientes-lista {
+  ion-grid {
+    margin-top: 1%;
+    background-color: #dadada;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow-x: auto; /* Habilitar scroll horizontal */
+    white-space: nowrap; /* Evitar que el contenido se desborde y deforme */
+    display: block; /* Asegurar que el grid pueda desplazarse horizontalmente */
+  }
+
+  ion-row {
+    border-bottom: 2px solid rgb(179, 179, 179);
+    padding: 10px 0;
+    align-items: center;
+    display: flex; /* Mantener las columnas alineadas en una fila */
+    flex-wrap: nowrap; /* Evitar que las columnas se envuelvan en varias filas */
+    margin: 0; /* Eliminar márgenes para evitar que las columnas se superpongan */
+  }
+
+  ion-col {
+    padding: 5px;
+    text-align: center;
+    font-weight: bold; /* Añadir negrita a los encabezados */
+    flex: 0 0 auto; /* Evitar que las columnas se reduzcan */
+    min-width: 120px; /* Establecer un ancho mínimo para evitar la superposición */
+    box-sizing: border-box; /* Incluir padding y margen en el tamaño total del col */
+  }
+
+  /* Ajustar el tamaño de las columnas y reducir el tamaño de la letra para pantallas pequeñas */
+  @media (max-width: 500px) {
+    ion-col {
+      min-width: 100px; /* Ajustar el ancho mínimo de las columnas en pantallas pequeñas */
+      font-size: 12px; /* Reducir el tamaño de la fuente */
+    }
+  }
+
+  /* Margen adicional para contenido interno en cualquier tamaño de pantalla */
+  ion-col p {
+    margin: 0;
+  }
+}
+/* Estilos específicos para el modal de registro */
+#modalRegistrarCliente {
+  ion-header {
+    --background: #3880ff;
+    color: white;
+  }
+
+  ion-toolbar {
+    --background: #3880ff;
+    padding: 10px;
+  }
+
+  ion-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+  }
+
+  ion-content {
+    --background: #f4f5f8;
+    padding: 16px;
+  }
+
+  ion-item {
+    --background: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  ion-label {
+    font-weight: bold;
+    color: #333;
+  }
+
+  ion-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .ion-text-center {
+    margin-top: 20px;
+  }
+
+  ion-button {
+    --border-radius: 8px;
+    margin: 10px;
+  }
+
+  ion-button[color="medium"] {
+    --background: #eb445a;
+  }
+
+  ion-button[color="primary"] {
+    --background: #3880ff;
+  }
+}

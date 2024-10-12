@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PageTitleService } from '../shared/page-title.service';
-import { ClienteService } from '../services/cliente.service';
+import { ClienteService } from 'src/app/services/cliente.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-clientes',
@@ -27,7 +25,7 @@ export class ClientesPage implements OnInit {
       nombres: ['', Validators.required],
       dni: ['', [Validators.required, Validators.maxLength(8), Validators.minLength(8)]],
       celular: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
-      preferencias: ['---'],
+      preferencias: [''],
       estado: [1],
     });
   }
@@ -46,7 +44,7 @@ export class ClientesPage implements OnInit {
       }
     );
   }
-
+  // Método para saber si un campo es inválido y fue tocado
   openModalRegistrar(): void {
     this.isModalOpen = true;
   }
@@ -61,6 +59,32 @@ export class ClientesPage implements OnInit {
     this.isModalOpenEliminar = false;
     this.selectedCliente = null;
   }
+
+  createCliente(): void {
+    if (this.clienteForm.valid) {
+      this.clienteService.create(this.clienteForm.value).subscribe(
+        (resp: any) => {
+          this.listarclientes();
+          this.closeModal();
+        },
+        (error) => {
+          console.error('Error al crear el cliente', error);
+        }
+      );
+    } else {
+      console.error('Formulario inválido');
+    }
+  }
+
+  onlyNumber(event: KeyboardEvent) {
+    const char = String.fromCharCode(event.keyCode);
+    if (!/^[0-9]*$/.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+
+
   /*
   openModalEditar(cliente: any = null): void {
     this.isModalOpenEditar = true;
@@ -78,22 +102,6 @@ export class ClientesPage implements OnInit {
   }
 */
 
-  createCliente(): void {
-    if (this.clienteForm.valid) {
-      this.clienteService.create(this.clienteForm.value).subscribe(
-        (resp: any) => {
-          this.clientes.push(resp.cliente);
-          this.listarclientes();
-          this.closeModal();
-        },
-        (error) => {
-          console.error('Error al crear el cliente', error);
-        }
-      );
-    } else {
-      console.error('Formulario inválido');
-    }
-  }
 /*
   deleteCliente(id: number): void {
     this.clienteService.deleteCliente(id).subscribe(() => {
@@ -124,5 +132,12 @@ export class ClientesPage implements OnInit {
 */
 //ionic g page clientes
 //ionic g service services/usuarios
+
+
+
+
+
+
+
 
 }
