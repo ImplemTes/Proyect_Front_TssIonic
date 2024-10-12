@@ -57,6 +57,9 @@ ion-col {
   padding: 5px;
   text-align: center;
   font-weight: bold; /* Añade negrita a los encabezados */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .modal-content {
   text-align: center;
