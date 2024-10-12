@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { HomePage } from 'src/app/home/home.page';
-
-
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
@@ -27,8 +24,8 @@ export class RegisterPage {
       dni: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(8)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      idrol: [4],  // Valor por defecto
-      estado: [1], // Valor por defecto
+      idrol: [4],
+      estado: [1],
     });
   }
 
@@ -44,8 +41,6 @@ export class RegisterPage {
     this.userService.create(formValue).subscribe(
       (resp: any) => {
         console.log('Usuario creado exitosamente:', resp);
-
-        // Realizar el login automático después de la creación
         this.authService.login({ email: formValue.email, password: formValue.password }).subscribe(
           (loginResp: any) => {
             localStorage.setItem('token', loginResp.token);

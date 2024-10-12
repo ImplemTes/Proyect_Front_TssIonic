@@ -1,37 +1,64 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>register</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="ion-padding custom-content">
+  <div class="form-container">
+    <form [formGroup]="usuarioform" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="logo-container">
+        <img src="../../../assets/icon/logo.jpg" class="logo" alt="logo" />
+        <h2 class="register-title">Registro</h2>
+      </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">register</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <!-- Apellidos -->
+      <ion-item [class.invalid]="usuarioform.get('apellidos')?.invalid && (usuarioform.get('apellidos')?.touched || usuarioform.get('apellidos')?.dirty)">
+        <ion-label position="stacked">Apellidos</ion-label>
+        <ion-input type="text" formControlName="apellidos"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="usuarioform.get('apellidos')?.invalid && (usuarioform.get('apellidos')?.touched || usuarioform.get('apellidos')?.dirty)">
+        <small>Los apellidos son obligatorios.</small>
+      </ion-text>
 
-  <form [formGroup]="usuarioform" (ngSubmit)="onSubmit()">
-    <ion-item>
-      <ion-label position="stacked">Apellidos</ion-label>
-      <ion-input type="apellidos" formControlName="apellidos"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Nombres</ion-label>
-      <ion-input type="nombres" formControlName="nombres"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Dni</ion-label>
-      <ion-input type="dni" formControlName="dni"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Email</ion-label>
-      <ion-input type="email" formControlName="email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="stacked">Password</ion-label>
-      <ion-input type="password" formControlName="password"></ion-input>
-    </ion-item>
-    <ion-button color="primary" type="submit">Registrar</ion-button>
-  </form>
+      <!-- Nombres -->
+      <ion-item [class.invalid]="usuarioform.get('nombres')?.invalid && (usuarioform.get('nombres')?.touched || usuarioform.get('nombres')?.dirty)">
+        <ion-label position="stacked">Nombres</ion-label>
+        <ion-input type="text" formControlName="nombres"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="usuarioform.get('nombres')?.invalid && (usuarioform.get('nombres')?.touched || usuarioform.get('nombres')?.dirty)">
+        <small>Los nombres son obligatorios.</small>
+      </ion-text>
+
+      <!-- DNI -->
+      <ion-item [class.invalid]="usuarioform.get('dni')?.invalid && (usuarioform.get('dni')?.touched || usuarioform.get('dni')?.dirty)">
+        <ion-label position="stacked">DNI</ion-label>
+        <ion-input type="text" formControlName="dni"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="usuarioform.get('dni')?.invalid && (usuarioform.get('dni')?.touched || usuarioform.get('dni')?.dirty)">
+        <small>El DNI debe tener exactamente 8 dígitos.</small>
+      </ion-text>
+
+      <!-- Email -->
+      <ion-item [class.invalid]="usuarioform.get('email')?.invalid && (usuarioform.get('email')?.touched || usuarioform.get('email')?.dirty)">
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="usuarioform.get('email')?.invalid && (usuarioform.get('email')?.touched || usuarioform.get('email')?.dirty)">
+        <small>El correo debe tener un formato válido.</small>
+      </ion-text>
+
+      <!-- Contraseña -->
+      <ion-item [class.invalid]="usuarioform.get('password')?.invalid && (usuarioform.get('password')?.touched || usuarioform.get('password')?.dirty)">
+        <ion-label position="stacked">Contraseña</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="usuarioform.get('password')?.invalid && (usuarioform.get('password')?.touched || usuarioform.get('password')?.dirty)">
+        <small>La contraseña debe tener al menos 8 caracteres.</small>
+      </ion-text>
+
+      <!-- Botón de registro -->
+      <ion-button expand="full" color="primary" type="submit" [disabled]="usuarioform.invalid">Registrar</ion-button>
+      <ion-button expand="full" routerLink="/login" fill="clear">Iniciar Sesión</ion-button>
+
+      <!-- Mensaje de error general -->
+      <ion-text color="danger" *ngIf="errorMessage">
+        <p>{{ errorMessage }}</p>
+      </ion-text>
+    </form>
+  </div>
 </ion-content>
