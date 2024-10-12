@@ -59,6 +59,43 @@ ion-title {
   ion-col p {
     margin: 0;
   }
+
+.paginador-container {
+  display: flex;
+  justify-content: center; // Centrar el paginador
+  margin-top: 20px; // Margen superior para separación
+  padding: 10px; // Espacio interior
+
+  // Estilos del paginador
+  .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin: 0 5px; // Espacio entre los botones de paginación
+
+      a {
+        display: block;
+        padding: 10px 15px; // Espacio interior de los botones
+        color: #007bff; // Color del texto del enlace
+        border: 1px solid #007bff; // Borde del botón
+        border-radius: 5px; // Bordes redondeados
+        text-decoration: none; // Sin subrayado
+
+        &:hover {
+          background-color: #007bff; // Color de fondo al pasar el mouse
+          color: white; // Color del texto al pasar el mouse
+        }
+      }
+
+      &.active a {
+        background-color: #007bff; // Color de fondo activo
+        color: white; // Color del texto activo
+      }
+    }
+  }
+}
 }
 /* Estilos específicos para el modal de registro */
 #modalRegistrarCliente {
@@ -140,3 +177,41 @@ ion-title {
     border: 1px solid #ffffff;
   }
 }
+
+.paginador-container {
+  display: flex;
+  justify-content: center; // Centrar el paginador
+  margin-top: 20px; // Margen superior para separación
+  padding: 10px; // Espacio interior
+
+  // Estilos del paginador
+  .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin: 0 5px; // Espacio entre los botones de paginación
+
+      a {
+        display: block;
+        padding: 10px 15px; // Espacio interior de los botones
+        color: #007bff; // Color del texto del enlace
+        border: 1px solid #007bff; // Borde del botón
+        border-radius: 5px; // Bordes redondeados
+        text-decoration: none; // Sin subrayado
+
+        &:hover {
+          background-color: #007bff; // Color de fondo al pasar el mouse
+          color: white; // Color del texto al pasar el mouse
+        }
+      }
+
+      &.active a {
+        background-color: #007bff; // Color de fondo activo
+        color: white; // Color del texto activo
+      }
+    }
+  }
+}
+

@@ -16,6 +16,13 @@ export class ClientesPage implements OnInit {
   isModalOpen: boolean = false;
   isModalOpenEditar: boolean = false;
 
+
+  // Paginación
+  p: number = 1; // Página actual
+  itemsPerPage: number = 5; // Elementos por página
+
+
+
   constructor(
     private clienteService: ClienteService,
     private fb: FormBuilder

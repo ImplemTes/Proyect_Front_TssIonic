@@ -1,16 +1,16 @@
-<ion-header [translucent]="true" >
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start" style="color: white;">
-      <ion-menu-button ></ion-menu-button>
+    <ion-buttons slot="start" style="color: white">
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title >{{ selectedPageTitle }}</ion-title>
+    <ion-title>{{ selectedPageTitle }}</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <div class="clientes-lista" style="padding: 16px;">
+  <div class="clientes-lista" style="padding: 16px">
     <p>Lista de clientes:</p>
     <ion-button (click)="openModalRegistrar()">+ Registrar Cliente</ion-button>
-    
+
     <ng-container *ngIf="clientes.length > 0; else noClientes">
       <ion-grid>
         <ion-row>
@@ -21,17 +21,48 @@
           <ion-col size="1">Preferencias</ion-col>
           <ion-col size="z">Opciones</ion-col>
         </ion-row>
-        <ion-row *ngFor="let cliente of clientes">
+        <ion-row
+          *ngFor="let cliente of clientes | paginate: { itemsPerPage: itemsPerPage, currentPage: p }"
+        >
           <ion-col size="1">{{ cliente.idcliente }}</ion-col>
-          <ion-col size="2">{{ cliente.apellidos }} {{ cliente.nombres }}</ion-col>
+          <ion-col size="2"
+            >{{ cliente.apellidos }} {{ cliente.nombres }}</ion-col
+          >
           <ion-col size="1">{{ cliente.dni }}</ion-col>
           <ion-col size="1">{{ cliente.celular }}</ion-col>
-          <ion-col size="1">{{ cliente.preferencias}}</ion-col>
+          <ion-col size="1">{{ cliente.preferencias }}</ion-col>
           <ion-col size="2">
-            <!-- Opciones de editar/eliminar cliente -->
-          </ion-col>
+            <!-- Opciones de editar/eliminar cliente 
+              (click)="openModaldeleteUser(user)"-->
+            <ion-button 
+           
+            fill="solid" 
+            color="light" 
+            
+            style="background-color: white; color: gray; justify-content: center; display: flex; flex-direction: column;">
+            <ion-icon slot="start" name="pencil" style="color: gray;"></ion-icon> <!-- Color plomo -->
+          </ion-button>
+        
+          <!-- Botón Eliminar con ícono de tacho de basura en color rojo y fondo blanco
+             (click)="openModalDeleteUser(user)" 
+          -->
+          <ion-button 
+          
+            fill="solid" 
+            color="light" 
+            style="background-color: white; color: red; justify-content: center; display: flex; flex-direction: column;">
+            <ion-icon slot="start" name="trash" style="color: red;"></ion-icon> <!-- Color rojo -->
+          </ion-button> </ion-col>
         </ion-row>
       </ion-grid>
+      <!-- Paginación -->
+      <div class="paginador-container">
+        <pagination-controls 
+          (pageChange)="p = $event" 
+          previousLabel="Anterior" 
+          nextLabel="Siguiente">
+        </pagination-controls>
+      </div>
     </ng-container>
 
     <ng-template #noClientes>
@@ -39,9 +70,11 @@
     </ng-template>
   </div>
 
-
-
-  <ion-modal id="modalRegistrarCliente" [isOpen]="isModalOpen" [backdropDismiss]="false">
+  <ion-modal
+    id="modalRegistrarCliente"
+    [isOpen]="isModalOpen"
+    [backdropDismiss]="false"
+  >
     <ng-template>
       <ion-header>
         <ion-toolbar>
@@ -49,7 +82,11 @@
         </ion-toolbar>
       </ion-header>
       <ion-content>
-        <form [formGroup]="clienteForm" (ngSubmit)="createCliente()" style="padding: 16px;">
+        <form
+          [formGroup]="clienteForm"
+          (ngSubmit)="createCliente()"
+          style="padding: 16px"
+        >
           <!-- Apellidos -->
           <ion-item>
             <ion-label position="stacked">Apellidos</ion-label>
@@ -58,7 +95,7 @@
           <ion-text color="danger" *ngIf="isFieldInvalid('apellidos')">
             Los apellidos son requeridos.
           </ion-text>
-  
+
           <!-- Nombres -->
           <ion-item>
             <ion-label position="stacked">Nombres</ion-label>
@@ -67,34 +104,46 @@
           <ion-text color="danger" *ngIf="isFieldInvalid('nombres')">
             Los nombres son requeridos.
           </ion-text>
-  
+
           <!-- DNI -->
           <ion-item>
             <ion-label position="stacked">DNI</ion-label>
-            <ion-input formControlName="dni" minlength="8" maxlength="8" (keypress)="onlyNumber($event)"></ion-input>
+            <ion-input
+              formControlName="dni"
+              minlength="8"
+              maxlength="8"
+              (keypress)="onlyNumber($event)"
+            ></ion-input>
           </ion-item>
           <ion-text color="danger" *ngIf="isFieldInvalid('dni')">
             El DNI debe tener 8 caracteres.
           </ion-text>
-  
+
           <!-- Celular -->
           <ion-item>
             <ion-label position="stacked">Celular</ion-label>
-            <ion-input formControlName="celular" minlength="9" maxlength="9" (keypress)="onlyNumber($event)"></ion-input>
+            <ion-input
+              formControlName="celular"
+              minlength="9"
+              maxlength="9"
+              (keypress)="onlyNumber($event)"
+            ></ion-input>
           </ion-item>
           <ion-text color="danger" *ngIf="isFieldInvalid('celular')">
             El celular debe tener 9 caracteres.
           </ion-text>
-  
+
           <!-- Preferencias -->
           <ion-item>
             <ion-label position="stacked">Preferencias</ion-label>
             <ion-input formControlName="preferencias"></ion-input>
           </ion-item>
-  
+
           <!-- Botones -->
-          <div class="ion-text-center" style="margin-top: 20px;">
-            <ion-button color="medium" (click)="closeModal()">Cancelar</ion-button>
+          <div class="ion-text-center" style="margin-top: 20px">
+            <ion-button color="medium" (click)="closeModal()"
+              >Cancelar</ion-button
+            >
             <ion-button color="primary" type="submit">Guardar</ion-button>
           </div>
         </form>
@@ -102,7 +151,7 @@
     </ng-template>
   </ion-modal>
 
-<!--
+  <!--
  Modal para eliminar
 <ion-modal [isOpen]="isModalOpenEliminar" [backdropDismiss]="false">
   <ng-template>
@@ -161,5 +210,4 @@
     </ion-content>
   </ng-template>
 </ion-modal>-->
-  
 </ion-content>

@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { ClientesPageRoutingModule } from './clientes-routing.module';
 import {   ReactiveFormsModule } from '@angular/forms'; // Asegúrate de incluir ReactiveFormsModule
- 
+import { NgxPaginationModule } from 'ngx-pagination';
 import { ClientesPage } from './clientes.page';
 
 @NgModule({
@@ -14,7 +14,8 @@ import { ClientesPage } from './clientes.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    ReactiveFormsModule, // Agrega esto
+    NgxPaginationModule, // Agrega manejo de paginaciones
+    ReactiveFormsModule, // Agrega para manejo de formularios con modal
     ClientesPageRoutingModule
   ],
   declarations: [ClientesPage]
