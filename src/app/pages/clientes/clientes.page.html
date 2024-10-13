@@ -23,9 +23,7 @@
         </ion-row>
         <ion-row *ngFor="let cliente of clientes | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
           <ion-col size="1" size-sm="2" size-md="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
-          <ion-col size="2"
-            >{{ cliente.apellidos }} {{ cliente.nombres }}</ion-col
-          >
+          <ion-col size="2">{{ cliente.apellidos }} {{ cliente.nombres }}</ion-col>
           <ion-col size="1">{{ cliente.dni }}</ion-col>
           <ion-col size="1">{{ cliente.celular }}</ion-col>
           <ion-col size="1">{{ cliente.preferencias }}</ion-col>
@@ -36,15 +34,15 @@
             </ion-button>
             <ion-button (click)="openModalEliminar(cliente)" fill="solid" color="light" style="background-color: white; color: red; justify-content: center; display: flex; flex-direction: column;">
               <ion-icon slot="start" name="trash" style="color: red;"></ion-icon> <!-- Color rojo -->
-            </ion-button> 
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
       <!-- Paginación -->
       <div class="paginador-container">
-        <pagination-controls 
-          (pageChange)="p = $event" 
-          previousLabel="Anterior" 
+        <pagination-controls
+          (pageChange)="p = $event"
+          previousLabel="Anterior"
           nextLabel="Siguiente">
         </pagination-controls>
       </div>
@@ -54,7 +52,7 @@
       <p>No se encontraron clientes.</p>
     </ng-template>
   </div>
-
+<!-- Modal para Registro-->
   <ion-modal id="modalRegistrarCliente" [isOpen]="isModalOpen" [backdropDismiss]="false" >
     <ng-template>
 
@@ -62,10 +60,10 @@
         <ion-toolbar>
           <ion-title>Registrar Cliente</ion-title>
           <ion-buttons slot="end">
-            <ion-button 
-              (click)="closeModal()" 
-              fill="solid" 
-              aria-label="Cerrar" 
+            <ion-button
+              (click)="closeModal()"
+              fill="solid"
+              aria-label="Cerrar"
               style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
               <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
             </ion-button>
@@ -143,10 +141,10 @@
       <ion-toolbar>
         <ion-title>Editar Cliente</ion-title>
         <ion-buttons slot="end">
-          <ion-button 
-            (click)="closeModal()" 
-            fill="solid" 
-            aria-label="Cerrar" 
+          <ion-button
+            (click)="closeModal()"
+            fill="solid"
+            aria-label="Cerrar"
             style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
             <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
           </ion-button>
@@ -217,7 +215,7 @@
   </ng-template>
 </ion-modal>
 
-  
+
 <!-- Modal para eliminar-->
 <ion-modal id="modalEliminarCliente" [isOpen]="isModalOpenEliminar" [backdropDismiss]="false">
   <ng-template>
@@ -225,10 +223,10 @@
       <ion-toolbar>
         <ion-title>Eliminar Cliente</ion-title>
         <ion-buttons slot="end">
-          <ion-button 
-            (click)="closeModal()" 
-            fill="solid" 
-            aria-label="Cerrar" 
+          <ion-button
+            (click)="closeModal()"
+            fill="solid"
+            aria-label="Cerrar"
             class="close-button">
             <span>X</span>
           </ion-button>

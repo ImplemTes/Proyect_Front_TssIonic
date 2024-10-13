@@ -12,6 +12,7 @@ export class AppComponent {
     { title: 'Inicio', url: '/home', icon: 'home-outline' },
     { title: 'Clientes', url: '/home/clientes', icon: 'people-outline' },
     { title: 'Usuarios', url: '/home/usuarios', icon: 'settings-outline' },
+    { title: 'Proveedores', url: '/home/proveedores', icon: 'people-outline' },
   ];
 
   constructor(private router: Router, private pageTitleService: PageTitleService) {}

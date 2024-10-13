@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';// Asegúrate de incluir ReactiveFormsModule
 
 import { IonicModule } from '@ionic/angular';
 
 import { ClientesPageRoutingModule } from './clientes-routing.module';
-import {   ReactiveFormsModule } from '@angular/forms'; // Asegúrate de incluir ReactiveFormsModule
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ClientesPage } from './clientes.page';
 

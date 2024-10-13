@@ -16,7 +16,7 @@
         <ion-col size="2" size-sm="4" size-md="2">Email</ion-col>
         <ion-col size="1" size-sm="2" size-md="1">Rol</ion-col>
         <ion-col size="1" size-sm="2" size-md="1">Dni</ion-col>
-        <ion-col size="1" size-sm="2" size-md="1">Estado</ion-col>
+        <ion-col size="1" size-sm="2" size-md="1">Estado(A/B)</ion-col>
         <ion-col size="2" size-sm="4" size-md="2">Opciones</ion-col>
       </ion-row>
 
@@ -37,9 +37,9 @@
     </ion-grid>
       <!-- Paginación -->
       <div class="paginador-container">
-        <pagination-controls 
-          (pageChange)="p = $event" 
-          previousLabel="Anterior" 
+        <pagination-controls
+          (pageChange)="p = $event"
+          previousLabel="Anterior"
           nextLabel="Siguiente">
         </pagination-controls>
       </div>
@@ -58,10 +58,10 @@
         <ion-toolbar>
           <ion-title>Editar Usuario</ion-title>
           <ion-buttons slot="end">
-            <ion-button 
-              (click)="closeModal()" 
-              fill="solid" 
-              aria-label="Cerrar" 
+            <ion-button
+              (click)="closeModal()"
+              fill="solid"
+              aria-label="Cerrar"
               style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
               <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
             </ion-button>

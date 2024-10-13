@@ -10,7 +10,7 @@ export class ClienteService {
   private apiUrl = environment.apiUrl + '/api/cliente';
 
   constructor(private http: HttpClient) { }
-  // Obtener una lista
+
   // Listar todos los usuarios
   list(): Observable<any> {
     return this.http.get(`${this.apiUrl}/`);
