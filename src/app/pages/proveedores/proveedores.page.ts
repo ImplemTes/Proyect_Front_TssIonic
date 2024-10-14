@@ -28,7 +28,7 @@ export class ProveedoresPage implements OnInit {
       dni: ['', [Validators.required, Validators.maxLength(8), Validators.minLength(8)]],
       celular: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]],
       nombre_proveedor: ['', Validators.required],
-      ruc: ['', Validators.required],
+      ruc: ['', [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       estado: [1],
     });
   }
@@ -102,20 +102,47 @@ export class ProveedoresPage implements OnInit {
   }
 
 
-  openModalEditar(cliente: any = null): void {
+  openModalEditar(prove: any = null): void {
     this.isModalOpenEditar = true;
-    this.selectedProveedor = cliente;
+    this.selectedProveedor = prove;
     // Usamos patchValue para cargar los datos
     this.proveedorForm.patchValue({
-      idusuario: cliente.idcliente,
-      apellidos: cliente.apellidos,
-      nombres: cliente.nombres,
-      dni: cliente.dni,
-      celular: cliente.celular,
-      preferencias: cliente.preferencias,
-      estado: cliente.estado ? '1' : '0', // Convertimos booleano a cadena
+      idusuario: prove.idcliente,
+      apellidos: prove.apellidos,
+      nombres: prove.nombres,
+      dni: prove.dni,
+      celular: prove.celular,
+      nombre_proveedor: prove.nombre_proveedor,
+      ruc: prove.ruc,
+      estado: prove.estado ? '1' : '0', // Convertimos booleano a cadena
     });
   }
 
+  editarproveedor(): void {
+    if (this.proveedorForm.valid) {
+      this.proveedorService.updateProveedor(this.selectedProveedor.idproveedor, this.proveedorForm.value).subscribe(
+        (resp: any) => {
+          const index = this.proveedores.findIndex((prove: any) => prove.idproveedor === this.selectedProveedor.idproveedor);
+          if (index !== -1) {
+            this.proveedores[index] = { ...this.proveedores[index], ...this.proveedorForm.value };
+          }
+          this.closeModal();
+        },
+        (error) => {
+          console.error('Error al actualizar el proveedor', error);
+        }
+      );
+    } else {
+      console.error('Formulario inválido');
+    }
+  }
+
+  deleteCliente(id: number): void {
+    this.proveedorService.deleteProveedor(id).subscribe(() => {
+      this.proveedores = this.proveedores.filter((prove: any) => prove.idproveedor !== id);
+      this.listarproveedores();
+      this.closeModal();
+    });
+  }
 
 }

@@ -8,6 +8,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <div class="usuarios-lista" style="padding: 16px">
+    <p>Lista de Usuarios</p>
   <ng-container *ngIf="personas.length > 0; else noUsuarios">
     <ion-grid>
       <ion-row>
@@ -44,6 +46,7 @@
         </pagination-controls>
       </div>
   </ng-container>
+  </div>
   <!-- Mostrar un mensaje si no hay clientes -->
   <ng-template #noUsuarios>
     <p>No se encontraron usuarios.</p>
@@ -114,3 +117,8 @@
     </ng-template>
   </ion-modal>
 </ion-content>
+<ion-footer >
+  <ion-toolbar >
+    <ion-title>© 2024 Mi Aplicación</ion-title>
+  </ion-toolbar>
+</ion-footer>

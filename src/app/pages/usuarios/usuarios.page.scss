@@ -1,17 +1,18 @@
+/* Estilos de la cabecera */
 ion-header {
-  --background: #3880ff; /* Color de fondo azul para el header */
-  color: white; /* Color del texto blanco */
+  --background: #3880ff; /* Color de fondo azul */
+  color: white;
 }
 
 ion-toolbar {
   --background: #3880ff; /* Fondo sólido azul */
-  padding: 10px;
   color: white;
 }
 
 ion-title {
   font-size: 1.5rem;
   font-weight: bold;
+  color: white;
 }
 
 ion-content {
@@ -19,48 +20,90 @@ ion-content {
   --padding-top: 56px; /* Evita superposición con el header */
 }
 
-h1 {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 10px;
+/* Estilos del listado de proveedores */
+.usuarios-lista {
+  ion-grid {
+    margin-top: 1%;
+    background-color: #dfdfdf91;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow-x: auto; /* Habilitar scroll horizontal */
+    white-space: nowrap; /* Evitar que el contenido se desborde y deforme */
+    display: block; /* Asegurar que el grid pueda desplazarse horizontalmente */
+  }
+
+  ion-row {
+    border-bottom: 2px solid rgba(209, 208, 208, 0.747);
+    padding: 10px 0;
+    align-items: center;
+    display: flex; /* Mantener las columnas alineadas en una fila */
+    flex-wrap: nowrap; /* Evitar que las columnas se envuelvan en varias filas */
+    margin: 0; /* Eliminar márgenes para evitar que las columnas se superpongan */
+  }
+
+  ion-col {
+    padding: 5px;
+    text-align: center;
+    font-weight: bold; /* Añadir negrita a los encabezados */
+    flex: 0 0 auto; /* Evitar que las columnas se reduzcan */
+    min-width: 120px; /* Establecer un ancho mínimo para evitar la superposición */
+    box-sizing: border-box; /* Incluir padding y margen en el tamaño total del col */
+  }
+
+  /* Ajustar el tamaño de las columnas y reducir el tamaño de la letra para pantallas pequeñas */
+  @media (max-width: 500px) {
+    ion-col {
+      min-width: 100px; /* Ajustar el ancho mínimo de las columnas en pantallas pequeñas */
+      font-size: 12px; /* Reducir el tamaño de la fuente */
+    }
+  }
+
+  /* Margen adicional para contenido interno en cualquier tamaño de pantalla */
+  ion-col p {
+    margin: 0;
+  }
+
+.paginador-container {
+  display: flex;
+  justify-content: center; // Centrar el paginador
+  margin-top: 20px; // Margen superior para separación
+  padding: 10px; // Espacio interior
+
+  // Estilos del paginador
+  .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin: 0 5px; // Espacio entre los botones de paginación
+
+      a {
+        display: block;
+        padding: 10px 15px; // Espacio interior de los botones
+        color: #007bff; // Color del texto del enlace
+        border: 1px solid #007bff; // Borde del botón
+        border-radius: 5px; // Bordes redondeados
+        text-decoration: none; // Sin subrayado
+
+        &:hover {
+          background-color: #007bff; // Color de fondo al pasar el mouse
+          color: white; // Color del texto al pasar el mouse
+        }
+      }
+
+      &.active a {
+        background-color: #007bff; // Color de fondo activo
+        color: white; // Color del texto activo
+      }
+    }
+  }
+}
 }
 
-p {
-  color: #666;
-  font-size: 16px;
-  margin-bottom: 20px;
-}
 
-/* Estilo para los botones de acción */
-ion-button {
-  margin-top: 10px;
-  --background: #347bf4; /* Azul Ionic */
-  --color: white;
-  --border-radius: 4px; /* Bordes redondeados */
-}
-
-ion-grid {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-ion-row {
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
-  align-items: center;
-}
-
-ion-col {
-  padding: 5px;
-  text-align: center;
-  font-weight: bold; /* Añade negrita a los encabezados */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 .modal-content {
   text-align: center;
   padding: 10px;
@@ -85,6 +128,9 @@ ion-col {
   justify-content: center;
   padding: 10px 0; /* Espaciado arriba y abajo de los botones */
 }
+
+
+
 .paginador-container {
   display: flex;
   justify-content: center; // Centrar el paginador

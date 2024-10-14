@@ -10,9 +10,10 @@ import { PageTitleService } from './shared/page-title.service'; // Asegúrate de
 export class AppComponent {
   public appPages = [
     { title: 'Inicio', url: '/home', icon: 'home-outline' },
+    { title: 'Usuarios', url: '/home/usuarios', icon: 'person-outline' },
     { title: 'Clientes', url: '/home/clientes', icon: 'people-outline' },
-    { title: 'Usuarios', url: '/home/usuarios', icon: 'settings-outline' },
-    { title: 'Proveedores', url: '/home/proveedores', icon: 'people-outline' },
+    { title: 'Proveedores', url: '/home/proveedores', icon: 'business-outline' },
+    { title: 'Almacenes', url: '/home/proveedores', icon: 'business-outline' },
   ];
 
   constructor(private router: Router, private pageTitleService: PageTitleService) {}

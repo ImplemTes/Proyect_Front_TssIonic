@@ -15,10 +15,19 @@ export class ProveedorService {
   list(): Observable<any> {
     return this.http.get(`${this.apiUrl}/`);
   }
-     // Crear un nuevo proveedor
 
+  // Crear un nuevo proveedor
   create(proveedor: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/`, proveedor);
   }
 
+  // Actualizar completo
+  updateProveedor(id: number, proveedor: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, proveedor);
+  }
+
+  // Eliminar
+  deleteProveedor(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
+  }
 }

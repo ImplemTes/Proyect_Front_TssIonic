@@ -1,3 +1,21 @@
+/* Estilos de la cabecera */
+ion-header {
+  --background: #3880ff; /* Color de fondo azul */
+  color: white;
+}
+
+ion-toolbar {
+  --background: #3880ff; /* Fondo sólido azul */
+  align-items: center;
+  color: white;
+}
+
+ion-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
 #container {
   text-align: center;
 
@@ -32,4 +50,28 @@ ion-content {
 
 ion-menu[side="start"].ion-menu-open ~ ion-content {
   margin-left: 250px; /* Ajusta según el ancho del menú */
+
+}
+
+
+.chat-float {
+  position: fixed;
+  bottom: 80px; /* Ajusta la posición del botón de chat */
+  right: 20px;
+  background-color: #a1a1a1; /* Color del botón */
+  color: white;
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+  transition: background-color 0.3s ease; /* Efecto de transición */
+}
+
+.chat-float:hover {
+  background-color: #272727; /* Color más oscuro al pasar el mouse */
+}
+
+.chat-float img {
+  width: 50px; /* Ajusta el tamaño de la imagen si es necesario */
+  height: 50px; /* Ajusta el tamaño de la imagen si es necesario */
 }

@@ -8,6 +8,9 @@
     </ion-header>
 
     <ion-content>
+      <div class="menu-title">
+        <h2>Bienvenido</h2>
+      </div>
       <ion-list>
         <ion-item *ngFor="let page of appPages" [routerLink]="page.url" (click)="updatePageTitle(page.title)">
           <ion-icon [name]="page.icon" slot="start"></ion-icon>
@@ -15,6 +18,12 @@
         </ion-item>
       </ion-list>
     </ion-content>
+
+    <ion-footer>
+      <ion-toolbar>
+        <ion-label>™Criss™ © 2024 Proyecto </ion-label>
+      </ion-toolbar>
+    </ion-footer>
   </ion-menu>
 
   <!-- Página principal -->
