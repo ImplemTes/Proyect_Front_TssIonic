@@ -35,7 +35,15 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
+  },  {
+    path: 'almacenes',
+    loadChildren: () => import('./pages/almacenes/almacenes.module').then( m => m.AlmacenesPageModule)
   },
+  {
+    path: 'vehiculos',
+    loadChildren: () => import('./pages/vehiculos/vehiculos.module').then( m => m.VehiculosPageModule)
+  },
+
 
 ];
 
