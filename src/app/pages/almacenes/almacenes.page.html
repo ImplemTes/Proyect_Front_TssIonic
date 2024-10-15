@@ -1,13 +1,205 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>almacenes</ion-title>
+    <ion-buttons slot="start" style="color: white">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ selectedPageTitle }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">almacenes</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="almacenes-lista" style="padding: 16px">
+    <p>Lista de Almacenes:</p>
+    <ion-button (click)="openModalRegistrar()">+ Registrar almacen</ion-button>
+
+    <ng-container *ngIf="almacenes.length > 0; else noAlmacenes">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="1">N°</ion-col>
+          <ion-col size="2">Almacen</ion-col>
+          <ion-col size="1">Ubicacion</ion-col>
+          <ion-col size="1">descripcion</ion-col>
+          <ion-col size="z">Opciones</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let almacen of almacenes | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+          <ion-col size="1" size-sm="2" size-md="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
+          <ion-col size="2">{{ almacen.nombre_almacen }}</ion-col>
+          <ion-col size="1">{{ almacen.ubicacion_almacen }}</ion-col>
+          <ion-col size="1">{{ almacen.descripcion_almacen }}</ion-col>
+          <ion-col size="2">
+            <!--
+            <ion-button (click)="openModalEditar(almacen)" fill="solid" color="light" style="background-color: white; color: gray; justify-content: center; display: flex; flex-direction: column;">
+              <ion-icon slot="start" name="pencil" style="color: gray;"></ion-icon>
+            </ion-button>
+            <ion-button (click)="openModalEliminar(almacen)" fill="solid" color="light" style="background-color: white; color: red; justify-content: center; display: flex; flex-direction: column;">
+              <ion-icon slot="start" name="trash" style="color: red;"></ion-icon>
+            </ion-button>
+            -->
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+           Paginación
+            <div class="paginador-container">
+              <pagination-controls
+                (pageChange)="p = $event"
+                previousLabel="Anterior"
+                nextLabel="Siguiente">
+              </pagination-controls>
+            </div>
+    </ng-container>
+    <ng-template #noAlmacenes>
+      <p>No se encontraron almacenes.</p>
+    </ng-template>
+  </div>
+
+
+  <!-- Modal para Registro-->
+<ion-modal id="modalRegistrarAlmacen" [isOpen]="isModalOpen" [backdropDismiss]="false" >
+  <ng-template>
+
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Registrar Almacen</ion-title>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="closeModal()"
+            fill="solid"
+            aria-label="Cerrar"
+            style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
+            <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <form [formGroup]="almacenForm" (ngSubmit)="createAlmacen()" style="padding: 16px">
+
+        <!-- Nombre -->
+        <ion-item>
+          <ion-label position="stacked">Nombre</ion-label>
+          <ion-input formControlName="nombre_almacen"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isFieldInvalid('nombre_almacen')">
+          El nombre es requerido.
+        </ion-text>
+
+        <!-- Ubicacion -->
+        <ion-item>
+          <ion-label position="stacked">Ubicacion</ion-label>
+          <ion-input formControlName="ubicacion_almacen"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isFieldInvalid('ubicacion_almacen')">
+          La Ubicacion es requerido.
+        </ion-text>
+
+        <ion-item>
+          <ion-label position="stacked">Descripcion</ion-label>
+          <ion-input formControlName="descripcion_almacen"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isFieldInvalid('descripcion_almacen')">
+          La descripcion es requerida.
+        </ion-text>
+        <!-- Botones -->
+        <div class="ion-text-center" style="margin-top: 20px">
+          <ion-button color="primary" type="submit">Guardar</ion-button>
+        </div>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- Modal para Editar-->
+<ion-modal  id="modalEditAlmacen" [isOpen]="isModalOpenEditar" [backdropDismiss]="false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Editar Almacen</ion-title>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="closeModal()"
+            fill="solid"
+            aria-label="Cerrar"
+            style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
+            <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <form [formGroup]="almacenForm" (ngSubmit)="editarAlmacen()" style="padding: 16px;">
+        <!-- Nombre -->
+        <ion-item>
+          <ion-label position="stacked">Nombre</ion-label>
+          <ion-input formControlName="nombre_almacen"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isFieldInvalid('nombre_almacen')">
+          El nombre es requerido.
+        </ion-text>
+
+        <!-- Ubicacion -->
+        <ion-item>
+          <ion-label position="stacked">Ubicacion</ion-label>
+          <ion-input formControlName="ubicacion_almacen"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isFieldInvalid('ubicacion_almacen')">
+          La Ubicacion es requerido.
+        </ion-text>
+
+        <ion-item>
+          <ion-label position="stacked">Descripcion</ion-label>
+          <ion-input formControlName="descripcion_almacen"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isFieldInvalid('descripcion_almacen')">
+          La descripcion es requerida.
+        </ion-text>
+        <!-- Botones -->
+          <div class="ion-text-center" style="margin-top: 20px">
+            <ion-button color="primary" type="submit">Actualizar</ion-button>
+          </div>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+<!-- Modal para Eliminar-->
+<ion-modal id="modalEliminarAlmacen" [isOpen]="isModalOpenEliminar" [backdropDismiss]="false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Eliminar Almacen</ion-title>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="closeModal()"
+            fill="solid"
+            aria-label="Cerrar"
+            class="close-button">
+            <span>X</span>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <form [formGroup]="almacenForm" class="modal-content">
+        <div class="centered-content">
+          <!-- Icono de advertencia centrado -->
+          <ion-icon name="warning-outline" class="warning-icon"></ion-icon>
+
+          <!-- Pregunta centrada -->
+          <ion-label class="warning-label">
+            ¿Estás seguro que deseas eliminar este almacen
+          </ion-label>
+          <ion-label class="cliente-info">
+            {{ selectedAlmacen?.nombre_almacen }} que se tiene como ubicacion {{ selectedAlmacen?.ubicacion_almacen }}?
+          </ion-label>
+
+          <!-- Botón de eliminar centrado -->
+          <div class="button-container">
+            <ion-button color="danger" (click)="deleteAlmacen(selectedAlmacen?.idalmacen)">Eliminar</ion-button>
+          </div>
+        </div>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
 </ion-content>

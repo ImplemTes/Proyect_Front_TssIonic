@@ -137,7 +137,7 @@ export class ProveedoresPage implements OnInit {
     }
   }
 
-  deleteCliente(id: number): void {
+  deleteProveedor(id: number): void {
     this.proveedorService.deleteProveedor(id).subscribe(() => {
       this.proveedores = this.proveedores.filter((prove: any) => prove.idproveedor !== id);
       this.listarproveedores();

@@ -53,6 +53,7 @@
     </ng-template>
   </div>
 
+
 <!-- Modal para Registro-->
 <ion-modal id="modalRegistrarProveedor" [isOpen]="isModalOpen" [backdropDismiss]="false" >
   <ng-template>
@@ -265,7 +266,7 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <form [formGroup]="proveedorForm" (ngSubmit)="createProveedor()" class="modal-content">
+      <form [formGroup]="proveedorForm" class="modal-content">
         <div class="centered-content">
           <!-- Icono de advertencia centrado -->
           <ion-icon name="warning-outline" class="warning-icon"></ion-icon>
@@ -280,7 +281,7 @@
 
           <!-- Botón de eliminar centrado -->
           <div class="button-container">
-            <ion-button color="danger" (click)="deleteCliente(selectedProveedor?.idcliente)">Eliminar</ion-button>
+            <ion-button color="danger" (click)="deleteProveedor(selectedProveedor?.idcliente)">Eliminar</ion-button>
           </div>
         </div>
       </form>
