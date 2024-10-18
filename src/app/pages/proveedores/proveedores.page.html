@@ -20,7 +20,7 @@
           <ion-col size="1">Celular</ion-col>
           <ion-col size="1">Proveedor</ion-col>
           <ion-col size="1">Ruc</ion-col>
-          <ion-col size="z">Opciones</ion-col>
+          <ion-col size="2">Opciones</ion-col>
         </ion-row>
         <ion-row *ngFor="let prove of proveedores | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
           <ion-col size="1" size-sm="2" size-md="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
@@ -151,6 +151,11 @@
     </ion-content>
   </ng-template>
 </ion-modal>
+
+
+
+
+
 
 <!-- Modal para Editar-->
 <ion-modal  id="modalEditProveedor" [isOpen]="isModalOpenEditar" [backdropDismiss]="false">

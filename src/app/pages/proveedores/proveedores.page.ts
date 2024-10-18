@@ -46,6 +46,9 @@ export class ProveedoresPage implements OnInit {
       }
     );
   }
+
+
+
   // Método para saber si un campo es inválido y fue tocado
   openModalRegistrar(): void {
     this.isModalOpen = true;
@@ -85,6 +88,9 @@ export class ProveedoresPage implements OnInit {
     }
   }
 
+
+
+  
   createProveedor(): void {
     if (this.proveedorForm.valid) {
       this.proveedorService.create(this.proveedorForm.value).subscribe(

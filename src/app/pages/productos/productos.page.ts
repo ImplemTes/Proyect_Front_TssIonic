@@ -10,6 +10,7 @@ export class ProductosPage implements OnInit {
   productoForm: FormGroup;
   public selectedPageTitle: string = 'Productos';
   productos: any = [];
+  tipos: any = [];
   selectedProducto: any = null;
   isModalOpenEliminar: boolean = false;
   isModalOpen: boolean = false;
@@ -35,6 +36,7 @@ export class ProductosPage implements OnInit {
 
   ngOnInit() {
     this.listarProductos();
+    this.listarTipos();
   }
 
   listarProductos(): void {
@@ -47,6 +49,16 @@ export class ProductosPage implements OnInit {
       }
     );
   }
+  listarTipos(): void {
+    this.productoService.listipos().subscribe(
+      (resp: any) => {
+        this.tipos = resp;
+      },
+      (error) => {
+        console.error('Error al mostrar los tipos', error);
+      }
+    );
+  }
   // Método para saber si un campo es inválido y fue tocado
   openModalRegistrar(): void {
     this.isModalOpen = true;
@@ -56,6 +68,26 @@ export class ProductosPage implements OnInit {
     this.isModalOpenEliminar = true;
     this.selectedProducto = producto;
   }
+
+  openModalEditar(produc: any = null): void {
+    this.isModalOpenEditar = true;
+    this.selectedProducto = produc;
+    // Usamos patchValue para cargar los datos
+    this.productoForm.patchValue({
+      idproducto: produc.idproducto,
+      idtipo: produc.idtipo,
+      nombre_producto: produc.nombre_producto,
+      stock_producto: produc.stock_producto,
+      unidad_de_medida: produc.unidad_de_medida,
+      nombre_proveedor: produc.nombre_proveedor,
+      precio_producto: produc.precio_producto,
+      imagen: produc.imagen,
+      estado: produc.estado ? '1' : '0', // Convertimos booleano a cadena
+    });
+  }
+
+
+
 
   closeModal(): void {
     this.isModalOpen = false;
@@ -92,12 +124,12 @@ export class ProductosPage implements OnInit {
       event.preventDefault();
     }
   }
+
   onlyNumberPunt(event: KeyboardEvent) {
     const char = String.fromCharCode(event.keyCode);
     const inputElement = event.target as HTMLInputElement;
     if (!/^[0-9.]$/.test(char)) {
       event.preventDefault();
     }
-
-
   }
+}

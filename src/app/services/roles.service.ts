@@ -14,25 +14,25 @@ export class RolesService {
     return this.http.get(`${this.apiUrl}/`);
   }
 
-  // Crear un nuevo usuario
-  create(user: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/`, user);
+  // Crear un nuevo rol
+  create(rol: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/`, rol);
   }
 
-  // Obtener un usuario por su ID
-  getById(userId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${userId}`);
+  // Obtener un rol por su ID
+  getById(rolId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${rolId}`);
   }
 
 
   // Actualizar un rol
-  edit(userId: number, user: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${userId}`, user);
+  edit(rolId: number, user: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${rolId}`, user);
   }
 
   // Eliminar un rol
-  delete(userId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${userId}`);
+  delete(rolId: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${rolId}`);
   }
 
 

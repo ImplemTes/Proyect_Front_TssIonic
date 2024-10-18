@@ -9,7 +9,11 @@
 
 <ion-content [fullscreen]="true">
   <div class="usuarios-lista" style="padding: 16px">
-    <p>Lista de Usuarios</p>
+    <div class="header-lista">
+      <p>Lista de Usuarios</p>
+      <ion-button [routerLink]="['/home/roles']">Ver Roles</ion-button>
+    </div>
+
   <ng-container *ngIf="personas.length > 0; else noUsuarios">
     <ion-grid>
       <ion-row>

@@ -10,7 +10,6 @@
   <div class="clientes-lista" style="padding: 16px">
     <p>Lista de clientes:</p>
     <ion-button (click)="openModalRegistrar()">+ Registrar Cliente</ion-button>
-
     <ng-container *ngIf="clientes.length > 0; else noClientes">
       <ion-grid>
         <ion-row>

@@ -14,7 +14,11 @@ export class AppComponent {
     { title: 'Clientes', url: '/home/clientes', icon: 'people-circle-outline' },
     { title: 'Proveedores', url: '/home/proveedores', icon: 'briefcase-outline' },
     { title: 'Almacenes', url: '/home/almacenes', icon: 'cube-outline' },
-    { title: 'Vehículos', url: '/home/vehiculos', icon: 'car-sport-outline' }
+    { title: 'Productos', url: '/home/productos', icon: 'cube-outline' }, 
+    //falta completar
+   { title: 'Vehículos', url: '/home/vehiculos', icon: 'car-sport-outline' },
+    { title: 'Abastecimiento', url: '/home/abastecimiento', icon: 'cart-outline' }, 
+    { title: 'Informes', url: '/home/informes', icon: 'analytics-outline' }
   ]
 
   constructor(private router: Router, private pageTitleService: PageTitleService) {}

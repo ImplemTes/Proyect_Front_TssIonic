@@ -26,6 +26,14 @@ const routes: Routes = [
     path: 'home/vehiculos',
     loadChildren: () => import('./pages/vehiculos/vehiculos.module').then( m => m.VehiculosPageModule)
   },
+  {
+    path: 'home/roles',
+    loadChildren: () => import('./pages/roles/roles.module').then( m => m.RolesPageModule)
+  },
+  {
+    path: 'home/productos',
+    loadChildren: () => import('./pages/productos/productos.module').then( m => m.ProductosPageModule)
+  },
 
   /*
   {
@@ -44,10 +52,8 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
-  },  {
-    path: 'productos',
-    loadChildren: () => import('./pages/productos/productos.module').then( m => m.ProductosPageModule)
   },
+
 
 
 ];

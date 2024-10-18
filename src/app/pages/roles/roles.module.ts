@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
-import { ProductosPageRoutingModule } from './productos-routing.module';
-
-import { ProductosPage } from './productos.page';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { RolesPageRoutingModule } from './roles-routing.module';
+
+import { RolesPage } from './roles.page';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,8 +15,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     NgxPaginationModule, // Agrega manejo de paginaciones
     ReactiveFormsModule, // Agrega para manejo de formularios con modal
     IonicModule,
-    ProductosPageRoutingModule
+    RolesPageRoutingModule
   ],
-  declarations: [ProductosPage]
+  declarations: [RolesPage]
 })
-export class ProductosPageModule {}
+export class RolesPageModule {}
