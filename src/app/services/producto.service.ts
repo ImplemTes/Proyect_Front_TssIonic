@@ -21,8 +21,8 @@ export class ProductoService {
   }
 
   // Crear un nuevo producto
-  create(producto: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/`, producto);
+  create(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/`, formData);
   }
 
   // Obtener un producto por su ID

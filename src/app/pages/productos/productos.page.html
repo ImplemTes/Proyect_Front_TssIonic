@@ -6,94 +6,52 @@
     <ion-title>{{ selectedPageTitle }}</ion-title>
   </ion-toolbar>
 </ion-header>
-<!--
+
 <ion-content [fullscreen]="true">
-  <div class="productos-lista" style="padding: 16px">
-    <p>Lista de productos:</p>
-    <ion-button (click)="openModalRegistrar()">+ Registrar Producto</ion-button>
+  <div id="productos-lista-container">
+    <h2>Lista de Productos</h2>
+    <ion-button [routerLink]="['/home/productos-create']" color="success">
+      + Registrar Producto
+    </ion-button>
+    
     <ng-container *ngIf="productos.length > 0; else noProductos">
       <ion-grid>
         <ion-row>
-          <ion-col size="1">N°</ion-col>
-          <ion-col size="1">idtipo</ion-col>
-          <ion-col size="1">nombre_producto</ion-col>
-          <ion-col size="1">stock_producto</ion-col>
-          <ion-col size="1">unidad_de_medida</ion-col>
-          <ion-col size="1">precio_producto</ion-col>
-          <ion-col size="1">imagen</ion-col>
-          <ion-col size="2">Opciones</ion-col>
-        </ion-row>
-        <ion-row *ngFor="let producto of productos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
-          <ion-col size="1" size-sm="2" size-md="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
-        
-          <ion-col size="1">{{ producto.nombre_producto }}</ion-col>
-          <ion-col size="1">{{ producto.stock_producto }}</ion-col>
-          <ion-col size="1">{{ producto.unidad_de_medida }}</ion-col>
-          <ion-col size="1">{{ producto.precio_producto }}</ion-col>
-          <ion-col size="1">{{ producto.imagen }}</ion-col>
-          <ion-col size="2">
-            <ion-button (click)="openModalEditar(producto)" fill="solid" color="light" style="background-color: white; color: gray; justify-content: center; display: flex; flex-direction: column;">
-              <ion-icon slot="start" name="pencil" style="color: gray;"></ion-icon>
-            </ion-button>
-            <ion-button (click)="openModalEliminar(producto)" fill="solid" color="light" style="background-color: white; color: red; justify-content: center; display: flex; flex-direction: column;">
-              <ion-icon slot="start" name="trash" style="color: red;"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-         
-            <div class="paginador-container">
-              <pagination-controls
-                (pageChange)="p = $event"
-                previousLabel="Anterior"
-                nextLabel="Siguiente">
-              </pagination-controls>
-            </div>
-    </ng-container>
-
-    <ng-template #noProductos>
-      <p>No se encontraron Productos.</p>
-    </ng-template>
-
- </div> 
-</ion-content>
--->
-
-<ion-content [fullscreen]="true">
-  <div class="productos-lista" style="padding: 16px">
-    <p>Lista de productos:</p>
-    <ion-button (click)="openModalRegistrar()">+ Registrar Producto</ion-button>
-    <ng-container *ngIf="productos.length > 0; else noProductos">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="12" class="productos-grid">
-            <ng-container *ngFor="let producto of productos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+          <ng-container *ngFor="let producto of productos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
+            <ion-col size="12" size-md="6" size-lg="4">
               <ion-card class="producto-card">
+                <!-- Imagen del producto -->
+                <ion-img [src]="producto.urlimagen" alt="{{ producto.nombre_producto }}" class="producto-imagen"></ion-img>
+
+                <!-- Información del producto -->
                 <ion-card-header>
-                  <ion-card-title>{{ producto.nombre_producto }}</ion-card-title>
+                  <ion-card-title>{{ producto.nombre_tipo }}</ion-card-title>
+                  <ion-card-subtitle>{{ producto.nombre_producto }}</ion-card-subtitle>
                 </ion-card-header>
+                
                 <ion-card-content>
-                  <img [src]="producto.imagen" alt="{{ producto.nombre_producto }}" class="producto-imagen"/>
-                  <p><strong>Stock:</strong> {{ producto.nombre_tipo }}</p>
                   <p><strong>Stock:</strong> {{ producto.stock_producto }}</p>
                   <p><strong>Unidad de Medida:</strong> {{ producto.unidad_de_medida }}</p>
                   <p><strong>Precio:</strong> {{ producto.precio_producto | currency }}</p>
+
+                  <!-- Botones de acción -->
                   <div class="botones-opciones">
-                    <ion-button (click)="openModalEditar(producto)" fill="solid" color="light">
+                    <ion-button fill="outline" color="primary" expand="block">
                       <ion-icon slot="start" name="pencil"></ion-icon> Editar
                     </ion-button>
-                    <ion-button (click)="openModalEliminar(producto)" fill="solid" color="light">
+                    <ion-button (click)="openModalEliminar(producto)" fill="outline" color="danger" expand="block">
                       <ion-icon slot="start" name="trash"></ion-icon> Eliminar
                     </ion-button>
                   </div>
                 </ion-card-content>
               </ion-card>
-            </ng-container>
-          </ion-col>
+            </ion-col>
+          </ng-container>
         </ion-row>
       </ion-grid>
+
       <!-- Paginación -->
-      <div class="paginador-container">
+      <div id="paginador-container">
         <pagination-controls
           (pageChange)="p = $event"
           previousLabel="Anterior"
@@ -103,110 +61,50 @@
     </ng-container>
 
     <ng-template #noProductos>
-      <p>No se encontraron Productos.</p>
+      <p>No se encontraron productos.</p>
     </ng-template>
   </div>
 
-<!-- Modal para Registro-->
-<ion-modal id="modalRegistrarProveedor" [isOpen]="isModalOpen" [backdropDismiss]="false" >
-  <ng-template>
 
+
+  <!-- Modal para Eliminar-->
+<ion-modal id="modalEliminarProveedor" [isOpen]="isModalOpenEliminar" [backdropDismiss]="false">
+  <ng-template>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Registrar Producto</ion-title>
+        <ion-title>Eliminar Producto</ion-title>
         <ion-buttons slot="end">
           <ion-button
             (click)="closeModal()"
             fill="solid"
             aria-label="Cerrar"
-            style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
-            <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
+            class="close-button">
+            <span>X</span>
           </ion-button>
         </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <form [formGroup]="productoForm"  style="padding: 16px">
-        <ion-label position="stacked" >Tipo</ion-label>
+      <form  class="modal-content">
+        <div class="centered-content">
+          <!-- Icono de advertencia centrado -->
+          <ion-icon name="warning-outline" class="warning-icon"></ion-icon>
 
-        <ion-item>
-          <ion-label position="stacked">Tipo</ion-label>
-          <ion-select formControlName="idtipo" placeholder="Seleccione una opción">
-            <ion-select-option *ngFor="let tipo of tipos" [value]="tipo.idtipo">
-              {{ tipo.nombre_tipo }}
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
+          <!-- Pregunta centrada -->
+          <ion-label class="warning-label">
+            ¿Estás seguro que deseas eliminar el producto
+          </ion-label>
+          <ion-label class="cliente-info">
+            {{ selectedProducto?.nombre_producto }}?
+          </ion-label>
 
-        <!-- Nombres -->
-        <ion-item>
-          <ion-label position="stacked">Nombres</ion-label>
-          <ion-input formControlName="nombres"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="isFieldInvalid('nombres')">
-          Los nombres son requeridos.
-        </ion-text>
-
-        <!-- DNI -->
-        <ion-item>
-          <ion-label position="stacked">DNI</ion-label>
-          <ion-input
-            formControlName="dni"
-            minlength="8"
-            maxlength="8"
-            (keypress)="onlyNumber($event)"
-          ></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="isFieldInvalid('dni')">
-          El DNI debe tener 8 caracteres.
-        </ion-text>
-
-        <!-- Celular -->
-        <ion-item>
-          <ion-label position="stacked">Celular</ion-label>
-          <ion-input
-            formControlName="celular"
-            minlength="9"
-            maxlength="9"
-            (keypress)="onlyNumber($event)"
-          ></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="isFieldInvalid('celular')">
-          El celular debe tener 9 caracteres.
-        </ion-text>
-        <ion-label position="stacked">Empresa</ion-label>
-        <!-- Proveedor -->
-        <ion-item>
-          <ion-label position="stacked">Nombre</ion-label>
-          <ion-input formControlName="nombre_proveedor"></ion-input>
-        </ion-item>
-        <ion-text color="danger" *ngIf="isFieldInvalid('nombre_proveedor')">
-          Los proveedor son requeridos.
-        </ion-text>
-       <!-- Ruc -->
-       <ion-item>
-        <ion-label position="stacked">Ruc</ion-label>
-        <ion-input
-          formControlName="ruc"
-          minlength="11"
-          maxlength="11"
-          (keypress)="onlyNumber($event)"
-        ></ion-input>
-      </ion-item>
-      <ion-text color="danger" *ngIf="isFieldInvalid('ruc')">
-        El ruc debe tener 11 caracteres.
-      </ion-text>
-
-        <!-- Botones -->
-        <div class="ion-text-center" style="margin-top: 20px">
-          <ion-button color="primary" type="submit">Guardar</ion-button>
+          <!-- Botón de eliminar centrado -->
+          <div class="button-container">
+            <ion-button color="danger" (click)="deleteProveedor(selectedProducto?.idProducto)">Eliminar</ion-button>
+          </div>
         </div>
       </form>
     </ion-content>
   </ng-template>
 </ion-modal>
-
-
-
 </ion-content>
-

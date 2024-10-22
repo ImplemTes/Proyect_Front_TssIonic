@@ -34,6 +34,10 @@ const routes: Routes = [
     path: 'home/productos',
     loadChildren: () => import('./pages/productos/productos.module').then( m => m.ProductosPageModule)
   },
+  {
+    path: 'home/productos-create',
+    loadChildren: () => import('./pages/productos-create/productos-create.module').then( m => m.ProductosCreatePageModule)
+  },
 
   /*
   {
@@ -53,6 +57,7 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
   },
+
 
 
 
