@@ -1,0 +1,86 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start" style="color: white">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ selectedPageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="producto-form-container" style="padding: 16px">
+    <h2>Editar Producto</h2>
+    <form [formGroup]="productoForm" id="producto-form" (ngSubmit)="submitFormSave()">
+      
+      <!-- Campo Tipo -->
+      <ion-item>
+        <ion-label position="stacked">Tipo</ion-label>
+        <ion-select formControlName="idtipo" placeholder="Seleccione una opción" [ngClass]="{'ion-invalid': isFieldInvalid('idtipo')}">
+          <ion-select-option *ngFor="let tipo of tipos" [value]="tipo.idtipo">
+            {{ tipo.nombre_tipo }}
+          </ion-select-option>
+        </ion-select>
+        <ion-note *ngIf="isFieldInvalid('idtipo')" color="danger">Campo requerido</ion-note>
+      </ion-item>
+
+      <!-- Campo Nombre -->
+      <ion-item>
+        <ion-label position="stacked">Nombre</ion-label>
+        <ion-input formControlName="nombre_producto" [ngClass]="{'ion-invalid': isFieldInvalid('nombre_producto')}"></ion-input>
+        <ion-note *ngIf="isFieldInvalid('nombre_producto')" color="danger">Campo requerido</ion-note>
+      </ion-item>
+
+      <!-- Campo Stock -->
+      <ion-item>
+        <ion-label position="stacked">Stock</ion-label>
+        <ion-input type="number" formControlName="stock_producto" [ngClass]="{'ion-invalid': isFieldInvalid('stock_producto')}"></ion-input>
+        <ion-note *ngIf="isFieldInvalid('stock_producto')" color="danger">Debe ser mayor a 0</ion-note>
+      </ion-item>
+
+      <!-- Campo Unidad de Medida -->
+      <ion-item>
+        <ion-label position="stacked">Unidad de Medida</ion-label>
+        <ion-input formControlName="unidad_de_medida" [ngClass]="{'ion-invalid': isFieldInvalid('unidad_de_medida')}"></ion-input>
+        <ion-note *ngIf="isFieldInvalid('unidad_de_medida')" color="danger">Campo requerido</ion-note>
+      </ion-item>
+
+      <!-- Campo Precio -->
+      <ion-item>
+        <ion-label position="stacked">Precio</ion-label>
+        <ion-input type="number" formControlName="precio_producto" [ngClass]="{'ion-invalid': isFieldInvalid('precio_producto')}"></ion-input>
+        <ion-note *ngIf="isFieldInvalid('precio_producto')" color="danger">Debe ser mayor a 0</ion-note>
+      </ion-item>
+
+      <!-- Campo Imagen -->
+      <ion-item>
+        <ion-label position="stacked">Imagen</ion-label>
+        <input id="imagen-input" type="file" (change)="onFileSelected($event)" accept="image/png, image/jpeg, image/jpg" />
+        <ion-note *ngIf="imageError" color="danger">{{ imageError }}</ion-note>
+      </ion-item>
+
+      <!-- Vista previa de la imagen -->
+      <div *ngIf="imageToShow" id="image-preview">
+        <h3>Vista Previa:</h3>
+        <img [src]="imageToShow" alt="Vista Previa" class="imagen-vista-previa"/>
+      </div>
+
+      <!-- Botones -->
+      <div id="form-buttons-container">
+        <ion-button 
+          color="success" 
+          type="submit" 
+          expand="block" 
+          [disabled]="!productoForm.valid || imageError">
+          Editar Producto
+        </ion-button>
+        <ion-button 
+          color="medium" 
+          expand="block" 
+          (click)="closeModal()">
+          Cancelar
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>
+

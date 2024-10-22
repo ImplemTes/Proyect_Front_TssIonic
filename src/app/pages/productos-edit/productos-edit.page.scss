@@ -1,0 +1,64 @@
+/* Estilos de la cabecera */
+ion-header {
+    --background: #3880ff; /* Color de fondo azul */
+    color: white;
+  }
+  
+  ion-toolbar {
+    --background: #3880ff; /* Fondo sólido azul */
+    color: white;
+  }
+  
+  ion-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+  }
+
+  #producto-form-container {
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  #producto-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #4caf50;
+  }
+  
+  ion-item {
+    margin-bottom: 15px;
+  }
+  
+  #imagen-input {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  #image-preview {
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .imagen-vista-previa {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  #form-buttons-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  #form-buttons-container ion-button {
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .ion-invalid ion-input {
+    border-color: red;
+  }

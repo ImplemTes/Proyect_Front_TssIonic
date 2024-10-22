@@ -26,14 +26,14 @@ export class ProductoService {
   }
 
   // Obtener un producto por su ID
-  getById(productoId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${productoId}`);
+  getById(idproducto: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${idproducto}`);
   }
 
 
   // Actualizar un producto
-  edit(productoId: number, producto: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${productoId}`,producto);
+  edit(idproducto: number, formData: FormData): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${idproducto}`,formData);
   }
 
   // Eliminar un producto

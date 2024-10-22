@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductoService } from 'src/app/services/producto.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-productos',
   templateUrl: './productos.page.html',
@@ -19,7 +20,8 @@ export class ProductosPage implements OnInit {
   itemsPerPage: number = 6; // Elementos por página
   constructor(
     private productoService: ProductoService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
    
   }
@@ -68,5 +70,8 @@ export class ProductosPage implements OnInit {
     });
   }
 
-
+// Dentro de tu clase
+  editarProducto(producto: any) {
+    this.router.navigate(['/home/productos-edit/edit', producto.idproducto]);
+  }
 }

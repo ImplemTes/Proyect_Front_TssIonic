@@ -36,7 +36,7 @@
 
                   <!-- Botones de acción -->
                   <div class="botones-opciones">
-                    <ion-button fill="outline" color="primary" expand="block">
+                    <ion-button fill="outline" color="primary" expand="block" (click)="editarProducto(producto)">
                       <ion-icon slot="start" name="pencil"></ion-icon> Editar
                     </ion-button>
                     <ion-button (click)="openModalEliminar(producto)" fill="outline" color="danger" expand="block">
@@ -100,7 +100,7 @@
 
           <!-- Botón de eliminar centrado -->
           <div class="button-container">
-            <ion-button color="danger" (click)="deleteProveedor(selectedProducto?.idProducto)">Eliminar</ion-button>
+            <ion-button color="danger" (click)="deleteProveedor(selectedProducto?.idproducto)">Eliminar</ion-button>
           </div>
         </div>
       </form>

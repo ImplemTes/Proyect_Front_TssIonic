@@ -38,6 +38,11 @@ const routes: Routes = [
     path: 'home/productos-create',
     loadChildren: () => import('./pages/productos-create/productos-create.module').then( m => m.ProductosCreatePageModule)
   },
+  {
+    path: 'home/productos-edit/edit/:id',
+    loadChildren: () => import('./pages/productos-edit/productos-edit.module').then( m => m.ProductosEditPageModule)
+  },
+
 
   /*
   {
@@ -57,6 +62,7 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
   },
+
 
 
 
