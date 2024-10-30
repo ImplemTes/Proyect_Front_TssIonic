@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener,OnInit } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { AlmacenService } from 'src/app/services/almacen.service';
 @Component({
@@ -14,7 +14,7 @@ export class AlmacenesPage implements OnInit {
   isModalOpenEliminar: boolean = false;
   isModalOpen: boolean = false;
   isModalOpenEditar: boolean = false;
-
+  isMobileView: boolean = false;
   // Paginación
   p: number = 1; // Página actual
   itemsPerPage: number = 8; // Elementos por página
@@ -32,7 +32,21 @@ export class AlmacenesPage implements OnInit {
 
   ngOnInit() {
     this.listaralmacenes();
+    this.checkScreenSize();
   }
+
+  // Detectar cambios en el tamaño de pantalla
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+  checkScreenSize() {
+    this.isMobileView = window.innerWidth < 720;
+  }
+
+
+
+
 
   listaralmacenes(): void {
     this.almacenService.list().subscribe(
