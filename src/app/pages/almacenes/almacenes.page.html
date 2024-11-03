@@ -19,7 +19,6 @@
     <!-- Contenedor para los almacenes -->
     <ng-container *ngIf="almacenes.length > 0; else noAlmacenes">
       <ion-grid class="almacenes-grid">
-        
         <!-- Diseño de Tabla para Pantallas Grandes -->
         <ng-container *ngIf="!isMobileView">
           <ion-row class="table-header">
@@ -64,6 +63,7 @@
             </div>
           </ion-row>
         </ng-container>
+
       </ion-grid>
 
       <!-- Paginador -->

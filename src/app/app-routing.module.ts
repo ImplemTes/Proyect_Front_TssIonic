@@ -42,6 +42,10 @@ const routes: Routes = [
     path: 'home/productos-edit/edit/:id',
     loadChildren: () => import('./pages/productos-edit/productos-edit.module').then( m => m.ProductosEditPageModule)
   },
+  {
+    path: 'home/abastecimiento',
+    loadChildren: () => import('./pages/abastecimiento/abastecimiento.module').then( m => m.AbastecimientoPageModule)
+  },
 
 
   /*

@@ -43,9 +43,9 @@ export class AlmacenesPage implements OnInit {
   checkScreenSize() {
     this.isMobileView = window.innerWidth < 720;
   }
+  // Fin tamaño
 
-
-
+  //Funcinalidad
 
 
   listaralmacenes(): void {
@@ -109,6 +109,9 @@ export class AlmacenesPage implements OnInit {
     }
   }
 
+
+
+  
   openModalEditar(alma: any = null): void {
     this.isModalOpenEditar = true;
     this.selectedAlmacen = alma;
@@ -130,6 +133,7 @@ export class AlmacenesPage implements OnInit {
           if (index !== -1) {
             this.almacenes[index] = { ...this.almacenes[index], ...this.almacenForm.value };
           }
+          this.listaralmacenes();
           this.closeModal();
         },
         (error) => {

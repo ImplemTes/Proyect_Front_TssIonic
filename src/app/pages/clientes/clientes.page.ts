@@ -129,6 +129,7 @@ export class ClientesPage implements OnInit {
           if (index !== -1) {
             this.clientes[index] = { ...this.clientes[index], ...this.clienteForm.value };
           }
+          this.listarclientes();
           this.closeModal();
         },
         (error) => {

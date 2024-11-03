@@ -110,6 +110,7 @@ export class RolesPage implements OnInit {
           if (index !== -1) {
             this.roles[index] = { ...this.roles[index], ...this.rolForm.value };
           }
+          this.listaroles();
           this.closeModal();
         },
         (error) => {

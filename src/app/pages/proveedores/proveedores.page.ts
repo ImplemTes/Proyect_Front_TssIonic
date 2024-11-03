@@ -132,6 +132,7 @@ export class ProveedoresPage implements OnInit {
           if (index !== -1) {
             this.proveedores[index] = { ...this.proveedores[index], ...this.proveedorForm.value };
           }
+          this.listarproveedores();
           this.closeModal();
         },
         (error) => {
