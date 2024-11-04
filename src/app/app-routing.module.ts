@@ -50,6 +50,14 @@ const routes: Routes = [
     path: 'home/chatbot',
     loadChildren: () => import('./pages/chatbot/chatbot.module').then( m => m.ChatbotPageModule)
   },
+  {
+    path: 'home/vehiculo-create',
+    loadChildren: () => import('./pages/vehiculo-create/vehiculo-create.module').then( m => m.VehiculoCreatePageModule)
+  },
+  {
+    path: 'home/vehiculo-edit/edit/:id',
+    loadChildren: () => import('./pages/vehiculo-edit/vehiculo-edit.module').then( m => m.VehiculoEditPageModule)
+  },
 
 
   /*
@@ -70,6 +78,8 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
   },
+
+
 
 
 
