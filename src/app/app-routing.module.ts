@@ -46,6 +46,10 @@ const routes: Routes = [
     path: 'home/abastecimiento',
     loadChildren: () => import('./pages/abastecimiento/abastecimiento.module').then( m => m.AbastecimientoPageModule)
   },
+  {
+    path: 'home/chatbot',
+    loadChildren: () => import('./pages/chatbot/chatbot.module').then( m => m.ChatbotPageModule)
+  },
 
 
   /*
