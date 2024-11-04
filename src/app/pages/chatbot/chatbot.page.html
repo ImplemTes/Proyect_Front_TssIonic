@@ -6,33 +6,30 @@
     <ion-title>Asistente Virtual</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true">
-  <div id="chat-assistant-container">
+<ion-content [fullscreen]="true" [ngClass]="isLightTheme ? 'light-theme' : 'dark-theme'">
+  <div id="chat-assistant-container"  >
     <div id="chat-container">
       <div *ngFor="let message of messages">
-        <div [ngClass]="message.isUser ? 'outgoing-message' : 'incoming-message'">
-          <p>{{ message.text }}</p>
+        <div [ngClass]="message.isUser ? 'envio-message' : 'genera-message'">
+          <p [innerHTML]="message.text"></p>
         </div>
       </div>
     </div>
 
     <div id="input-container">
-      <ion-input
-        id="chat-input"
-        [(ngModel)]="userInput"
-        placeholder="Escribe tu mensaje..."
-        (keydown.enter)="sendMessage()"
-        [disabled]="isLoading"
-      ></ion-input>
+      <ion-input id="chat-input" [(ngModel)]="userInput" placeholder="Escribe tu mensaje ..."
+                (keydown.enter)="sendMessage()" [disabled]="isLoading" ></ion-input>
       <ion-button (click)="sendMessage()" id="send-btn" [disabled]="isLoading">
         <ion-icon name="send"></ion-icon>
       </ion-button>
-
       <ion-button (click)="clearMessages()" id="delete-btn" [disabled]="isLoading">
         <ion-icon name="trash-outline"></ion-icon>
       </ion-button>
       <ion-button (click)="toggleTheme()" id="theme-btn" [disabled]="isLoading">
         <ion-icon [name]="isLightTheme ? 'sunny' : 'moon'"></ion-icon>
+      </ion-button>
+      <ion-button (click)="regresarventana()" id="exit-btn" [disabled]="isLoading">
+        <ion-icon name="exit"></ion-icon>
       </ion-button>
     </div>
   </div>

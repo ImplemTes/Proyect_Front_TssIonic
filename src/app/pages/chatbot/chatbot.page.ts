@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ChatbotService } from 'src/app/services/chatbot.service';
-
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular'; // Importación de AlertController
 @Component({
   selector: 'app-chat',
   templateUrl: './chatbot.page.html',
@@ -9,36 +10,81 @@ import { ChatbotService } from 'src/app/services/chatbot.service';
 export class ChatbotPage {
   userInput: string = '';
   messages: any[] = [];
-  isLoading: boolean = false; // Control para bloquear los botones
-  isLightTheme: boolean = true; // Control para el tema
+  isLoading: boolean = false; 
+  isLightTheme: boolean = true; 
 
-  constructor(private chatbotService: ChatbotService) {}
+  constructor(
+    private chatbotService: ChatbotService,
+    private router: Router,
+    private alertController: AlertController
+  ) {}
+
 
   sendMessage() {
     if (!this.userInput.trim()) return;
 
-    this.isLoading = true; // Bloquea los botones
-    this.messages.push({ text: this.userInput, isUser: true });
-    const userMessage = this.userInput;
+    this.isLoading = true;
+    this.addMessage(this.userInput, true); 
+    const userMessage = this.userInput.trim();
     this.userInput = '';
 
-    this.chatbotService.sendMessageToGemini(userMessage).subscribe(
+      this.requestText(userMessage);
+  }
+
+  private requestText(message: string) {
+    this.chatbotService.generateContent(message).subscribe(
       (response) => {
-        this.messages.push({ text: response.data, isUser: false });
-        this.isLoading = false; // Desbloquea los botones
+        let botResponse = response?.candidates?.[0]?.content?.parts?.[0]?.text || 'No se recibió una respuesta';
+        
+        botResponse = this.formatText(botResponse);
+
+        this.addMessage(botResponse, false);
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error al enviar el mensaje:', error);
-        this.isLoading = false; // Desbloquea los botones
+        this.addMessage('Error al recibir respuesta del servidor', false);
+        this.isLoading = false;
       }
     );
   }
 
-  clearMessages() {
-    this.messages = [];
+  // Método para agregar un mensaje a la lista de mensajes
+  private addMessage(text: string, isUser: boolean) {
+    this.messages.push({ text, isUser });
+  }
+
+  // Método para formatear el texto con negritas y listas
+  private formatText(text: string): string {
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Negrita
+    text = text.replace(/\*\s(.*?)(\n|$)/g, '<li>$1</li>');       // Elementos de lista
+    return text.replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>');        // Agrupar en <ul>
+  }
+
+  async clearMessages() {
+    const alert = await this.alertController.create({
+      header: 'Confirmar',
+      message: '¿Estás seguro de que quieres borrar todos los mensajes?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {}
+        },
+        {
+          text: 'Sí',
+          handler: () => {this.messages = []; }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   toggleTheme() {
     this.isLightTheme = !this.isLightTheme;
+  }
+  regresarventana(){
+    this.router.navigate(['/home']);
+
   }
 }

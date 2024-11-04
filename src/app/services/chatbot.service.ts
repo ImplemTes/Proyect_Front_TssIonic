@@ -1,24 +1,34 @@
+// chatbot.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Observable, throwError } from 'rxjs';
+import { catchError, timeout } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatbotService {
-  private apigemini = environment.geminiApiKey;
-  private apiUrl = 'https://api.gemini.endpoint.com/query'; // Ajusta la URL de la API
+  private readonly baseUrl = environment.geminiBaseUrl;
+  private readonly apiKey = environment.geminiApiKey;
 
   constructor(private http: HttpClient) {}
 
-  sendMessageToGemini(message: string): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.apigemini}`
-    });
-    const body = { query: message };
+  // Método para generar contenido de texto
+  public generateContent(message: string): Observable<any> {
+    const url = `${this.baseUrl}${environment.geminiModelEndpoint}`;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const params = new HttpParams().set('key', this.apiKey);
+    const body = { contents: [{ parts: [{ text: message }] }] };
 
-    return this.http.post(this.apiUrl, body, { headers });
+    return this.http.post(url, body, { headers, params })
+      .pipe(
+        timeout(environment.geminiTimeout),
+        catchError(error => {
+          console.error('Error al comunicarse con la API de Gemini:', error);
+          return throwError(error);
+        })
+      );
   }
+
 }

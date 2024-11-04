@@ -77,19 +77,52 @@ ion-header {
 }
 
 /* Contenedor de mensajes */
-.incoming-message {
-  background-color: #e0e0e0;
+.genera-message {
+  background-color: #b8b7b7;
   border-radius: 10px;
   padding: 10px;
   margin: 8px 0;
   align-self: flex-start;
 }
+#chat-assistant-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--ion-background-color);
+  color: var(--ion-text-color);
+}
 
-.outgoing-message {
-  background-color: #007bff;
+.light-theme {
+  --ion-background-color: #ffffff;
+  --ion-text-color: #000000;
+}
+
+.dark-theme {
+  --ion-background-color: #222222;
+  --ion-text-color: #000000;
+}
+
+.envio-message {
+  background-color: #0d82ff;
   color: #ffffff;
   border-radius: 10px;
   padding: 10px;
   margin: 8px 0;
   align-self: flex-end;
+}
+p {
+  white-space: pre-line;
+}
+
+ul {
+  padding-left: 20px; /* Para que la lista tenga indentación */
+  margin: 10px 0;
+}
+
+li {
+  margin-bottom: 5px; /* Espacio entre elementos de la lista */
+}
+
+strong {
+  font-weight: bold;
 }
