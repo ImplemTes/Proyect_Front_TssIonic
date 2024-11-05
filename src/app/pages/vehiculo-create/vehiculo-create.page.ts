@@ -85,7 +85,7 @@ export class VehiculoCreatePage implements OnInit {
 
   }
 
-  LimpiarCampo(){
+  LimpiarCaptura(){
     this.vehiculoForm.patchValue({ placa: '' });  //campo de la placa
     this.selectedFile = null;
     this.imageToShow = null;
