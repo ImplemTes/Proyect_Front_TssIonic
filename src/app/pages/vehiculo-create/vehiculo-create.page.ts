@@ -74,11 +74,8 @@ export class VehiculoCreatePage implements OnInit {
   
   
   CapturarImagen(){
-    
-  }
-  ResetCamara(){
-    this.vehiculoForm.patchValue({ placa: '' });  //campo para limpiar el input placa
-
+    const captura=this.imageToShow()
+    this.EnviarCaptura(captura);
   }
 
   LimpiarCaptura(){
@@ -88,12 +85,11 @@ export class VehiculoCreatePage implements OnInit {
     this.imageError = null; 
   }
 
-  EnviarCaptura(): void{
+  EnviarCaptura(captura:any): void{
     const formData = new FormData();
     if (this.selectedFile) {
-      formData.append('file', this.selectedFile, this.selectedFile.name);
+      formData.append('file', captura, captura);
     }
-
     this.vehiculoService.ObtenerObjeto(formData).subscribe(
       (data: any) => {
         console.log("Se ha recibido correctamente", data);
