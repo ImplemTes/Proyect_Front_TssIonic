@@ -11,26 +11,31 @@
   <div id="vehiculo-form-container" style="padding: 16px">
     <h2>Registro de Vehicular</h2>
     <form [formGroup]="vehiculoForm" id="vehiculo-form" (ngSubmit)="CreateVehiculo()">
-<!-- -----inicio de manejo de camara------- -->
-      <!-- Camara -->
-      <div style="text-align: center;">
-          <ion-label position="stacked" >CAMARA</ion-label>
+
+      <!-- Sección de la cámara -->
+      <div class="camera-container">
+        <ion-label position="stacked">CAMARA DE SEGURIDAD</ion-label>
+
+        <!-- Video en vivo de la cámara con fondo antes de activarse -->
+         <div *ngIf="!imagePath"  > 
+              <video #video   autoplay class="video-preview"></video>
+        </div>
+
+
+        <!-- Botones para manejo de la cámara -->
+        <div class="camera-buttons">
+          <ion-button *ngIf="verCamara" color="medium" (click)="abrirCamaraWeb()">Ver Cámara</ion-button>
+          <ion-button  color="medium" (click)="CapturarImagenWeb()">Capturar / Enviar</ion-button>
+          <ion-button color="medium" (click)="LimpiarCaptura()">Limpiar</ion-button>
+        </div>
       </div>
       
-      <div style="width: full; height: 450px;background: black;margin: 2%;"  >
-      </div>
-      <!-- Botones de camara -->
-      <ion-button color="medium" (click)="CapturarImagen()">Capturar</ion-button>
-      <ion-button color="medium" (click)="LimpiarCaptura()">Limpiar</ion-button>
-      <!-- Campo Placa -->
+        <!-- Campo de entrada de datos del formulario -->
       <ion-item>
         <ion-label position="stacked">Placa</ion-label>
         <ion-input formControlName="placa" [ngClass]="{'ion-invalid': isFieldInvalid('placa')}" readonly></ion-input>
         <ion-note *ngIf="isFieldInvalid('placa')" color="danger">Campo requerido</ion-note>
       </ion-item>
-<!-- -----fin------- -->
-
-
 
       <ion-item>
         <ion-label position="stacked">Marca</ion-label>

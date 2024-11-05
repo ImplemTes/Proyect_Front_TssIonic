@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { VehiculoService } from 'src/app/services/vehiculo.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,12 +8,18 @@ import { Router } from '@angular/router';
   styleUrls: ['./vehiculo-create.page.scss'],
 })
 export class VehiculoCreatePage implements OnInit {
-
+  @ViewChild('video') videoElement!: ElementRef;
+  @ViewChild('canvas') canvasElement!: ElementRef;
   plagaobtenida: string = '';
   public selectedPageTitle: string = 'Registro Vehiculo';
-  selectedFile: File | null = null;
-  imageToShow: any;
+
   imageError: string | null = null;
+  imagePath:  string | null = null;
+
+
+  verCamara: boolean = true;
+ 
+
   vehiculoForm: FormGroup = this.fb.group({
     placa: ['', Validators.required],
     marca: ['', Validators.required],
@@ -66,42 +72,75 @@ export class VehiculoCreatePage implements OnInit {
     this.router.navigate(['/home/vehiculos']);
   }
 
-  // ============================================
-  // MANEJO DE LA CAMARA: CAPTURA Y ENVIO DE LA IMAGEN ES DECIR
-  // ENVIAR EL FRAME MEDIANTE ARCHIVO formData A MI SERVICIO Y ESTE LO ENVIARA A MI BACKEND
-  // Y LUEGO, RECIBIRE UN STRING
-  // ============================================
-  
-  
-  CapturarImagen(){
-    const captura=this.imageToShow()
-    this.EnviarCaptura(captura);
-  }
 
-  LimpiarCaptura(){
-    this.vehiculoForm.patchValue({ placa: '' });  //campo para limpiar el input placa
-    this.selectedFile = null;
-    this.imageToShow = null;
-    this.imageError = null; 
-  }
 
-  EnviarCaptura(captura:any): void{
-    const formData = new FormData();
-    if (this.selectedFile) {
-      formData.append('file', captura, captura);
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  // Función para iniciar la cámara en el navegador
+  async abrirCamaraWeb() {
+    const video = this.videoElement.nativeElement;
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      video.srcObject = stream;
+      video.play();
     }
-    this.vehiculoService.ObtenerObjeto(formData).subscribe(
-      (data: any) => {
-        console.log("Se ha recibido correctamente", data);
-        // Navegar a la página de productos
-         this.plagaobtenida = data.placa;
-         this.vehiculoForm.patchValue({ placa: this.plagaobtenida });
-       }, 
-      (error) => {
-        const errorMsg = this.formatErrorMessage(error);
-        alert(errorMsg);  
-      }
-    );
+    this.verCamara=false;
   }
 
+  // Función para capturar la imagen desde el video y mostrarla en un canvas
+  CapturarImagenWeb() {
+    const video = this.videoElement.nativeElement;
+    const canvas = this.canvasElement.nativeElement;
+    const context = canvas.getContext('2d');
+    if (context) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      this.imagePath = canvas.toDataURL('image/png'); // Convertimos el canvas a una imagen base64
+      this.EnviarCaptura();
+    }
+  }
+ // Función para limpiar la imagen capturada y detener la cámara
+ LimpiarCaptura() {
+  this.imagePath = null;
+  const video = this.videoElement.nativeElement;
+  const stream = video.srcObject as MediaStream;
+  const tracks = stream.getTracks();
+  this.verCamara=true;
+  // Detener cada pista de la cámara
+  tracks.forEach(track => track.stop());
+  video.srcObject = null;
+}
+
+  // Función para enviar la imagen al backend
+  EnviarCaptura(): void {
+    if (this.imagePath) {
+      const formData = new FormData();
+      formData.append('file', this.imagePath);
+      this.vehiculoService.ObtenerObjeto(formData).subscribe(
+        (data: any) => {
+          console.log("Se ha recibido correctamente", data);
+          this.plagaobtenida = data.placa;
+          this.vehiculoForm.patchValue({ placa: this.plagaobtenida });
+        }, 
+        (error) => {
+          console.error("Error al enviar la captura", error);
+        }
+      );
+    } else {
+      console.error("No se ha capturado ninguna imagen para enviar");
+    }
+  }
 }

@@ -44,3 +44,29 @@ ion-item {
 .ion-invalid ion-input {
   border-color: red;
 }
+
+
+
+
+.video-preview {
+  width: 100%;
+  height: auto;
+  background-color: #f0f0f0; /* Fondo gris claro antes de activar la cámara */
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.image-preview img {
+  width: 100px;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.camera-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+  gap: 8px;
+  margin-top: 10px;
+}
