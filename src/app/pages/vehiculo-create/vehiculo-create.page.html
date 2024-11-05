@@ -11,9 +11,13 @@
   <div id="vehiculo-form-container" style="padding: 16px">
     <h2>Registro de Vehicular</h2>
     <form [formGroup]="vehiculoForm" id="vehiculo-form" (ngSubmit)="submitFormSave()">
+<!-- -----inicio de manejo de camara------- -->
       <!-- Camara -->
-      <div style="width: 200px; height: 200px;background: black;"  >
-          <p style="color: white;padding: 30%;">CAMARA</p>
+      <div style="text-align: center;">
+          <ion-label position="stacked" >CAMARA</ion-label>
+      </div>
+      
+      <div style="width: full; height: 450px;background: black;margin: 2%;"  >
       </div>
       <!-- Botones de l camara -->
       <ion-button color="medium" (click)="CapturarImagen()">Capturar</ion-button>
@@ -26,6 +30,9 @@
         <ion-input formControlName="placa" [ngClass]="{'ion-invalid': isFieldInvalid('placa')}" readonly></ion-input>
         <ion-note *ngIf="isFieldInvalid('placa')" color="danger">Campo requerido</ion-note>
       </ion-item>
+<!-- -----fin------- -->
+
+
 
       <!-- Campo Marca -->
       <ion-item>
