@@ -13,7 +13,7 @@ export class VehiculoCreatePage implements OnInit {
   public selectedPageTitle: string = 'Registro Vehiculo';
   selectedFile: File | null = null;
   imageToShow: any;
-  imageError: string | null = null; // Para los errores de validación de la imagen
+  imageError: string | null = null;
   vehiculoForm: FormGroup = this.fb.group({
     placa: ['', Validators.required],
     marca: ['', Validators.required],
@@ -29,16 +29,12 @@ export class VehiculoCreatePage implements OnInit {
   ngOnInit() {
   }
 
-  // Método para guardar el vehículo
-  submitFormSave(): void {
+  CreateVehiculo(): void {
     if (this.vehiculoForm.valid) {
       this.vehiculoService.create(this.vehiculoForm.value).subscribe(
         (resp: any) => {
           console.log("Se ha guardado correctamente", resp);
-
-          // Navegar a la página de vehiculo
           this.router.navigate(['/home/vehiculos']).then(() => {
-            // Una vez que llegues a la página, la recargas
             window.location.reload();
           });
         },
@@ -81,12 +77,12 @@ export class VehiculoCreatePage implements OnInit {
     
   }
   ResetCamara(){
-    this.vehiculoForm.patchValue({ placa: '' });  //campo de la placa
+    this.vehiculoForm.patchValue({ placa: '' });  //campo para limpiar el input placa
 
   }
 
   LimpiarCaptura(){
-    this.vehiculoForm.patchValue({ placa: '' });  //campo de la placa
+    this.vehiculoForm.patchValue({ placa: '' });  //campo para limpiar el input placa
     this.selectedFile = null;
     this.imageToShow = null;
     this.imageError = null; 

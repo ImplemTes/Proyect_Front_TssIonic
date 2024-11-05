@@ -10,7 +10,7 @@
 <ion-content [fullscreen]="true">
   <div id="vehiculo-form-container" style="padding: 16px">
     <h2>Registro de Vehicular</h2>
-    <form [formGroup]="vehiculoForm" id="vehiculo-form" (ngSubmit)="submitFormSave()">
+    <form [formGroup]="vehiculoForm" id="vehiculo-form" (ngSubmit)="CreateVehiculo()">
 <!-- -----inicio de manejo de camara------- -->
       <!-- Camara -->
       <div style="text-align: center;">
@@ -34,29 +34,24 @@
 
 
 
-      <!-- Campo Marca -->
       <ion-item>
         <ion-label position="stacked">Marca</ion-label>
         <ion-input  formControlName="marca" [ngClass]="{'ion-invalid': isFieldInvalid('marca')}"></ion-input>
         <ion-note *ngIf="isFieldInvalid('marca')" color="danger">Campo requerido</ion-note>
       </ion-item>
 
-      <!-- Campo Modelo -->
       <ion-item>
         <ion-label position="stacked">Modelo</ion-label>
         <ion-input formControlName="modelo" [ngClass]="{'ion-invalid': isFieldInvalid('modelo')}"></ion-input>
         <ion-note *ngIf="isFieldInvalid('modelo')" color="danger">Campo requerido</ion-note>
       </ion-item>
 
-      <!-- Campo color -->
       <ion-item>
         <ion-label position="stacked">Color</ion-label>
         <ion-input formControlName="color" [ngClass]="{'ion-invalid': isFieldInvalid('color')}"></ion-input>
         <ion-note *ngIf="isFieldInvalid('color')" color="danger">Campo requerido</ion-note>
       </ion-item>
 
-
-      <!-- Botones -->
       <div id="form-buttons-container">
         <ion-button color="success" type="submit" expand="block" [disabled]="!vehiculoForm.valid">Registrar</ion-button>
         <ion-button color="medium" expand="block" (click)="closeModal()">Cancelar</ion-button>
