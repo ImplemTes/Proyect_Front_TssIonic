@@ -3,12 +3,56 @@
     <ion-buttons slot="start" style="color: white">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>vehiculo</ion-title>
+    <ion-title>{{ selectedPageTitle }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div id="vehiculo-form-container" style="padding: 16px">
-    
+    <h2>Registro de Vehicular</h2>
+    <form [formGroup]="vehiculoForm" id="vehiculo-form" (ngSubmit)="submitFormSave()">
+      <!-- Camara -->
+      <div style="width: 200px; height: 200px;background: black;"  >
+          <p style="color: white;padding: 30%;">CAMARA</p>
+      </div>
+      <!-- Botones de l camara -->
+      <ion-button color="medium" (click)="CapturarImagen()">Capturar</ion-button>
+      <ion-button color="medium" (click)="LimpiarCampo()">Limpiar</ion-button>
+      <ion-button color="medium" (click)="ResetCamara()">Resetear</ion-button>
+      <!-- Campo Placa -->
+      <ion-item>
+        <ion-label position="stacked">Placa</ion-label>
+        <ion-input formControlName="placa" [ngClass]="{'ion-invalid': isFieldInvalid('placa')}" readonly></ion-input>
+        <ion-note *ngIf="isFieldInvalid('placa')" color="danger">Campo requerido</ion-note>
+      </ion-item>
+
+      <!-- Campo Marca -->
+      <ion-item>
+        <ion-label position="stacked">Marca</ion-label>
+        <ion-input  formControlName="marca" [ngClass]="{'ion-invalid': isFieldInvalid('marca')}"></ion-input>
+        <ion-note *ngIf="isFieldInvalid('marca')" color="danger">Campo requerido</ion-note>
+      </ion-item>
+
+      <!-- Campo Modelo -->
+      <ion-item>
+        <ion-label position="stacked">Modelo</ion-label>
+        <ion-input formControlName="modelo" [ngClass]="{'ion-invalid': isFieldInvalid('modelo')}"></ion-input>
+        <ion-note *ngIf="isFieldInvalid('modelo')" color="danger">Campo requerido</ion-note>
+      </ion-item>
+
+      <!-- Campo color -->
+      <ion-item>
+        <ion-label position="stacked">Color</ion-label>
+        <ion-input formControlName="color" [ngClass]="{'ion-invalid': isFieldInvalid('color')}"></ion-input>
+        <ion-note *ngIf="isFieldInvalid('color')" color="danger">Campo requerido</ion-note>
+      </ion-item>
+
+
+      <!-- Botones -->
+      <div id="form-buttons-container">
+        <ion-button color="success" type="submit" expand="block" [disabled]="!vehiculoForm.valid">Registrar</ion-button>
+        <ion-button color="medium" expand="block" (click)="closeModal()">Cancelar</ion-button>
+      </div>
+    </form>
   </div>
 </ion-content>

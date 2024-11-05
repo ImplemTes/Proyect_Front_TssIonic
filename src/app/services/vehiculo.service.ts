@@ -35,4 +35,8 @@ export class VehiculoService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  ObtenerObjeto(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/objeto`, formData);
+  }
 }

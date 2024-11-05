@@ -23,10 +23,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/almacenes/almacenes.module').then( m => m.AlmacenesPageModule)
   },
   {
-    path: 'home/vehiculos',
-    loadChildren: () => import('./pages/vehiculos/vehiculos.module').then( m => m.VehiculosPageModule)
-  },
-  {
     path: 'home/roles',
     loadChildren: () => import('./pages/roles/roles.module').then( m => m.RolesPageModule)
   },
@@ -49,6 +45,10 @@ const routes: Routes = [
   {
     path: 'home/chatbot',
     loadChildren: () => import('./pages/chatbot/chatbot.module').then( m => m.ChatbotPageModule)
+  },
+  {
+    path: 'home/vehiculos',
+    loadChildren: () => import('./pages/vehiculos/vehiculos.module').then( m => m.VehiculosPageModule)
   },
   {
     path: 'home/vehiculo-create',
