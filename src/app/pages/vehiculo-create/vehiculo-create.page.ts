@@ -1,7 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { VehiculoService } from 'src/app/services/vehiculo.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Capacitor } from '@capacitor/core';
+
 @Component({
   selector: 'app-vehiculo-create',
   templateUrl: './vehiculo-create.page.html',
@@ -13,12 +16,10 @@ export class VehiculoCreatePage implements OnInit {
   plagaobtenida: string = '';
   public selectedPageTitle: string = 'Registro Vehiculo';
 
-  imageError: string | null = null;
-  imagePath:  string | null = null;
-
-
+  imagePath: string | null | undefined = null;
   verCamara: boolean = true;
- 
+  verbtnCapt: boolean = true;
+
 
   vehiculoForm: FormGroup = this.fb.group({
     placa: ['', Validators.required],
@@ -69,26 +70,42 @@ export class VehiculoCreatePage implements OnInit {
   }
 
   closeModal() {
+    this.imagePath = null;
+    this.verCamara = true;
+    this.verbtnCapt=true;
     this.router.navigate(['/home/vehiculos']);
   }
 
 
+  // Activa la cámara dependiendo de la plataforma
+  activarCamara() {
+    if (Capacitor.isNativePlatform()) {
+      this.abrirCamaraMovil();
+    } else {
+      this.abrirCamaraWeb();
+    }
+  }
 
 
+  // Función para abrir la cámara en dispositivos móviles
+  async abrirCamaraMovil() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 100,
+        allowEditing: false,
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Camera,
+      });
+      this.imagePath = `data:image/png;base64,${image.base64String}`;
+      this.verCamara = false;
+      
+      this.EnviarCaptura();
+    } catch (error) {
+      console.error("Error al capturar la imagen", error);
+    }
+  }
 
-
-
-
-
-
-
-
-
-
-
-  
-
-  // Función para iniciar la cámara en el navegador
+  // Función para abrir la cámara en la web
   async abrirCamaraWeb() {
     const video = this.videoElement.nativeElement;
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -96,45 +113,51 @@ export class VehiculoCreatePage implements OnInit {
       video.srcObject = stream;
       video.play();
     }
-    this.verCamara=false;
+    this.verbtnCapt=true;
+    this.verCamara = false;
   }
 
   // Función para capturar la imagen desde el video y mostrarla en un canvas
   CapturarImagenWeb() {
     const video = this.videoElement.nativeElement;
     const canvas = this.canvasElement.nativeElement;
+    this.verbtnCapt=false;
     const context = canvas.getContext('2d');
     if (context) {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      this.imagePath = canvas.toDataURL('image/png'); // Convertimos el canvas a una imagen base64
-      this.EnviarCaptura();
+      this.imagePath = canvas.toDataURL('image/png');  // Exporta la imagen en formato PNG
     }
+    this.EnviarCaptura();
   }
- // Función para limpiar la imagen capturada y detener la cámara
- LimpiarCaptura() {
-  this.imagePath = null;
-  const video = this.videoElement.nativeElement;
-  const stream = video.srcObject as MediaStream;
-  const tracks = stream.getTracks();
-  this.verCamara=true;
-  // Detener cada pista de la cámara
-  tracks.forEach(track => track.stop());
-  video.srcObject = null;
-}
+
+  // Función para limpiar la imagen capturada y detener la cámara
+  LimpiarCaptura() {
+    this.imagePath = null;
+    this.verCamara = true;
+    this.verbtnCapt=true;
+    const video = this.videoElement.nativeElement;
+    const stream = video.srcObject as MediaStream;
+    const tracks = stream.getTracks();
+    // Detener cada pista de la cámara
+    tracks.forEach(track => track.stop());
+    video.srcObject = null;
+  }
 
   // Función para enviar la imagen al backend
   EnviarCaptura(): void {
     if (this.imagePath) {
       const formData = new FormData();
-      formData.append('file', this.imagePath);
+      const fileBlob = this.dataURLtoBlob(this.imagePath);
+      formData.append('file', fileBlob, 'captura.png');  // Envía el archivo como .png
+
       this.vehiculoService.ObtenerObjeto(formData).subscribe(
-        (data: any) => {
-          console.log("Se ha recibido correctamente", data);
-          this.plagaobtenida = data.placa;
+        (Res: any) => {
+          console.log("Se ha recibido correctamente", Res);
+          this.plagaobtenida = Res.plate;
           this.vehiculoForm.patchValue({ placa: this.plagaobtenida });
-        }, 
+        },
         (error) => {
           console.error("Error al enviar la captura", error);
         }
@@ -142,5 +165,18 @@ export class VehiculoCreatePage implements OnInit {
     } else {
       console.error("No se ha capturado ninguna imagen para enviar");
     }
+  }
+
+  // Helper para convertir DataURL a Blob
+  private dataURLtoBlob(dataUrl: string): Blob {
+    const arr = dataUrl.split(',');
+    const mime = arr[0].match(/:(.*?);/)?.[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime || 'image/png' });
   }
 }

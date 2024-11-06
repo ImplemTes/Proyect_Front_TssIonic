@@ -37,6 +37,6 @@ export class VehiculoService {
   }
 
   ObtenerObjeto(formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/objeto`, formData);
+    return this.http.post(`${this.apiUrl}/objeto/`, formData);
   }
 }
