@@ -9,12 +9,10 @@
 <ion-content [fullscreen]="true">
   <div class="almacenes-lista">
     <!-- Título de la sección -->
-    <ion-text class="header-text">Lista de Almacenes:</ion-text><br>
+    <ion-text class="header-text">Lista de Almacenes</ion-text><br>
 
     <!-- Botón de registro -->
-    <ion-button (click)="openModalRegistrar()" color="primary" class="register-button">
-      + Registrar almacén
-    </ion-button>
+    <ion-button (click)="openModalRegistrar()" color="primary" class="register-button">+ Registrar almacén </ion-button>
 
     <!-- Contenedor para los almacenes -->
     <ng-container *ngIf="almacenes.length > 0; else noAlmacenes">
@@ -72,12 +70,20 @@
       </div>
     </ng-container>
 
+
+
+    
     <!-- Mensaje de no hay almacenes -->
     <ng-template #noAlmacenes>
       <ion-label class="no-data-message">No se encontraron almacenes.</ion-label>
     </ng-template>
   </div>
 
+
+
+
+
+  
   <!-- Modal para Registro-->
 <ion-modal id="modalRegistrarAlmacen" [isOpen]="isModalOpen" [backdropDismiss]="false" >
   <ng-template>

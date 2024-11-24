@@ -9,35 +9,62 @@
 
 <ion-content [fullscreen]="true">
   <div class="proveedores-lista" style="padding: 16px">
-    <p>Lista de proveedores:</p>
-    <ion-button (click)="openModalRegistrar()">+ Registrar Proveedor</ion-button>
+       <!-- Título de la sección -->
+       <ion-text class="header-text">Lista de Proveedores</ion-text><br>
+
+    <ion-button (click)="openModalRegistrar()" color="primary" class="register-button">+ Registrar Proveedor</ion-button>
     <ng-container *ngIf="proveedores.length > 0; else noProveedores">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="1">N°</ion-col>
-          <ion-col size="2">Contacto</ion-col>
-          <ion-col size="1">DNI</ion-col>
-          <ion-col size="1">Celular</ion-col>
-          <ion-col size="1">Proveedor</ion-col>
-          <ion-col size="1">Ruc</ion-col>
-          <ion-col size="2">Opciones</ion-col>
-        </ion-row>
-        <ion-row *ngFor="let prove of proveedores | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
-          <ion-col size="1" size-sm="2" size-md="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
-          <ion-col size="2">{{ prove.apellidos }} {{ prove.nombres }}</ion-col>
-          <ion-col size="1">{{ prove.dni }}</ion-col>
-          <ion-col size="1">{{ prove.celular }}</ion-col>
-          <ion-col size="1">{{ prove.nombre_proveedor }}</ion-col>
-          <ion-col size="1">{{ prove.ruc }}</ion-col>
-          <ion-col size="2">
-            <ion-button (click)="openModalEditar(prove)" fill="solid" color="light" style="background-color: white; color: gray; justify-content: center; display: flex; flex-direction: column;">
-              <ion-icon slot="start" name="pencil" style="color: gray;"></ion-icon>
-            </ion-button>
-            <ion-button (click)="openModalEliminar(prove)" fill="solid" color="light" style="background-color: white; color: red; justify-content: center; display: flex; flex-direction: column;">
-              <ion-icon slot="start" name="trash" style="color: red;"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
+      <ion-grid class="proveedores-grid">
+         <!-- Diseño de Tabla para Pantallas Grandes -->
+         <ng-container *ngIf="!isMobileView">
+          <ion-row class="table-header">
+            <ion-col size="1">N°</ion-col>
+            <ion-col size="2">Contacto</ion-col>
+            <ion-col size="1">DNI</ion-col>
+            <ion-col size="1">Celular</ion-col>
+            <ion-col size="2">Proveedor</ion-col>
+            <ion-col size="2">Ruc</ion-col>
+            <ion-col size="2">Opciones</ion-col>
+          </ion-row>
+          <ion-row *ngFor="let prove of proveedores | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row">
+            <ion-col size="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
+            <ion-col size="2">{{ prove.apellidos }} {{ prove.nombres }}</ion-col>
+            <ion-col size="1">{{ prove.dni }}</ion-col>
+            <ion-col size="1">{{ prove.celular }}</ion-col>
+            <ion-col size="2">{{ prove.nombre_proveedor }}</ion-col>
+            <ion-col size="2">{{ prove.ruc }}</ion-col>
+            <ion-col size="2">
+              <ion-button (click)="openModalEditar(prove)" fill="clear" color="primary" class="action-button">
+                <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+              </ion-button>
+              <ion-button (click)="openModalEliminar(prove)" fill="clear" color="danger" class="action-button">
+                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+
+        <!-- Diseño de Tarjeta para Pantallas Pequeñas -->
+        <ng-container *ngIf="isMobileView">
+          <ion-row *ngFor="let prove of proveedores | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row mobile-card">
+            <div class="card-content">
+              <p><strong>N°:</strong> {{ i + 1 + (p - 1) * itemsPerPage }}</p>
+              <p><strong>Contacto:</strong> {{ prove.apellidos }} {{ prove.nombres }}</p>
+              <p><strong>DNI:</strong> {{ prove.dni }}</p>
+              <p><strong>Celular:</strong>{{ prove.celular }}</p>
+              <p><strong>Proveedor:</strong>{{ prove.nombre_proveedor }}</p>
+              <p><strong>Ruc:</strong>{{ prove.ruc }}</p>
+              <div class="options">
+                <ion-button (click)="openModalEditar(prove)" fill="clear" color="primary" class="action-button">
+                  <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+                </ion-button>
+                <ion-button (click)="openModalEliminar(prove)" fill="clear" color="danger" class="action-button">
+                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </ion-row>
+        </ng-container>
       </ion-grid>
             <!-- Paginación -->
             <div class="paginador-container">

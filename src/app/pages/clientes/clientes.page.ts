@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,HostListener, OnInit } from '@angular/core';
 import { ClienteService } from 'src/app/services/cliente.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
@@ -16,7 +16,7 @@ export class ClientesPage implements OnInit {
   isModalOpen: boolean = false;
   isModalOpenEditar: boolean = false;
 
-
+  isMobileView: boolean = false;
   // Paginación
   p: number = 1; // Página actual
   itemsPerPage: number = 8; // Elementos por página
@@ -39,8 +39,16 @@ export class ClientesPage implements OnInit {
 
   ngOnInit() {
     this.listarclientes();
+    this.checkScreenSize();
   }
-
+  // Detectar cambios en el tamaño de pantalla
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+  checkScreenSize() {
+    this.isMobileView = window.innerWidth < 720;
+  }
   listarclientes(): void {
     this.clienteService.list().subscribe(
       (resp: any) => {

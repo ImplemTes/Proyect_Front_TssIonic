@@ -9,31 +9,54 @@
 
 <ion-content [fullscreen]="true">
   <div class="roles-lista" style="padding: 16px">
-    <p>Lista de Roles:</p>
-    <div class="botones" style="display: flex; justify-content: space-between; align-items: center;">
-        <ion-button (click)="openModalRegistrar()">+ Registrar</ion-button>
-        <ion-button [routerLink]="['/home/usuarios']">Ver Usuarios</ion-button>
-    </div>
-    <ng-container *ngIf="roles.length > 0; else noRoles">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="1">N°</ion-col>
-          <ion-col size="2">Rol</ion-col>
-          <ion-col size="z">Opciones</ion-col>
-        </ion-row>
-        <ion-row *ngFor="let prove of roles | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index">
-          <ion-col size="1" size-sm="2" size-md="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
-          <ion-col size="2"> {{ prove.nombre_rol }}</ion-col>
+    <!-- Título de la sección -->
+    <ion-text class="header-text">Lista de Roles:</ion-text><br>
 
-          <ion-col size="2">
-            <ion-button (click)="openModalEditar(prove)" fill="solid" color="light" style="background-color: white; color: gray; justify-content: center; display: flex; flex-direction: column;">
-              <ion-icon slot="start" name="pencil" style="color: gray;"></ion-icon>
-            </ion-button>
-            <ion-button (click)="openModalEliminar(prove)" fill="solid" color="light" style="background-color: white; color: red; justify-content: center; display: flex; flex-direction: column;">
-              <ion-icon slot="start" name="trash" style="color: red;"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
+    <div class="botones" style="display: flex; justify-content: space-between; align-items: center;">
+        <ion-button (click)="openModalRegistrar()" color="primary" class="register-button">+ Registrar</ion-button>
+        <ion-button [routerLink]="['/home/usuarios']" color="primary" class="ver-button">Ver Usuarios</ion-button>
+    </div>
+        <!-- Contenedor para roles -->
+    <ng-container *ngIf="roles.length > 0; else noRoles">
+      <ion-grid class="roles-grid">
+        <ng-container *ngIf="!isMobileView">
+            <ion-row class="table-header">
+              <ion-col size="2">N°</ion-col>
+              <ion-col size="4">Rol</ion-col>
+              <ion-col size="4">Opciones</ion-col>
+            </ion-row>
+            <ion-row *ngFor="let rol of roles | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row">
+              <ion-col size="2">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
+              <ion-col size="4"> {{ rol.nombre_rol }}</ion-col>
+
+              <ion-col size="4">
+                <ion-button (click)="openModalEditar(rol)" fill="clear" color="primary" class="action-button">
+                  <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+                </ion-button>
+                <ion-button (click)="openModalEliminar(rol)" fill="clear" color="danger" class="action-button">
+                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+        </ng-container>
+                <!-- Diseño de Tarjeta para Pantallas Pequeñas -->
+                <ng-container *ngIf="isMobileView">
+                  <ion-row *ngFor="let rol of roles | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row mobile-card">
+                    <div class="card-content">
+                      <p><strong>N°:</strong> {{ i + 1 + (p - 1) * itemsPerPage }}</p>
+                      <p><strong>Rol:</strong> {{ rol.nombre_rol }}</p>
+                      <div class="options">
+                        <ion-button (click)="openModalEditar(rol)" fill="clear" color="primary" class="action-button">
+                          <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+                        </ion-button>
+                        <ion-button (click)="openModalEliminar(rol)" fill="clear" color="danger" class="action-button">
+                          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                        </ion-button>
+                      </div>
+                    </div>
+                  </ion-row>
+                </ng-container>
+        
       </ion-grid>
             <!-- Paginación -->
             <div class="paginador-container">

@@ -1,5 +1,5 @@
 import { RolesService } from 'src/app/services/roles.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,HostListener } from '@angular/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
@@ -19,7 +19,7 @@ export class RolesPage implements OnInit {
   // Paginación
   p: number = 1; // Página actual
   itemsPerPage: number = 8; // Elementos por página
-
+  isMobileView: boolean = false;
   constructor(
     private rolService: RolesService,
     private fb: FormBuilder
@@ -32,8 +32,16 @@ export class RolesPage implements OnInit {
 
   ngOnInit() {
     this.listaroles();
+    this.checkScreenSize();
   }
-
+  // Detectar cambios en el tamaño de pantalla
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+  checkScreenSize() {
+    this.isMobileView = window.innerWidth < 720;
+  }
   listaroles(): void {
     this.rolService.listarR().subscribe(
       (resp: any) => {
