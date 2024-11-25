@@ -46,7 +46,14 @@ ion-item {
 }
 
 
-
+.no-image {
+  text-align: center;
+  color: gray;
+}
+.image-container img {
+  max-width: 100%;
+  height: auto;
+}
 
 .video-preview {
   width: 100%;

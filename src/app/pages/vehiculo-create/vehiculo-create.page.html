@@ -31,7 +31,12 @@
           <ion-button color="medium" (click)="LimpiarCaptura()">Limpiar</ion-button>
         </div>
       </div>
-      
+      <div *ngIf="!urlobtenida" class="no-image">
+        <p>No se ha detectado ninguna imagen aún.</p>
+      </div>
+      <div *ngIf="urlobtenida" class="image-container">
+        <img [src]="urlobtenida" alt="Imagen detectada">
+      </div>
         <!-- Campo de entrada de datos del formulario -->
       <ion-item>
         <ion-label position="stacked">Placa</ion-label>

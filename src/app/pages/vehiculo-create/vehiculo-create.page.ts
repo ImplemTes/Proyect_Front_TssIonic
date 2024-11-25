@@ -14,6 +14,7 @@ export class VehiculoCreatePage implements OnInit {
   @ViewChild('video') videoElement!: ElementRef;
   @ViewChild('canvas') canvasElement!: ElementRef;
   plagaobtenida: string = '';
+  urlobtenida: string = '';
   public selectedPageTitle: string = 'Registro Vehiculo';
 
   imagePath: string | null | undefined = null;
@@ -34,6 +35,8 @@ export class VehiculoCreatePage implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.plagaobtenida;
+    this.urlobtenida;
   }
 
   CreateVehiculo(): void {
@@ -136,6 +139,9 @@ export class VehiculoCreatePage implements OnInit {
   LimpiarCaptura() {
     this.imagePath = null;
     this.verCamara = true;
+    this.urlobtenida='';
+    this.plagaobtenida='';
+    this.vehiculoForm.patchValue({ placa: this.urlobtenida });
     this.verbtnCapt=true;
     const video = this.videoElement.nativeElement;
     const stream = video.srcObject as MediaStream;
@@ -156,6 +162,7 @@ export class VehiculoCreatePage implements OnInit {
         (Res: any) => {
           console.log("Se ha recibido correctamente", Res);
           this.plagaobtenida = Res.plate;
+          this.urlobtenida = Res.image_url;
           this.vehiculoForm.patchValue({ placa: this.plagaobtenida });
         },
         (error) => {
