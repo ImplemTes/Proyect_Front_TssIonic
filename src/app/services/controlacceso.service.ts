@@ -12,7 +12,7 @@ export class ControlaccesoService {
 
   // Listar todos los detalles
   list(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/`);
+    return this.http.get(`${this.apiUrl}/lista/`);
   }
   listPersonas(): Observable<any> {
     return this.http.get(`${this.apiUrl}/personas/`);
@@ -33,7 +33,7 @@ export class ControlaccesoService {
   }
 
   // Eliminar
-  deleteProgra(idprogra: number): Observable<any> {
+  deletAcces(idprogra: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${idprogra}`);
   }
 }

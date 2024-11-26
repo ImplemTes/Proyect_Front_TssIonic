@@ -1,6 +1,9 @@
 import { Component,HostListener, OnInit } from '@angular/core';
+import { ProgramacionService } from 'src/app/services/programacion.service';
 import { VehiculoService } from 'src/app/services/vehiculo.service';
+import { ControlaccesoService } from 'src/app/services/controlacceso.service';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { AlmacenService } from 'src/app/services/almacen.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-controlacceso',
@@ -8,24 +11,95 @@ import { Router } from '@angular/router';
   styleUrls: ['./controlacceso.page.scss'],
 })
 export class ControlaccesoPage implements OnInit {
-  public selectedPageTitle: string = 'Vehiculos';
+  public selectedPageTitle: string = 'Control de Acceso';
+  isModalOpen: boolean = false;
+  accesos: any = [];
+  programaciones: any = [];
+  selectedProgra: any = [];
+  personas: any = [];
+  almacenes: any = [];
   vehiculos: any = [];
-  selectedVehiculo: any = null;
+  detalleForm: FormGroup;
+  selectedAcceso: any = null;
   isModalOpenEliminar: boolean = false;
   isMobileView: boolean = false;
+  isModalOpenEditar: boolean = false;
   // Paginación
   p: number = 1; // Página actual
   itemsPerPage: number = 6; // Elementos por página
   constructor(
+    private controlaccesoService: ControlaccesoService,
     private vehiculoService: VehiculoService,
+    private almacenService: AlmacenService,
+    private programacionService: ProgramacionService,
     private fb: FormBuilder,
     private router: Router
-  ) { }
+  ) {
+    this.detalleForm = this.fb.group({
+      //Para un nuevo formulario Acceso
+      idprogramacion: [0],
+      idalmacen: ['', Validators.required],
+      idpersona: ['', Validators.required],
+      observacion: [''],
+      fechaEntrada: [null, Validators.required],
+      fechaSalida: [null, Validators.required],
+      placa: ['', Validators.required],
+      marca: ['', Validators.required],
+      modelo: ['', Validators.required],
+      color: ['', Validators.required],
+    });
+   }
 
   ngOnInit() {
-    this.getVehiculos();
+    this.getaccesos();
+    this.listarpersonas();
+    this.listaralmacenes();
+    this.listarvehiculos();
+    this.listarprogramaciones();
+    this.checkScreenSize();
   }
 
+  listarpersonas(): void {
+    this.controlaccesoService.listPersonas().subscribe(
+      (resp: any) => {
+        this.personas = resp;
+      },
+      (error) => {
+        console.error('Error al mostrar las personas', error);
+      }
+    );
+  }
+
+  listaralmacenes(): void {
+    this.almacenService.list().subscribe(
+      (resp: any) => {
+        this.almacenes = resp;
+      },
+      (error) => {
+        console.error('Error al mostrar los almacenes', error);
+      }
+    );
+  }
+  listarvehiculos(): void {
+    this.vehiculoService.list().subscribe(
+      (resp: any) => {
+        this.vehiculos = resp;
+      },
+      (error) => {
+        console.error('Error al mostrar los vehiculos', error);
+      }
+    );
+  }
+  listarprogramaciones(): void {
+    this.programacionService.list().subscribe(
+      (resp: any) => {
+        this.programaciones = resp;
+      },
+      (error) => {
+        console.error('Error al mostrar las programaciones', error);
+      }
+    );
+  }
 
   // Detectar cambios en el tamaño de pantalla
     @HostListener('window:resize', ['$event'])
@@ -38,41 +112,125 @@ export class ControlaccesoPage implements OnInit {
   // Fin tamaño
   
   // Obtener vehículos
-  getVehiculos(): void {
-    this.vehiculoService.list().subscribe(
+  getaccesos(): void {
+    this.controlaccesoService.list().subscribe(
       (resp: any) => {
-        this.vehiculos = resp;
+        this.accesos = resp;
       },
       (error) => {
-        console.error('Error al mostrar los vehiculos', error);
+        console.error('Error al mostrar los detalles', error);
       }
     );
   }
+  seleccionarprogra(idprogramacion: any): void {
+    console.log('ID de programación seleccionado:', idprogramacion); // Debugging
+    this.programacionService.getProgra(idprogramacion).subscribe(
+        (resp: any) => {
+            // Capturar datos del vehiculo asimismo de la programacion
+            this.vehiculoService.getVehiculo(resp.idvehiculo).subscribe(
+                (resp2: any) => {
+                    console.log('Datos del vehículo:', resp2.idvehiculo);  // Verifica los datos del vehículo
+                    this.detalleForm.patchValue({
+                        // Llenamos datos del vehiculo
+                        placa: resp2.placa,
+                        marca: resp2.marca,
+                        modelo: resp2.modelo,
+                        color: resp2.color,
+                        // Llenamos datos de la programacion
+                        fechaEntrada: resp.fechaEntrada,
+                        fechaSalida: resp.fechaSalida,
+                        observacion: resp.observacion,
+                    });
+                    console.log('Formulario después de patchValue:', this.detalleForm.value);
+                },
+                (error) => {
+                    console.error('Error al obtener el vehículo', error);
+                }
+            );
+        },
+        (error) => {
+            console.error('Error al obtener el vehículo', error);
+        }
+    );
 
+}
   registrar(){
     this.router.navigate(['/home/controlacceso-create']);
   }
+  isFieldInvalid(field: string): boolean {
+    const control = this.detalleForm.get(field);
+    return control ? control.invalid && control.touched : false;
+  }
 
-  openModalEliminar(vehiculo: any = null): void {
+  openModalEliminar(acceso: any = null): void {
     this.isModalOpenEliminar = true;
-    this.selectedVehiculo = vehiculo;
+    this.selectedAcceso = acceso;
   }
 
   closeModal(): void {
     this.isModalOpenEliminar = false;
-    this.selectedVehiculo = null;
+    this.isModalOpenEditar=false;
+    this.selectedAcceso = null;
+    this.detalleForm.patchValue({
+      idpersona: '',
+      idalmacen: '',
+      idprogramacion: 0,
+      placa: '',
+      marca: '',
+      modelo: '',
+      color: '',
+      // Llenamos datos de la programacion
+      fechaEntrada: '',
+      fechaSalida: '',
+      observacion: '',
+    });
   }
-
-  deleteVehiculo(id: number): void {
-    this.vehiculoService.delete(id).subscribe(() => {
-      this.vehiculos = this.vehiculos.filter((prove: any) => prove.idvehiculo !== id);
-      this.getVehiculos();
+  LimpiarData() {
+    this.selectedProgra = null;
+    this.detalleForm.patchValue({
+      idpersona: '',
+      idalmacen: '',
+      idprogramacion: 0,
+      placa: '',
+      marca: '',
+      modelo: '',
+      color: '',
+      // Llenamos datos de la programacion
+      fechaEntrada: '',
+      fechaSalida: '',
+      observacion: '',
+    });
+  };
+  deleteAcceso(id: number): void {
+    this.controlaccesoService.deletAcces(id).subscribe(() => {
+      this.accesos = this.accesos.filter((prove: any) => prove.idacceso !== id);
+      this.getaccesos();
       this.closeModal();
     });
   }
 
-  editarVehiculo(vehiculo: any) {
-    this.router.navigate(['/home/vehiculo-edit/edit', vehiculo.idvehiculo]);
+  openModalEditar(acceso: any = null): void {
+    this.isModalOpenEditar = true;
+    this.selectedAcceso = acceso;
+    // Usamos patchValue para cargar los datos
+    this.detalleForm.patchValue({
+      idpersona: acceso.idpersona,
+      idalmacen: acceso.idalmacen,
+      idprogramacion:acceso.idprogramacion,
+      placa: acceso.placa,
+      marca: acceso.marca,
+      modelo: acceso.modelo,
+      color: acceso.color,
+      fechaEntrada: acceso.fechaEntrada,
+      fechaSalida:acceso.fechaSalida,
+      observacion: acceso.estado? '1' : '0', // Convertimos booleano a cadena
+    });
   }
-  
+
+
+
+  editarVehiculo() {
+   
+  }
+
 }
