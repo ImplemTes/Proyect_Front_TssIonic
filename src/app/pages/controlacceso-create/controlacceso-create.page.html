@@ -9,7 +9,7 @@
 
 <ion-content [fullscreen]="true">
   <div id="vehiculo-form-container" style="padding: 16px">
-    <form [formGroup]="detalleForm" id="vehiculo-form" (ngSubmit)="CreateDetalle()">
+    <form [formGroup]="detalleForm" id="vehiculo-form" (ngSubmit)="createdata()">
 
       <!-- Sección de la cámara -->
       <div class="camera-container">
@@ -39,16 +39,18 @@
         <!-- Campo de entrada de datos del formulario acceso -->
       <ion-label position="stacked">Datos del Detalle</ion-label><br>
        
-      
-      
       <!-- Campo Programacion -->
        <ion-item>
         <ion-label position="stacked">Programacion</ion-label>
         <h6><ion-button [routerLink]="['/home/programaciones']" color="primary">¿Registrar programacion?</ion-button>
           <ion-button (click)="LimpiarData()" color="primary">Limpiar Datos</ion-button></h6>
-        <ion-select formControlName="idprogramacion" placeholder="Seleccione una opción en caso tenga una programacion" [ngClass]="{'ion-invalid': isFieldInvalid('idprogramacion')}" (ionChange)="seleccionarprogra($event)">
-          <ion-select-option *ngFor="let programacion of programaciones" [value]="programacion">
-            {{ programacion.marca }}/{{ programacion.placa }}  <!--programacion.idvehiculo-->
+          <ion-select
+          formControlName="idprogramacion"
+          placeholder="Seleccione una opción en caso tenga una programación"
+          [ngClass]="{'ion-invalid': isFieldInvalid('idprogramacion')}"
+          (ionChange)="seleccionarprogra($event.detail.value)">
+          <ion-select-option *ngFor="let programacion of programaciones" [value]="programacion.idprogramacion">
+            {{ programacion.marca }}/{{ programacion.placa }}
           </ion-select-option>
         </ion-select>
       </ion-item>
@@ -74,24 +76,17 @@
           <ion-note *ngIf="isFieldInvalid('idpersona')" color="danger">Campo requerido</ion-note>
       </ion-item>
 
-      <!-- Campo Vehiculo -->
-      <ion-item>
-        <ion-label position="stacked">Vehiculo</ion-label>
-        <ion-select formControlName="idvehiculo" placeholder="Seleccione un vehiculo" [ngClass]="{'ion-invalid': isFieldInvalid('idvehiculo')}">
-          <ion-select-option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.idvehiculo">
-            {{ vehiculo.marca }}/{{ vehiculo.placa}}
-          </ion-select-option>
-        </ion-select>
-      </ion-item>
        <!-- Campo Observacion -->
         <ion-item>
-        <ion-label position="stacked">Observacion</ion-label>
-        <ion-input  formControlName="observacion" [ngClass]="{'ion-invalid': isFieldInvalid('observacion')}"></ion-input>
-        <ion-note *ngIf="isFieldInvalid('observacion')" color="danger">Campo requerido</ion-note>
+          <ion-label position="stacked">Observacion</ion-label>
+          <ion-input formControlName="observacion"></ion-input>
         </ion-item>
-
+        <ion-text color="danger" *ngIf="isFieldInvalid('observacion')">
+          Campo requerido
+        </ion-text>
+  
           <!-- Fecha Entrada -->
-        <div class="datetime-container">
+          <div class="datetime-container">
             <ion-item id="fechsss">
               <ion-label position="stacked" class="custom-label">Fecha Entrada</ion-label>
               <ion-datetime
@@ -100,9 +95,9 @@
                 class="custom-datetime">
               </ion-datetime>
             </ion-item>
-        </div>
+          </div>
 
-      <!-- Fecha Salida -->
+          <!-- Fecha Salida -->
           <div class="datetime-container">
             <ion-item id="fechsss">
               <ion-label position="stacked" class="custom-label">Fecha Salida</ion-label>
@@ -119,27 +114,36 @@
       <ion-label position="stacked">Datos del Vehiculo</ion-label>
       <ion-item>
         <ion-label position="stacked">Placa</ion-label>
-        <ion-input formControlName="placa" [ngClass]="{'ion-invalid': isFieldInvalid('placa')}" readonly></ion-input>
-        <ion-note *ngIf="isFieldInvalid('placa')" color="danger">Campo requerido</ion-note>
+        <ion-input formControlName="placa" readonly></ion-input>
       </ion-item>
+      <ion-text color="danger" *ngIf="isFieldInvalid('placa')">
+        Campo requerido
+      </ion-text>
 
       <ion-item>
         <ion-label position="stacked">Marca</ion-label>
-        <ion-input  formControlName="marca" [ngClass]="{'ion-invalid': isFieldInvalid('marca')}"></ion-input>
-        <ion-note *ngIf="isFieldInvalid('marca')" color="danger">Campo requerido</ion-note>
+        <ion-input formControlName="marca" ></ion-input>
       </ion-item>
+      <ion-text color="danger" *ngIf="isFieldInvalid('marca')">
+        Campo requerido
+      </ion-text>
 
       <ion-item>
         <ion-label position="stacked">Modelo</ion-label>
-        <ion-input formControlName="modelo" [ngClass]="{'ion-invalid': isFieldInvalid('modelo')}"></ion-input>
-        <ion-note *ngIf="isFieldInvalid('modelo')" color="danger">Campo requerido</ion-note>
+        <ion-input formControlName="modelo" ></ion-input>
       </ion-item>
+      <ion-text color="danger" *ngIf="isFieldInvalid('modelo')">
+        Campo requerido
+      </ion-text>
 
       <ion-item>
         <ion-label position="stacked">Color</ion-label>
-        <ion-input formControlName="color" [ngClass]="{'ion-invalid': isFieldInvalid('color')}"></ion-input>
-        <ion-note *ngIf="isFieldInvalid('color')" color="danger">Campo requerido</ion-note>
+        <ion-input formControlName="color" ></ion-input>
       </ion-item>
+      <ion-text color="danger" *ngIf="isFieldInvalid('color')">
+        Campo requerido
+      </ion-text>
+
       <!-- Campo de entrada de datos del formulario fin -->
       <div id="form-buttons-container">
         <ion-button color="success" type="submit" expand="block" [disabled]="!detalleForm.valid">Registrar</ion-button>

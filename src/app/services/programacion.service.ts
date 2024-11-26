@@ -25,6 +25,10 @@ export class ProgramacionService {
     return this.http.get(`${this.apiUrl}/${idprogra}`);
   }
 
+  // Obtener  por ID
+  getPrograExist(idprogra: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/existe/${idprogra}`);
+  }
   // Actualizar
   updateProgra(idprogra: number, progra: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${idprogra}`, progra);

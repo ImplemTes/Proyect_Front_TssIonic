@@ -17,11 +17,11 @@ export class ControlaccesoService {
   listPersonas(): Observable<any> {
     return this.http.get(`${this.apiUrl}/personas/`);
   }
-  // Crear un nuevo
-  create(progra: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/`, progra);
+  
+  // Crear un nuevo controlaccesos
+  create(acceso: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/`, acceso);
   }
-
   // Obtener  por ID
   getProgra(idprogra: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${idprogra}`);

@@ -262,3 +262,61 @@ ion-item {
   gap: 8px;
   margin-top: 10px;
 }
+
+
+
+/*ESTILO FECHAS*/
+/* Contenedor principal para centrar */
+.datetime-container {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  margin: 16px 0; /* Espaciado entre elementos */
+  padding: 10px; /* Espaciado interno */
+  background: #f9f9f9; /* Fondo claro */
+  border: 1px solid #ddd; /* Borde gris claro */
+  border-radius: 10px; /* Esquinas redondeadas */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Estiliza el ion-item */
+.datetime-container ion-item {
+  --background: transparent; /* Fondo transparente */
+  --inner-padding-start: 0; /* Quitar padding inicial */
+  --inner-padding-end: 0; /* Quitar padding final */
+}
+
+/* Estiliza el ion-label */
+.custom-label {
+  color: #5a5a5a; /* Gris oscuro */
+  font-weight: bold; /* Negrita */
+  font-size: 14px; /* Tamaño pequeño */
+  margin-bottom: 4px; /* Espaciado inferior */
+}
+
+/* Estiliza el ion-datetime */
+.custom-datetime {
+  --background: #ffffff; /* Fondo blanco */
+  --border-radius: 6px; /* Esquinas redondeadas */
+  --padding: 8px; /* Espaciado interno */
+  --color: #333333; /* Texto en negro */
+  --placeholder-color: #888888; /* Texto placeholder en gris */
+  font-size: 16px; /* Tamaño del texto */
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+  max-width: 400px; /* Máximo ancho para que no sea demasiado grande */
+  border: 1px solid #cccccc; /* Borde claro */
+}
+
+/* Efecto hover */
+.custom-datetime:hover {
+  border-color: #007bff; /* Azul al pasar el cursor */
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5); /* Sombra azul */
+}
+
+/* Mejorar visibilidad al enfocar */
+.custom-datetime:focus {
+  outline: none;
+  border-color: #007bff; /* Azul al enfocar */
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.5); /* Sombra azul más intensa */
+}
+
