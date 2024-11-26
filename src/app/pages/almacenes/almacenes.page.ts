@@ -26,6 +26,7 @@ export class AlmacenesPage implements OnInit {
       nombre_almacen: ['', Validators.required],
       ubicacion_almacen: ['', Validators.required],
       descripcion_almacen: [''],
+      capacidad: ['', Validators.required],
       estado_almacen: [1],
     });
   }
@@ -77,6 +78,7 @@ export class AlmacenesPage implements OnInit {
       nombre_almacen: '',
       ubicacion_almacen: '',
       descripcion_almacen: '',
+      capacidad: '',
       estado_almacen: 1,
     });
   }
@@ -110,8 +112,6 @@ export class AlmacenesPage implements OnInit {
   }
 
 
-
-  
   openModalEditar(alma: any = null): void {
     this.isModalOpenEditar = true;
     this.selectedAlmacen = alma;
@@ -121,6 +121,7 @@ export class AlmacenesPage implements OnInit {
       nombre_almacen: alma.nombre_almacen,
       ubicacion_almacen: alma.ubicacion_almacen,
       descripcion_almacen: alma.descripcion_almacen,
+      capacidad:alma.capacidad,
       estado_almacen: alma.estado_almacen ? '1' : '0', // Convertimos booleano a cadena
     });
   }

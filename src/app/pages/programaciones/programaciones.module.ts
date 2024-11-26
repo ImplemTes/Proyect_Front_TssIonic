@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
-import { VehiculosPageRoutingModule } from './vehiculos-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { VehiculosPage } from './vehiculos.page';
+import { ProgramacionesPageRoutingModule } from './programaciones-routing.module';
+
+import { ProgramacionesPage } from './programaciones.page';
 
 @NgModule({
   imports: [
@@ -15,8 +15,8 @@ import { VehiculosPage } from './vehiculos.page';
     NgxPaginationModule, // Agrega manejo de paginaciones
     ReactiveFormsModule, // Agrega para manejo de formularios con modal
     IonicModule,
-    VehiculosPageRoutingModule
+    ProgramacionesPageRoutingModule
   ],
-  declarations: [VehiculosPage]
+  declarations: [ProgramacionesPage]
 })
-export class VehiculosPageModule {}
+export class ProgramacionesPageModule {}

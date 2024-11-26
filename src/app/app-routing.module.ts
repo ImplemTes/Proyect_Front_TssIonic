@@ -54,9 +54,18 @@ const routes: Routes = [
     path: 'home/vehiculo-create',
     loadChildren: () => import('./pages/vehiculo-create/vehiculo-create.module').then( m => m.VehiculoCreatePageModule)
   },
+
   {
-    path: 'home/vehiculo-edit/edit/:id',
-    loadChildren: () => import('./pages/vehiculo-edit/vehiculo-edit.module').then( m => m.VehiculoEditPageModule)
+    path: 'home/programaciones',
+    loadChildren: () => import('./pages/programaciones/programaciones.module').then( m => m.ProgramacionesPageModule)
+  },
+  {
+    path: 'home/controlacceso',
+    loadChildren: () => import('./pages/controlacceso/controlacceso.module').then( m => m.ControlaccesoPageModule)
+  },
+  {
+    path: 'home/controlacceso-create',
+    loadChildren: () => import('./pages/controlacceso-create/controlacceso-create.module').then( m => m.ControlaccesoCreatePageModule)
   },
 
 
@@ -64,7 +73,10 @@ const routes: Routes = [
   {
     path: 'home/ajustes',
     loadChildren: () => import('./ajustes/ajustes.module').then(m => m.AjustesPageModule) // Asegúrate de tener el módulo Ajustes
-  },*/
+  },
+  */
+
+  
   {
     path: '',
     redirectTo: 'login', //home
@@ -78,12 +90,10 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
   },
-
-
-
-
-
-
+  {
+    path: 'controlacceso-create',
+    loadChildren: () => import('./pages/controlacceso-create/controlacceso-create.module').then( m => m.ControlaccesoCreatePageModule)
+  },
 
 ];
 

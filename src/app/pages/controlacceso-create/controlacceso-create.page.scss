@@ -200,82 +200,65 @@ ion-header {
   }
 }
 
-#modalEditVehiculo {
-  ion-header {
-    --background: #4a90e2;
-    color: white;
-  }
+#vehiculo-form-container {
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-  ion-toolbar {
-    --background: #4a90e2;
-    padding: 10px;
-  }
+#vehiculo-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #4caf50;
+}
 
-  ion-title {
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: white;
-  }
+ion-item {
+  margin-bottom: 15px;
+}
+#form-buttons-container {
+  text-align: center;
+  margin-top: 20px;
+}
 
-  ion-content {
-    --background: #f4f5f8;
-    padding: 16px;
-  }
+#form-buttons-container ion-button {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
 
-  ion-item {
-    --background: white;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
+.ion-invalid ion-input {
+  border-color: red;
+}
 
-  ion-label {
-    font-weight: bold;
-    color: #333;
-  }
 
-  ion-input {
-    padding: 10px;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
+.no-image {
+  text-align: center;
+  color: gray;
+}
+.image-container img {
+  max-width: 100%;
+  height: auto;
+}
 
-  ion-text {
-    margin-top: 4px;
-    margin-left: 16px;
-    font-size: 0.9rem;
-    color: #e74c3c;
-  }
+.video-preview {
+  width: 100%;
+  height: auto;
+  background-color: #f0f0f0; /* Fondo gris claro antes de activar la cámara */
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.image-preview img {
+  width: 100px;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+}
 
-  .ion-text-center {
-    margin-top: 20px;
-  }
-
-  ion-button {
-    --border-radius: 8px;
-    margin: 10px;
-    font-size: 1rem;
-    padding: 8px 16px;
-  }
-
-  ion-button[color="medium"] {
-    --background: #ce5e5e;
-    --color: white;
-    font-weight: bold;
-  }
-
-  ion-button[color="primary"] {
-    --background: #4a90e2;
-    --color: white;
-    font-weight: bold;
-  }
-
-  ion-button:hover {
-    opacity: 0.9;
-  }
-
-  ion-item.ion-invalid {
-    --background: #ffe6e6;
-    border: 1px solid #ffffff;
-  }
+.camera-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+  gap: 8px;
+  margin-top: 10px;
 }

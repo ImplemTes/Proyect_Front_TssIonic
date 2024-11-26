@@ -4,9 +4,9 @@ import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { VehiculosPageRoutingModule } from './vehiculos-routing.module';
+import { ControlaccesoPageRoutingModule } from './controlacceso-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { VehiculosPage } from './vehiculos.page';
+import { ControlaccesoPage } from './controlacceso.page';
 
 @NgModule({
   imports: [
@@ -15,8 +15,8 @@ import { VehiculosPage } from './vehiculos.page';
     NgxPaginationModule, // Agrega manejo de paginaciones
     ReactiveFormsModule, // Agrega para manejo de formularios con modal
     IonicModule,
-    VehiculosPageRoutingModule
+    ControlaccesoPageRoutingModule
   ],
-  declarations: [VehiculosPage]
+  declarations: [ControlaccesoPage]
 })
-export class VehiculosPageModule {}
+export class ControlaccesoPageModule {}

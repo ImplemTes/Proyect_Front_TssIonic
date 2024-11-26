@@ -3,20 +3,18 @@
     <ion-buttons slot="start" style="color: white">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>{{ selectedPageTitle }}</ion-title>
+    <ion-title>Control de Acceso</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="vehiculos-lista" style="padding: 16px">
     <!-- Título de la sección -->
-    <ion-text class="header-text">Lista de Vehiculos:</ion-text><br>
-
-  
+    <ion-text class="header-text">Lista de detalles:</ion-text><br>
     <div class="button-container-vertical">
-      <ion-button [routerLink]="['/home/vehiculo-create']" color="primary">+ Registrar vehiculo</ion-button>
-      <ion-button [routerLink]="['/home/controlacceso']" color="primary" class="register-button" style="max-width: medium;"  >+Ver Control de acceso</ion-button>
-      <ion-button [routerLink]="['/home/programaciones']" color="primary" class="register-button" style="max-width: medium;"  >+Ver programaciones</ion-button>
+      <ion-button [routerLink]="['/home/controlacceso-create']"  color="primary" class="register-button" style="max-width: medium;"   >Registrar detalle</ion-button>
+      <ion-button [routerLink]="['/home/programaciones']" color="primary" class="register-button" style="max-width: medium;"  >+Ver Programaciones</ion-button>
+      <ion-button [routerLink]="['/home/vehiculos']"  color="primary" class="register-button" style="max-width: medium;" >+Ver Vehiculos</ion-button>
     </div>
     <!-- Contenedor para los vehiculos -->
     <ng-container *ngIf="vehiculos.length > 0; else noVehiculos">
@@ -41,7 +39,7 @@
                     <ion-col size="2">{{ vehiculo.fecha_registro }}</ion-col>
                     <ion-col size="2" class="options">
 
-                      <ion-button (click)="openModalEditar(vehiculo)" fill="clear" color="primary" class="action-button">
+                      <ion-button (click)="editarVehiculo(vehiculo)" fill="clear" color="primary" class="action-button">
                         <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
                       </ion-button>
                       <ion-button (click)="openModalEliminar(vehiculo)" fill="clear" color="danger" class="action-button">
@@ -62,7 +60,7 @@
               <p><strong>Color:</strong> {{ vehiculo.color }}</p>
               <p><strong>Fecha Registro:</strong> {{ vehiculo.fecha_registro }}</p>
               <div class="options">
-                <ion-button (click)="openModalEditar(vehiculo)" fill="clear" color="primary" class="action-button">
+                <ion-button (click)="editarVehiculo(vehiculo)" fill="clear" color="primary" class="action-button">
                   <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
                 </ion-button>
                 <ion-button (click)="openModalEliminar(vehiculo)" fill="clear" color="danger" class="action-button">
@@ -124,58 +122,4 @@
     </ion-content>
   </ng-template>
 </ion-modal>
-
-<!-- Modal para Editar-->
-<ion-modal  id="modalEditVehiculo" [isOpen]="isModalOpenEditar" [backdropDismiss]="false">
-  <ng-template>
-
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Editar Vehiculo</ion-title>
-        <ion-buttons slot="end">
-          <ion-button
-            (click)="closeModal()"
-            fill="solid"
-            aria-label="Cerrar"
-            style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
-            <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <form [formGroup]="vehiculoForm" (ngSubmit)="editarVehiculo()" style="padding: 16px;">
-          <!-- Campo de entrada de datos del formulario -->
-          <ion-item>
-            <ion-label position="stacked">Placa</ion-label>
-            <ion-input formControlName="placa" [ngClass]="{'ion-invalid': isFieldInvalid('placa')}"></ion-input>
-            <ion-note *ngIf="isFieldInvalid('placa')" color="danger">Campo requerido</ion-note>
-          </ion-item>
-    
-          <ion-item>
-            <ion-label position="stacked">Marca</ion-label>
-            <ion-input  formControlName="marca" [ngClass]="{'ion-invalid': isFieldInvalid('marca')}"></ion-input>
-            <ion-note *ngIf="isFieldInvalid('marca')" color="danger">Campo requerido</ion-note>
-          </ion-item>
-    
-          <ion-item>
-            <ion-label position="stacked">Modelo</ion-label>
-            <ion-input formControlName="modelo" [ngClass]="{'ion-invalid': isFieldInvalid('modelo')}"></ion-input>
-            <ion-note *ngIf="isFieldInvalid('modelo')" color="danger">Campo requerido</ion-note>
-          </ion-item>
-    
-          <ion-item>
-            <ion-label position="stacked">Color</ion-label>
-            <ion-input formControlName="color" [ngClass]="{'ion-invalid': isFieldInvalid('color')}"></ion-input>
-            <ion-note *ngIf="isFieldInvalid('color')" color="danger">Campo requerido</ion-note>
-          </ion-item>
-          <div class="ion-text-center" style="margin-top: 20px">
-            <ion-button color="primary" type="submit">Actualizar</ion-button>
-          </div>
-      </form>
-    </ion-content>
-  </ng-template>
-</ion-modal>
-
-
 </ion-content>

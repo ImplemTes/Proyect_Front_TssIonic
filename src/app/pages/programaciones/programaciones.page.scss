@@ -1,0 +1,438 @@
+/* Estilos de la cabecera */
+ion-header {
+    --background: #3880ff; /* Color de fondo azul */
+    color: white;
+  }
+  
+  ion-toolbar {
+    --background: #3880ff; /* Fondo sólido azul */
+    color: white;
+  }
+  
+  ion-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+  }
+  
+/*ESTILO FECHAS*/
+/* Contenedor principal para centrar */
+.datetime-container {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  margin: 16px 0; /* Espaciado entre elementos */
+  padding: 10px; /* Espaciado interno */
+  background: #f9f9f9; /* Fondo claro */
+  border: 1px solid #ddd; /* Borde gris claro */
+  border-radius: 10px; /* Esquinas redondeadas */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+}
+
+/* Estiliza el ion-item */
+.datetime-container ion-item {
+  --background: transparent; /* Fondo transparente */
+  --inner-padding-start: 0; /* Quitar padding inicial */
+  --inner-padding-end: 0; /* Quitar padding final */
+}
+
+/* Estiliza el ion-label */
+.custom-label {
+  color: #5a5a5a; /* Gris oscuro */
+  font-weight: bold; /* Negrita */
+  font-size: 14px; /* Tamaño pequeño */
+  margin-bottom: 4px; /* Espaciado inferior */
+}
+
+/* Estiliza el ion-datetime */
+.custom-datetime {
+  --background: #ffffff; /* Fondo blanco */
+  --border-radius: 6px; /* Esquinas redondeadas */
+  --padding: 8px; /* Espaciado interno */
+  --color: #333333; /* Texto en negro */
+  --placeholder-color: #888888; /* Texto placeholder en gris */
+  font-size: 16px; /* Tamaño del texto */
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+  max-width: 400px; /* Máximo ancho para que no sea demasiado grande */
+  border: 1px solid #cccccc; /* Borde claro */
+}
+
+/* Efecto hover */
+.custom-datetime:hover {
+  border-color: #007bff; /* Azul al pasar el cursor */
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5); /* Sombra azul */
+}
+
+/* Mejorar visibilidad al enfocar */
+.custom-datetime:focus {
+  outline: none;
+  border-color: #007bff; /* Azul al enfocar */
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.5); /* Sombra azul más intensa */
+}
+
+
+  
+  /* Estilos del listado de programaciones */
+  .programaciones-lista {
+    padding: 3%;
+  
+  /* Estilo para el encabezado de texto */
+  .header-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    --background: #ffffff;
+  }
+  
+  /* Contenedor de los botones */
+  .button-container-vertical {
+    display: flex;
+    flex-direction: column; /* Los botones estarán en una columna */
+    gap: 12px; /* Espaciado vertical entre botones */
+    margin-top: 16px; /* Espaciado superior del contenedor */
+    align-items: flex-start; /* Alinea los botones al inicio */
+  }
+
+  /* Estilo del botón */
+  .register-button {
+    max-width: 300px; /* Ancho máximo del botón */
+    width: auto; /* Ajusta el ancho al contenido */
+    align-self: left; /* Centra cada botón dentro del contenedor */
+  }
+  
+  /* Estilos generales para el grid */
+  .programaciones-grid {
+    padding: 1rem 0;
+  }
+  
+  /* Fila de tabla y diseño responsivo en forma de tarjeta */
+  .table-row {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 1%;
+    border-bottom: 2px solid #e0e0e0;
+  }
+  
+  .options {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .table-header {
+    text-align: center;
+    background: rgb(0, 0, 0);
+    border: solid #006eff;
+    color: #ffffff;  
+    font-size: 1rem; 
+    border-radius: 10px;
+  }
+  
+  /* Diseño de tarjeta para pantallas móviles */
+  @media (max-width: 720px) {
+    /* Ocultar encabezado en pantallas pequeñas */
+    .table-header {
+      display: none;
+    }
+  
+    /* Contenido de tarjeta en pantallas pequeñas */
+    .table-row.mobile-card .card-content {
+      display: block;
+      background-color: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      padding: 12px;
+      width: 100%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      color: #333;
+    }
+  
+    /* Estilo de cada campo en la tarjeta */
+    .card-content p {
+      font-size: 1rem;
+      margin: 4px 0;
+      text-align: left;
+    }
+  
+    /* Opciones en modo tarjeta */
+    .options {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 8px;
+    }
+  
+    /* Tipografía adaptable */
+    .header-text, .table-row, .no-data-message, .register-button {
+      font-size: calc(1rem + 0.2vw);
+    }
+  }
+  }
+
+  
+  /* Estilos específicos para el modal de registro */
+  #modalRegistrarProgra {
+    ion-header {
+      --background: #4a90e2;
+      color: white;
+    }
+  
+    ion-toolbar {
+      --background: #4a90e2;
+      padding: 10px;
+    }
+  
+    ion-title {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: white;
+    }
+  
+    ion-content {
+      --background: #f4f5f8;
+      padding: 16px;
+    }
+  
+    ion-item {
+      --background: white;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    ion-label {
+      font-weight: bold;
+      color: #333;
+    }
+  
+    ion-input {
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+  
+    ion-text {
+      margin-top: 4px;
+      margin-left: 16px;
+      font-size: 0.9rem;
+      color: #e74c3c;
+    }
+  
+    .ion-text-center {
+      margin-top: 20px;
+    }
+  
+    ion-button {
+      --border-radius: 8px;
+      margin: 10px;
+      font-size: 1rem;
+      padding: 8px 16px;
+    }
+  
+    ion-button[color="medium"] {
+      --background: #ce5e5e;
+      --color: white;
+      font-weight: bold;
+    }
+  
+    ion-button[color="primary"] {
+      --background: #4a90e2;
+      --color: white;
+      font-weight: bold;
+    }
+  
+    ion-button:hover {
+      opacity: 0.9;
+    }
+  
+    #fechsss{
+      --background: #ffffff;
+      border: 0px  ;
+    }
+
+
+    ion-item.ion-invalid {
+      --background: #ffe6e6;
+      border: 1px solid #ffffff;
+    }
+  }
+  #modalEditProgra {
+    ion-header {
+      --background: #4a90e2;
+      color: white;
+    }
+  
+    ion-toolbar {
+      --background: #4a90e2;
+      padding: 10px;
+    }
+  
+    ion-title {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: white;
+    }
+  
+    ion-content {
+      --background: #f4f5f8;
+      padding: 16px;
+    }
+  
+    ion-item {
+      --background: white;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+  
+    ion-label {
+      font-weight: bold;
+      color: #333;
+    }
+  
+    ion-input {
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+  
+    ion-text {
+      margin-top: 4px;
+      margin-left: 16px;
+      font-size: 0.9rem;
+      color: #e74c3c;
+    }
+  
+    .ion-text-center {
+      margin-top: 20px;
+    }
+  
+    ion-button {
+      --border-radius: 8px;
+      margin: 10px;
+      font-size: 1rem;
+      padding: 8px 16px;
+    }
+  
+    ion-button[color="medium"] {
+      --background: #ce5e5e;
+      --color: white;
+      font-weight: bold;
+    }
+  
+    ion-button[color="primary"] {
+      --background: #4a90e2;
+      --color: white;
+      font-weight: bold;
+    }
+  
+    ion-button:hover {
+      opacity: 0.9;
+    }
+  
+    ion-item.ion-invalid {
+      --background: #ffe6e6;
+      border: 1px solid #ffffff;
+    }
+  }
+  
+  #modalEliminarCliente {
+    .modal-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%; /* Asegurarse de ocupar todo el alto del modal */
+      text-align: center;
+    }
+  
+    .centered-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+  
+    .warning-label {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 20px 0 10px;
+      text-align: center;
+    }
+  
+    .cliente-info {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  
+    .warning-icon {
+      color: red;
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+  
+    .button-container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+  
+    .close-button {
+      border-radius: 50%;
+      background-color: black;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+  
+    .close-button span {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  }
+  
+  .paginador-container {
+    display: flex;
+    justify-content: center; // Centrar el paginador
+    margin-top: 20px; // Margen superior para separación
+    padding: 10px; // Espacio interior
+  
+    // Estilos del paginador
+    .pagination {
+      display: flex;
+      list-style: none;
+      padding: 0;
+  
+      li {
+        margin: 0 5px; // Espacio entre los botones de paginación
+  
+        a {
+          display: block;
+          padding: 10px 15px; // Espacio interior de los botones
+          color: #007bff; // Color del texto del enlace
+          border: 1px solid #007bff; // Borde del botón
+          border-radius: 5px; // Bordes redondeados
+          text-decoration: none; // Sin subrayado
+  
+          &:hover {
+            background-color: #007bff; // Color de fondo al pasar el mouse
+            color: white; // Color del texto al pasar el mouse
+          }
+        }
+  
+        &.active a {
+          background-color: #007bff; // Color de fondo activo
+          color: white; // Color del texto activo
+        }
+      }
+    }
+  }
+  
+  

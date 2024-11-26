@@ -9,9 +9,11 @@ import { Router } from '@angular/router';
 })
 export class VehiculosPage implements OnInit {
   public selectedPageTitle: string = 'Vehiculos';
+  vehiculoForm: FormGroup;
   vehiculos: any = [];
   selectedVehiculo: any = null;
   isModalOpenEliminar: boolean = false;
+  isModalOpenEditar: boolean = false;
   isMobileView: boolean = false;
   // Paginación
   p: number = 1; // Página actual
@@ -20,7 +22,14 @@ export class VehiculosPage implements OnInit {
     private vehiculoService: VehiculoService,
     private fb: FormBuilder,
     private router: Router
-  ) { }
+  ) { 
+    this.vehiculoForm = this.fb.group({
+      placa: ['', Validators.required],
+      marca: ['', Validators.required],
+      modelo: ['', Validators.required],
+      color: ['', Validators.required],
+    });
+  }
 
   ngOnInit() {
     this.getVehiculos();
@@ -55,8 +64,16 @@ export class VehiculosPage implements OnInit {
 
   closeModal(): void {
     this.isModalOpenEliminar = false;
+    this.isModalOpenEditar=false;
     this.selectedVehiculo = null;
-  }
+      this.vehiculoForm.reset({ // reset pero con predetermin de lo contrario son null
+        placa: '',
+        marca: '',
+        modelo: '',
+        color: '',
+      });
+    }
+  
 
   deleteVehiculo(id: number): void {
     this.vehiculoService.delete(id).subscribe(() => {
@@ -66,8 +83,41 @@ export class VehiculosPage implements OnInit {
     });
   }
 
-  editarVehiculo(vehiculo: any) {
-    this.router.navigate(['/home/vehiculo-edit/edit', vehiculo.idvehiculo]);
+  isFieldInvalid(field: string): boolean {
+    const control = this.vehiculoForm.get(field);
+    return control ? control.invalid && control.touched : false;
   }
+
+  openModalEditar(vehiculo: any = null): void {
+    this.isModalOpenEditar = true;
+    this.selectedVehiculo = vehiculo;
+    // Usamos patchValue para cargar los datos
+    this.vehiculoForm.patchValue({
+      placa: vehiculo.placa,
+      marca: vehiculo.marca,
+      modelo: vehiculo.modelo,
+      color: vehiculo.color,
+    });
+  }
+
   
+  editarVehiculo(): void {
+    if (this.vehiculoForm.valid) {
+      this.vehiculoService.update(this.selectedVehiculo.idvehiculo, this.vehiculoForm.value).subscribe(
+        (resp: any) => {
+          const index = this.vehiculos.findIndex((clien: any) => clien.idvehiculo === this.selectedVehiculo.idvehiculo);
+          if (index !== -1) {
+            this.vehiculos[index] = { ...this.vehiculos[index], ...this.vehiculoForm.value };
+          }
+          this.getVehiculos()
+          this.closeModal();
+        },
+        (error) => {
+          console.error('Error al actualizar el vehiculo', error);
+        }
+      );
+    } else {
+      console.error('Formulario inválido');
+    }
+  }
 }

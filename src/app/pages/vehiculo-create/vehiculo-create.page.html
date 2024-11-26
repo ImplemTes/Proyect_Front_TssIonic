@@ -12,35 +12,10 @@
     <h2>Registro de Vehicular</h2>
     <form [formGroup]="vehiculoForm" id="vehiculo-form" (ngSubmit)="CreateVehiculo()">
 
-      <!-- Sección de la cámara -->
-      <div class="camera-container">
-        <ion-label position="stacked">CAMARA DE SEGURIDAD</ion-label>
-
-         <!-- Video en vivo de la cámara web (solo para web) -->
-         <div *ngIf="!imagePath"  > 
-              <video #video   autoplay class="video-preview"></video>
-        </div>
-
-        <canvas #canvas class="canvas-preview" style="display: none;"></canvas>
-
-
-        <!-- Botones para manejo de la cámara -->
-        <div class="camera-buttons">
-          <ion-button *ngIf="verCamara" color="medium" (click)="activarCamara()">Ver Cámara</ion-button>
-          <ion-button *ngIf="verbtnCapt" color="medium" (click)="CapturarImagenWeb()">Capturar / Enviar</ion-button>
-          <ion-button color="medium" (click)="LimpiarCaptura()">Limpiar</ion-button>
-        </div>
-      </div>
-      <div *ngIf="!urlobtenida" class="no-image">
-        <p>No se ha detectado ninguna imagen aún.</p>
-      </div>
-      <div *ngIf="urlobtenida" class="image-container">
-        <img [src]="urlobtenida" alt="Imagen detectada">
-      </div>
         <!-- Campo de entrada de datos del formulario -->
       <ion-item>
         <ion-label position="stacked">Placa</ion-label>
-        <ion-input formControlName="placa" [ngClass]="{'ion-invalid': isFieldInvalid('placa')}" readonly></ion-input>
+        <ion-input formControlName="placa" [ngClass]="{'ion-invalid': isFieldInvalid('placa')}"></ion-input>
         <ion-note *ngIf="isFieldInvalid('placa')" color="danger">Campo requerido</ion-note>
       </ion-item>
 
@@ -63,9 +38,10 @@
       </ion-item>
 
       <div id="form-buttons-container">
-        <ion-button color="success" type="submit" expand="block" [disabled]="!vehiculoForm.valid">Registrar</ion-button>
-        <ion-button color="medium" expand="block" (click)="closeModal()">Cancelar</ion-button>
+        <ion-button color="success" type="submit" expand="medium" [disabled]="!vehiculoForm.valid">Registrar</ion-button>
+        <ion-button color="medium" expand="medium" (click)="closeModal()">Cancelar</ion-button>
       </div>
     </form>
   </div>
+  
 </ion-content>

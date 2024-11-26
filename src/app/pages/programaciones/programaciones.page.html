@@ -1,0 +1,273 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start" style="color: white">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ selectedPageTitle }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="programaciones-lista" style="padding: 16px">
+    <!-- Título de la sección -->
+    <ion-text class="header-text">Lista de programaciones:</ion-text><br>
+
+    <div class="button-container-vertical">
+      <ion-button (click)="openModalRegistrar()" color="primary" class="register-button" style="max-width: medium;"  >+Registrar Programacion</ion-button>
+      <ion-button [routerLink]="['/home/vehiculo-create']" color="primary" class="register-button">+Registrar Vehiculo</ion-button>
+      <ion-button [routerLink]="['/home/controlacceso']" color="primary" class="register-button">+Ver control de acceso</ion-button>
+    </div>
+    <ng-container *ngIf="programaciones.length > 0; else noProgramaciones">
+      <ion-grid class="programaciones-grid">
+        <!-- Diseño de Tabla para Pantallas Grandes -->
+        <ng-container *ngIf="!isMobileView">
+          <ion-row class="table-header">
+            <ion-col size="1">N°</ion-col>
+            <ion-col size="3">Vehiculo--Placa</ion-col>
+            <ion-col size="2">fecha Entrada</ion-col>
+            <ion-col size="2">fecha Salida</ion-col>
+            <ion-col size="2">Observacion</ion-col>
+            <ion-col size="2">Opciones</ion-col>
+          </ion-row>
+          <ion-row *ngFor="let programacion of programaciones | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row">
+            <ion-col size="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
+            <ion-col size="3">{{ programacion.marca }}--{{ programacion.placa }}</ion-col>
+            <ion-col size="2">{{ programacion.fechaEntrada }}</ion-col>
+            <ion-col size="2">{{ programacion.fechaSalida }}</ion-col>
+            <ion-col size="2">{{ programacion.observacion }}</ion-col>
+            <ion-col size="2">
+              <ion-button (click)="openModalEditar(programacion)" fill="clear" color="primary" class="action-button">
+                <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+              </ion-button>
+              <ion-button (click)="openModalEliminar(programacion)" fill="clear" color="danger" class="action-button">
+                <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ng-container>
+        <!-- Diseño de Tarjeta para Pantallas Pequeñas -->
+        <ng-container *ngIf="isMobileView">
+          <ion-row *ngFor="let programacion of programaciones | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row mobile-card">
+            <div class="card-content">
+              <p><strong>N°:</strong> {{ i + 1 + (p - 1) * itemsPerPage }}</p>
+              <p><strong>Vehiculo / Placa:</strong> {{ programacion.marca }} / {{ programacion.placa }}</p>
+              <p><strong>Fecha Entrada:</strong> {{ programacion.fechaEntrada }}</p>
+              <p><strong>Fecha Salida:</strong> {{ programacion.fechaSalida }}</p>
+              <p><strong>Observacion:</strong> {{ programacion.observacion }}</p>
+              <div class="options">
+                <ion-button (click)="openModalEditar(programacion)" fill="clear" color="primary" class="action-button">
+                  <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+                </ion-button>
+                <ion-button (click)="openModalEliminar(programacion)" fill="clear" color="danger" class="action-button">
+                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </ion-row>
+        </ng-container>
+      </ion-grid>
+      <!-- Paginación -->
+      <div class="paginador-container">
+        <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"> </pagination-controls>
+      </div>
+    </ng-container>
+
+    <ng-template #noProgramaciones>
+      <p>No se encontraron programaciones.</p>
+    </ng-template>
+  </div>
+
+<!-- Modal para Registro-->
+  <ion-modal id="modalRegistrarProgra" [isOpen]="isModalOpen" [backdropDismiss]="false" >
+    <ng-template>
+
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Registrar Programacion</ion-title>
+          <ion-buttons slot="end">
+            <ion-button
+              (click)="closeModal()"
+              fill="solid"
+              aria-label="Cerrar"
+              style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
+              <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <form [formGroup]="prograForm" (ngSubmit)="createProgra()" style="padding: 16px">
+        
+         <!-- Campo Vehiculos -->
+          <ion-item>
+            <ion-label position="stacked">Vehiculos</ion-label>
+            <ion-select formControlName="idvehiculo" placeholder="Seleccione una opción" [ngClass]="{'ion-invalid': isFieldInvalid('idvehiculo')}">
+              <ion-select-option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.idvehiculo">
+                {{ vehiculo.placa }}- {{ vehiculo.marca }}
+              </ion-select-option>
+            </ion-select>
+            <ion-note *ngIf="isFieldInvalid('idvehiculo')" color="danger">Campo requerido</ion-note>
+          </ion-item>
+
+
+          <!-- Fecha Entrada -->
+          <div class="datetime-container">
+            <ion-item id="fechsss">
+              <ion-label position="stacked" class="custom-label">Fecha Entrada</ion-label>
+              <ion-datetime
+                formControlName="fechaEntrada"
+                display-format="DD.MM.YYYY HH:mm"
+                class="custom-datetime">
+              </ion-datetime>
+            </ion-item>
+          </div>
+
+          <!-- Fecha Salida -->
+          <div class="datetime-container">
+            <ion-item id="fechsss">
+              <ion-label position="stacked" class="custom-label">Fecha Salida</ion-label>
+              <ion-datetime
+                formControlName="fechaSalida"
+                display-format="DD.MM.YYYY HH:mm"
+                class="custom-datetime">
+              </ion-datetime>
+            </ion-item>
+          </div>
+
+          <!-- Observacion -->
+          <ion-item>
+            <ion-label position="stacked">Observacion</ion-label>
+            <ion-input formControlName="observacion"></ion-input>
+          </ion-item>
+          <!-- Botones -->
+          <div class="ion-text-center" style="margin-top: 20px">
+            <ion-button color="primary" type="submit">Guardar</ion-button>
+          </div>
+        </form>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+ 
+<!-- Modal para Editar-->
+<ion-modal  id="modalEditProgra" [isOpen]="isModalOpenEditar" [backdropDismiss]="false">
+  <ng-template>
+
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Editar Programacion</ion-title>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="closeModal()"
+            fill="solid"
+            aria-label="Cerrar"
+            style="border-radius: 50%; background-color: black; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; padding: 0;">
+            <span style="color: #ffffff; font-size: 1.5rem; font-weight: bold;">X</span>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <form [formGroup]="prograForm" (ngSubmit)="editarProgra()" style="padding: 16px;">
+         <!-- Campo Vehiculos -->
+         <ion-item>
+          <ion-label position="stacked">Vehiculos</ion-label>
+          <ion-select formControlName="idvehiculo" placeholder="Seleccione una opción" [ngClass]="{'ion-invalid': isFieldInvalid('idvehiculo')}">
+            <ion-select-option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.idvehiculo">
+              {{ vehiculo.placa }}- {{ vehiculo.marca }}
+            </ion-select-option>
+          </ion-select>
+          <ion-note *ngIf="isFieldInvalid('idvehiculo')" color="danger">Campo requerido</ion-note>
+        </ion-item>
+
+
+        <!-- Fecha Entrada -->
+        <div class="datetime-container">
+          <ion-item id="fechsss">
+            <ion-label position="stacked" class="custom-label">Fecha Entrada</ion-label>
+            <ion-datetime
+              formControlName="fechaEntrada"
+              display-format="DD.MM.YYYY HH:mm"
+              class="custom-datetime">
+            </ion-datetime>
+          </ion-item>
+        </div>
+
+        <!-- Fecha Salida -->
+        <div class="datetime-container">
+          <ion-item id="fechsss">
+            <ion-label position="stacked" class="custom-label">Fecha Salida</ion-label>
+            <ion-datetime
+              formControlName="fechaSalida"
+              display-format="DD.MM.YYYY HH:mm"
+              class="custom-datetime">
+            </ion-datetime>
+          </ion-item>
+        </div>
+
+        <!-- Observacion -->
+        <ion-item>
+          <ion-label position="stacked">Observacion</ion-label>
+          <ion-input formControlName="observacion"></ion-input>
+        </ion-item>
+
+          <div class="ion-text-center" style="margin-top: 20px">
+            <ion-button color="primary" type="submit">Actualizar</ion-button>
+          </div>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+
+<!-- Modal para eliminar-->
+<ion-modal id="modalEliminarCliente" [isOpen]="isModalOpenEliminar" [backdropDismiss]="false">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Eliminar Programacion</ion-title>
+        <ion-buttons slot="end">
+          <ion-button
+            (click)="closeModal()"
+            fill="solid"
+            aria-label="Cerrar"
+            class="close-button">
+            <span>X</span>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <form [formGroup]="prograForm" class="modal-content">
+        <div class="centered-content">
+          <!-- Icono de advertencia centrado -->
+          <ion-icon name="warning-outline" class="warning-icon"></ion-icon>
+
+          <!-- Pregunta centrada -->
+          <ion-label class="warning-label">
+            ¿Estás seguro que deseas eliminar la programacion del vehiculo 
+          </ion-label>
+          <ion-label class="cliente-info">
+            Vehiculo: {{ selectedProgra?.idvehiculo }} <br><br>
+            Fecha Entrada: {{ selectedProgra?.fechaEntrada }} <br><br>
+            Fecha Salida: {{ selectedProgra?.fechaSalida }} <br>
+            ?
+          </ion-label>
+
+          <!-- Botón de eliminar centrado -->
+          <div class="button-container">
+            <ion-button color="danger" (click)="deleteProgra(selectedProgra?.idprogramacion)">Eliminar</ion-button>
+          </div>
+        </div>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+
+</ion-content>
+<ion-footer >
+  <ion-toolbar >
+    <ion-title>© 2024 Mi Aplicación</ion-title>
+  </ion-toolbar>
+</ion-footer>
+

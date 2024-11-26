@@ -23,14 +23,16 @@
             <ion-col size="1">N°</ion-col>
             <ion-col size="2">Almacén</ion-col>
             <ion-col size="2">Ubicación</ion-col>
-            <ion-col size="4">Descripción</ion-col>
+            <ion-col size="3">Descripción</ion-col>
+            <ion-col size="1">Capacidad</ion-col>
             <ion-col size="3">Opciones</ion-col>
           </ion-row>
           <ion-row *ngFor="let almacen of almacenes | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row">
             <ion-col size="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
             <ion-col size="2">{{ almacen.nombre_almacen }}</ion-col>
             <ion-col size="2">{{ almacen.ubicacion_almacen }}</ion-col>
-            <ion-col size="4">{{ almacen.descripcion_almacen }}</ion-col>
+            <ion-col size="3">{{ almacen.descripcion_almacen }}</ion-col>
+            <ion-col size="1">{{ almacen.capacidad }}</ion-col>
             <ion-col size="3" class="options">
               <ion-button (click)="openModalEditar(almacen)" fill="clear" color="primary" class="action-button">
                 <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
@@ -50,6 +52,7 @@
               <p><strong>Almacén:</strong> {{ almacen.nombre_almacen }}</p>
               <p><strong>Ubicación:</strong> {{ almacen.ubicacion_almacen }}</p>
               <p><strong>Descripción:</strong> {{ almacen.descripcion_almacen }}</p>
+              <p><strong>Capacidad:</strong> {{ almacen.capacidad }}</p>
               <div class="options">
                 <ion-button (click)="openModalEditar(almacen)" fill="clear" color="primary" class="action-button">
                   <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
@@ -130,6 +133,14 @@
         <ion-text color="danger" *ngIf="isFieldInvalid('descripcion_almacen')">
           La descripcion es requerida.
         </ion-text>
+        <!-- Capacidad -->
+          <ion-item>
+          <ion-label position="stacked">Capacidad</ion-label>
+          <ion-input   formControlName="capacidad"  (keypress)="onlyNumber($event)"></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="isFieldInvalid('capacidad')">
+          La capacidad es requerida.
+        </ion-text>
         <!-- Botones -->
         <div class="ion-text-center" style="margin-top: 20px">
           <ion-button color="primary" type="submit">Guardar</ion-button>
@@ -182,6 +193,14 @@
         </ion-item>
         <ion-text color="danger" *ngIf="isFieldInvalid('descripcion_almacen')">
           La descripcion es requerida.
+        </ion-text>
+        <!-- Capacidad -->
+        <ion-item>
+            <ion-label position="stacked">Capacidad</ion-label>
+            <ion-input   formControlName="capacidad"  (keypress)="onlyNumber($event)"></ion-input>
+          </ion-item>
+          <ion-text color="danger" *ngIf="isFieldInvalid('capacidad')">
+                  La capacidad es requerida.
         </ion-text>
         <!-- Botones -->
           <div class="ion-text-center" style="margin-top: 20px">
