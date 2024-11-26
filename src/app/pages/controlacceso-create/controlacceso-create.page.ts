@@ -22,6 +22,7 @@ export class ControlaccesoCreatePage implements OnInit {
   personas: any = [];
   almacenes: any = [];
   programaciones: any = [];
+  selectedProgra: any = null;
   vehiculos: any = [];
   urlobtenida: string = '';
   public selectedPageTitle: string = 'Registro Detalle';
@@ -31,16 +32,15 @@ export class ControlaccesoCreatePage implements OnInit {
   verbtnCapt: boolean = true;
 
 
-  vehiculoForm: FormGroup = this.fb.group({
+  detalleForm: FormGroup = this.fb.group({
     //Para un nuevo formulario Acceso
-    idalmacen: ['', Validators.required],
-    idprogramacion: [0],
+    idprogramacion: [''],
     idvehiculo: ['', Validators.required],
+    idalmacen: ['', Validators.required],
     idpersona: ['', Validators.required],
     observacion: [''],
-    fecha_entrada: [null, Validators.required],
-    fecha_salida: [null, Validators.required],
-
+    fechaEntrada: [null, Validators.required],
+    fechaSalida: [null, Validators.required],
     //Para un nuevo formulario Vehiculo
     placa: ['', Validators.required],
     marca: ['', Validators.required],
@@ -187,7 +187,8 @@ export class ControlaccesoCreatePage implements OnInit {
     this.verCamara = true;
     this.urlobtenida='';
     this.placaobtenida='';
-    this.vehiculoForm.patchValue({ placa: this.placaobtenida });
+    this.selectedProgra='';
+    this.detalleForm.patchValue({placa: ''});
     this.verbtnCapt=true;
     const video = this.videoElement.nativeElement;
     const stream = video.srcObject as MediaStream;
@@ -196,7 +197,23 @@ export class ControlaccesoCreatePage implements OnInit {
     tracks.forEach(track => track.stop());
     video.srcObject = null;
   }
-
+  LimpiarData(){
+    this.detalleForm.patchValue({
+      idpersona: '',
+      idalmacen: '',
+      idprogramacion: '',
+      idvehiculo: '',
+      placa: '',
+      marca: '',
+      modelo:'',
+      color: '',
+      // Llenamos datos de la programacion
+      fechaEntrada: '',
+      fechaSalida: '',
+      observacion: '',
+     });
+     this.habilitador(1);
+   };
   // Función para enviar la imagen al backend
   EnviarCaptura(): void {
     if (this.imagePath) {
@@ -209,7 +226,7 @@ export class ControlaccesoCreatePage implements OnInit {
           console.log("Se ha recibido correctamente", Res);
           this.placaobtenida = Res.plate;
           this.urlobtenida = Res.image_url;
-          this.vehiculoForm.patchValue({ placa: this.placaobtenida });
+          this.detalleForm.patchValue({ placa: this.placaobtenida });
         },
         (error) => {
           console.error("Error al enviar la captura", error);
@@ -234,13 +251,73 @@ export class ControlaccesoCreatePage implements OnInit {
   }
 
   isFieldInvalid(field: string): boolean {
-    const control = this.vehiculoForm.get(field);
+    const control = this.detalleForm.get(field);
     return control ? control.invalid && control.touched : false;
   }
 
-  CreateVehiculo(): void {
-    if (this.vehiculoForm.valid) {
-      this.vehiculoService.create(this.vehiculoForm.value).subscribe(
+  seleccionarprogra(event: any): void {
+    const programacion = event.detail.value;  // Obtenemos el objeto completo
+  
+    console.log('Programación seleccionada:', programacion);  // Verifica si se pasa correctamente el objeto
+  
+    // Capturar datos del vehiculo asimismo de la programacion
+    this.vehiculoService.getVehiculo(programacion.idvehiculo).subscribe(
+        (resp: any) => {
+          console.log('Datos del vehículo:', resp);  // Verifica los datos del vehículo
+          this.detalleForm.patchValue({ 
+            // Llenamos datos del vehiculo
+            idvehiculo: resp.idvehiculo,
+            placa: resp.placa,
+            marca: resp.marca,
+            modelo: resp.modelo,
+            color: resp.color,
+            // Llenamos datos de la programacion
+            fechaEntrada: programacion.fechaEntrada,
+            fechaSalida: programacion.fechaSalida,
+            observacion: programacion.observacion,
+          });
+        },
+        (error) => {
+          console.error('Error al obtener el vehículo', error);
+        }
+    );
+    this.habilitador(0);
+  }
+
+  habilitador(activa: number): void {
+    // Si 'activa' es 1, habilitamos los campos
+    if (activa === 1) {
+      this.detalleForm.controls['idvehiculo'].enable();
+      this.detalleForm.controls['placa'].enable();
+      this.detalleForm.controls['marca'].enable();
+      this.detalleForm.controls['modelo'].enable();
+      this.detalleForm.controls['color'].enable();
+      this.detalleForm.controls['fechaEntrada'].enable();
+      this.detalleForm.controls['fechaSalida'].enable();
+      this.detalleForm.controls['observacion'].enable();
+    }
+    // Si 'activa' es 0, deshabilitamos los campos
+    else if (activa === 0) {
+      this.detalleForm.controls['idvehiculo'].disable();
+      this.detalleForm.controls['placa'].disable();
+      this.detalleForm.controls['marca'].disable();
+      this.detalleForm.controls['modelo'].disable();
+      this.detalleForm.controls['color'].disable();
+      this.detalleForm.controls['fechaEntrada'].disable();
+      this.detalleForm.controls['fechaSalida'].disable();
+      this.detalleForm.controls['observacion'].disable();
+    }
+  }
+
+  CreateDetalle(): void {
+    if (this.detalleForm.valid) {
+
+
+
+
+
+      
+      this.vehiculoService.create(this.detalleForm.value).subscribe(
         (resp: any) => {
           console.log("Se ha guardado correctamente", resp);
           this.router.navigate(['/home/vehiculos']).then(() => {
@@ -254,6 +331,10 @@ export class ControlaccesoCreatePage implements OnInit {
     } else {
       console.error('Formulario inválido');
     }
+
+
+
+
   }
 
 

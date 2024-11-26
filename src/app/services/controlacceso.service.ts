@@ -10,7 +10,7 @@ export class ControlaccesoService {
 
   constructor(private http: HttpClient) { }
 
-  // Listar todos los
+  // Listar todos los detalles
   list(): Observable<any> {
     return this.http.get(`${this.apiUrl}/`);
   }
