@@ -49,6 +49,8 @@
           placeholder="Seleccione una opción en caso tenga una programación"
           [ngClass]="{'ion-invalid': isFieldInvalid('idprogramacion')}"
           (ionChange)="seleccionarprogra($event.detail.value)">
+           <!-- Opción predeterminada con valor 0 -->
+          <ion-select-option [value]="0" selected>Seleccione su programacion</ion-select-option>
           <ion-select-option *ngFor="let programacion of programaciones" [value]="programacion.idprogramacion">
             {{ programacion.marca }}/{{ programacion.placa }}
           </ion-select-option>

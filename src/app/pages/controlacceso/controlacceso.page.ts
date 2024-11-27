@@ -2,7 +2,7 @@ import { Component,HostListener, OnInit } from '@angular/core';
 import { ProgramacionService } from 'src/app/services/programacion.service';
 import { VehiculoService } from 'src/app/services/vehiculo.service';
 import { ControlaccesoService } from 'src/app/services/controlacceso.service';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, RadioControlValueAccessor } from '@angular/forms';
 import { AlmacenService } from 'src/app/services/almacen.service';
 import { Router } from '@angular/router';
 @Component({
@@ -122,7 +122,9 @@ export class ControlaccesoPage implements OnInit {
       }
     );
   }
+
   seleccionarprogra(idprogramacion: any): void {
+
     console.log('ID de programación seleccionado:', idprogramacion); // Debugging
     this.programacionService.getProgra(idprogramacion).subscribe(
         (resp: any) => {
@@ -152,8 +154,8 @@ export class ControlaccesoPage implements OnInit {
             console.error('Error al obtener el vehículo', error);
         }
     );
+  }
 
-}
   registrar(){
     this.router.navigate(['/home/controlacceso-create']);
   }
@@ -168,8 +170,8 @@ export class ControlaccesoPage implements OnInit {
   }
 
   closeModal(): void {
-    this.isModalOpenEliminar = false;
     this.isModalOpenEditar=false;
+    this.isModalOpenEliminar = false;
     this.selectedAcceso = null;
     this.detalleForm.patchValue({
       idpersona: '',
@@ -195,7 +197,6 @@ export class ControlaccesoPage implements OnInit {
       marca: '',
       modelo: '',
       color: '',
-      // Llenamos datos de la programacion
       fechaEntrada: '',
       fechaSalida: '',
       observacion: '',
@@ -223,14 +224,32 @@ export class ControlaccesoPage implements OnInit {
       color: acceso.color,
       fechaEntrada: acceso.fechaEntrada,
       fechaSalida:acceso.fechaSalida,
-      observacion: acceso.estado? '1' : '0', // Convertimos booleano a cadena
+      observacion: acceso.observacion, // Convertimos booleano a cadena
     });
   }
 
 
 
-  editarVehiculo() {
-   
+  editardetalle() {
+    if (this.detalleForm.valid) {
+      this.controlaccesoService.updateAcceso(this.selectedAcceso.idacceso, this.detalleForm.value).subscribe(
+        (resp: any) => {
+          const index = this.accesos.findIndex((clien: any) => clien.idacceso === this.selectedAcceso.idacceso);
+          if (index !== -1) {
+            this.accesos[index] = { ...this.accesos[index], ...this.detalleForm.value };
+          }
+          this.getaccesos();
+          this.closeModal();
+        },
+        (error) => {
+          console.error('Error al actualizar el acceso', error);
+        }
+      );
+    } else {
+      console.error('Formulario inválido');
+    }
+
+
   }
 
 }

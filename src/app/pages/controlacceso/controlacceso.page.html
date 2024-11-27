@@ -24,9 +24,9 @@
         <ng-container *ngIf="!isMobileView">
                   <ion-row class="table-header">
                     <ion-col size="1">N°</ion-col>
-                    <ion-col size="1">Codigo Programacion</ion-col>
+                    <ion-col size="1">Programacion</ion-col>
                     <ion-col size="2">Vehiculo</ion-col>
-                    <ion-col size="2">Persona</ion-col>
+                    <ion-col size="2">Transportista</ion-col>
                     <ion-col size="2">Almacen</ion-col>
                     <ion-col size="2">Capacidad</ion-col>
                     <ion-col size="2">Opciones</ion-col>
@@ -55,9 +55,9 @@
           <ion-row *ngFor="let acceso of accesos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row mobile-card">
             <div class="card-content">
               <p><strong>N°:</strong> {{ i + 1 + (p - 1) * itemsPerPage }}</p>
-              <p><strong>Codigo Programacion:</strong> {{ acceso.idprogramacion }}</p>
+              <p><strong>Programacion:</strong> {{ acceso.idprogramacion }}</p>
               <p><strong>Vehiculo:</strong> {{ acceso.marca }}-{{ acceso.placa }}</p>
-              <p><strong>Persona:</strong> {{ acceso.apellidos }}-{{ acceso.nombres }}</p>
+              <p><strong>Transportista:</strong> {{ acceso.apellidos }}-{{ acceso.nombres }}</p>
               <p><strong>Almacen:</strong> {{ acceso.nombre_almacen }}</p>
               <p><strong>Capacidad:</strong>{{ acceso.capacidad }}</p>
               <div class="options">
@@ -132,7 +132,7 @@
 
     <ion-header>
       <ion-toolbar>
-        <ion-title>Editar Cliente</ion-title>
+        <ion-title>Editar Detalle</ion-title>
         <ion-buttons slot="end">
           <ion-button
             (click)="closeModal()"
@@ -146,12 +146,12 @@
     </ion-header>
 
     <ion-content>
-      <form [formGroup]="detalleForm" (ngSubmit)="editarVehiculo()" style="padding: 16px;">
+      <form [formGroup]="detalleForm" (ngSubmit)="editardetalle()" style="padding: 16px;">
         <!-- Campo de entrada de datos del formulario acceso -->
           <ion-label position="stacked">Datos del Detalle</ion-label><br>
           
             <!-- Campo Programacion -->
-            <ion-item>
+            <ion-item >
               <ion-label position="stacked">Programacion</ion-label>
               <h6><ion-button [routerLink]="['/home/programaciones']" color="primary">¿Registrar programacion?</ion-button>
                 <ion-button (click)="LimpiarData()" color="primary">Limpiar Datos</ion-button></h6>
@@ -159,8 +159,9 @@
                 formControlName="idprogramacion"
                 placeholder="Seleccione una opción en caso tenga una programación"
                 [ngClass]="{'ion-invalid': isFieldInvalid('idprogramacion')}"
-                (ionChange)="seleccionarprogra($event.detail.value)">
-                <ion-select-option *ngFor="let programacion of programaciones" [value]="programacion.idprogramacion">
+                (ionChange)="seleccionarprogra($event.detail.value)" readonly>
+                <!-- Opciones dinámicas -->
+                <ion-select-option readonly *ngFor="let programacion of programaciones" [value]="programacion.idprogramacion">
                   {{ programacion.marca }}/{{ programacion.placa }}
                 </ion-select-option>
               </ion-select>
@@ -203,7 +204,7 @@
                     <ion-datetime
                       formControlName="fechaEntrada"
                       display-format="DD.MM.YYYY HH:mm"
-                      class="custom-datetime">
+                      class="custom-datetime" readonly>
                     </ion-datetime>
                   </ion-item>
                 </div>
@@ -212,10 +213,10 @@
                 <div class="datetime-container">
                   <ion-item id="fechsss">
                     <ion-label position="stacked" class="custom-label">Fecha Salida</ion-label>
-                    <ion-datetime
+                    <ion-datetime 
                       formControlName="fechaSalida"
                       display-format="DD.MM.YYYY HH:mm"
-                      class="custom-datetime">
+                      class="custom-datetime" readonly>
                     </ion-datetime>
                   </ion-item>
                 </div>
@@ -224,7 +225,7 @@
               <!-- Campo de entrada de datos del formulario vehiculo -->
             <ion-label position="stacked">Datos del Vehiculo</ion-label>
             <ion-item>
-              <ion-label position="stacked">Placa</ion-label>
+              <ion-label position="stacked" >Placa</ion-label>
               <ion-input formControlName="placa" readonly></ion-input>
             </ion-item>
             <ion-text color="danger" *ngIf="isFieldInvalid('placa')">
@@ -233,7 +234,7 @@
       
             <ion-item>
               <ion-label position="stacked">Marca</ion-label>
-              <ion-input formControlName="marca" ></ion-input>
+              <ion-input formControlName="marca" readonly></ion-input>
             </ion-item>
             <ion-text color="danger" *ngIf="isFieldInvalid('marca')">
               Campo requerido
@@ -241,7 +242,7 @@
       
             <ion-item>
               <ion-label position="stacked">Modelo</ion-label>
-              <ion-input formControlName="modelo" ></ion-input>
+              <ion-input formControlName="modelo" readonly ></ion-input>
             </ion-item>
             <ion-text color="danger" *ngIf="isFieldInvalid('modelo')">
               Campo requerido
@@ -249,11 +250,16 @@
       
             <ion-item>
               <ion-label position="stacked">Color</ion-label>
-              <ion-input formControlName="color" ></ion-input>
+              <ion-input formControlName="color" readonly ></ion-input>
             </ion-item>
             <ion-text color="danger" *ngIf="isFieldInvalid('color')">
               Campo requerido
             </ion-text>
+
+
+            <div class="ion-text-center" style="margin-top: 20px">
+              <ion-button color="primary" type="submit">Actualizar</ion-button>
+            </div>
       </form>
     </ion-content>
   </ng-template>

@@ -205,7 +205,6 @@ export class ControlaccesoCreatePage implements OnInit {
       marca: '',
       modelo: '',
       color: '',
-      // Llenamos datos de la programacion
       fechaEntrada: '',
       fechaSalida: '',
       observacion: '',
@@ -253,6 +252,7 @@ export class ControlaccesoCreatePage implements OnInit {
   }
 
   seleccionarprogra(idprogramacion: any): void {
+    if (idprogramacion!=0 || idprogramacion!=null) {
     console.log('ID de programación seleccionado:', idprogramacion); // Debugging
     this.programacionService.getProgra(idprogramacion).subscribe(
         (resp: any) => {
@@ -282,7 +282,9 @@ export class ControlaccesoCreatePage implements OnInit {
             console.error('Error al obtener el vehículo', error);
         }
     );
-
+  }else{
+    this.LimpiarData();
+  }
 }
 
 createdata(): void {
@@ -293,6 +295,11 @@ createdata(): void {
       (resp: any) => {
         console.log('Respuesta del backend:', resp);
         this.closeModal();
+        this.router.navigate(['/home/controlacceso']).then(() => {
+          // Una vez que llegues a la página, la recargas
+          window.location.reload();
+        });
+
       },
       (error) => {
         console.error('Error al registrar'+error.message);

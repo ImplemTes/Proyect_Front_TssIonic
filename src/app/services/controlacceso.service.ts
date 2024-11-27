@@ -28,8 +28,8 @@ export class ControlaccesoService {
   }
 
   // Actualizar
-  updateProgra(idprogra: number, progra: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${idprogra}`, progra);
+  updateAcceso(idacceso: number, form: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${idacceso}`, form);
   }
 
   // Eliminar
