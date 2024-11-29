@@ -8,21 +8,31 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div style="padding: 16px;">
-    <h1>Página de Inicio</h1> <!-- Contenido específico de la página -->
-    <p>Bienvenido a la página de inicio.</p>
-  </div>
+  <div class="fondo">
+    
+      <h1>Bienvenido a MAXFER</h1>
+      <p>Bienvenido a la página de inicio.</p>
+   
+    <div class="boton-container">
+      <ion-button expand="medium" (click)="abrirPDF()">Manual de Ayuda</ion-button>
+    </div>
+
+
+
+
+
 
     <!-- Botón de chat flotante -->
-  <div class="chat-float">
-    <a [routerLink]="['/home/chatbot']">
-      <img src="../../assets/icon/bot.png" alt="Chat" />
-    </a>
+    <div class="chat-float">
+      <a [routerLink]="['/home/chatbot']">
+        <img src="../../assets/icon/bot.png" alt="Chat" />
+      </a>
+    </div>
   </div>
 </ion-content>
 <!-- Footer -->
-<ion-footer >
-  <ion-toolbar >
+<ion-footer>
+  <ion-toolbar>
     <ion-title>© 2024 Mi Aplicación</ion-title>
   </ion-toolbar>
 </ion-footer>

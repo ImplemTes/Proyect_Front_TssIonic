@@ -9,10 +9,14 @@ import { PageTitleService } from '../shared/page-title.service'; // Asegúrate d
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  public selectedPageTitle: string = 'Inicio'; // Inicialización aquí
+  public selectedPageTitle: string = 'Inicio'; 
 
   constructor(private pageTitleService: PageTitleService) {
-    // Aquí puedes configurar cualquier lógica inicial si es necesario
+    
   }
-
+  abrirPDF() {
+    // Ruta del archivo PDF
+    const rutaPDF = 'assets/docs/Manual.pdf';
+    window.open(rutaPDF, '_blank');
+  }
 }
