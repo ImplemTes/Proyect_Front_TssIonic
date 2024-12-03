@@ -9,19 +9,58 @@
 
 <ion-content [fullscreen]="true">
   <div class="fondo">
-    
-      <h1>Bienvenido a MAXFER</h1>
-      <p>Bienvenido a la página de inicio.</p>
-   
+
+    <h1>Bienvenido a MAXFER</h1>
+    <p>Bienvenido a la página de inicio.</p>
+
     <div class="boton-container">
       <ion-button expand="medium" (click)="abrirPDF()">Manual de Ayuda</ion-button>
     </div>
 
-
-
-
-
-
+    <form [formGroup]="filtroForm" (ngSubmit)="actualizargrafico()" style="padding: 16px;">
+      <ion-text class="header-text">Ver Actividad de los almacenes</ion-text>
+      <ion-item>
+        <ion-label>Fecha de Inicio</ion-label><br>
+        <ion-input type="date" formControlName="fechaInicio" placeholder="Fecha de Inicio"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="isFieldInvalid('fechaInicio')">
+        Falta la fecha inicio
+      </ion-text>
+      <ion-item>
+        <ion-label>Fecha de Fin</ion-label><br>
+        <ion-input type="date" formControlName="fechaFin" placeholder="Fecha de Fin"></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="isFieldInvalid('fechaFin')">
+        Falta la fecha fin
+      </ion-text>
+      <!-- Botones -->
+      <div class="ion-text-center" style="margin-top: 20px">
+        <ion-button color="primary" type="submit">Guardar</ion-button>
+      </div>
+    </form>
+    <!-- Contenedor con ID único -->
+    <div id="resultado-accesos">
+      <!-- Gráfico -->
+      <canvas #barCanvas></canvas>
+    
+      <!-- Tabla -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Almacén</th>
+              <th>Vehículos Accedidos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of listaAlmacenes">
+              <td>{{ item.descripcion }}</td>
+              <td>{{ item.cantidad }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <!-- Botón de chat flotante -->
     <div class="chat-float">
       <a [routerLink]="['/home/chatbot']">

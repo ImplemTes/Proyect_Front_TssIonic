@@ -76,9 +76,6 @@ ion-menu[side="start"].ion-menu-open ~ ion-content {
   height: 50px; 
 }
 
-
-
-
 .fondo {
   background: url('/assets/img/fondo.jpg') no-repeat center center/cover;
   height: 100%;
@@ -98,4 +95,82 @@ ion-menu[side="start"].ion-menu-open ~ ion-content {
   display: flex;
   justify-content: flex-end; /* Mueve el botón al extremo derecho */
   margin-right: 10px; /* Separa el botón del borde derecho */
+}
+
+
+
+
+//Estilos para el viltrado y la muestra del grafico
+#resultado-accesos {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos horizontalmente */
+  justify-content: center;
+  background-color: #f7f9fc; /* Fondo claro */
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para resaltar */
+}
+
+/* Gráfico */
+#resultado-accesos canvas {
+  max-width: 400px; /* Ancho máximo del gráfico */
+  max-height: 250px; /* Altura máxima */
+  width: 100%; /* Ajusta el ancho automáticamente */
+  height: auto; /* Mantén proporción */
+  margin: 16px 0; /* Separación entre el gráfico y la tabla */
+}
+
+/* Contenedor de la tabla */
+#resultado-accesos .table-container {
+  width: 100%;
+  max-width: 600px; /* Ancho máximo de la tabla */
+  margin-top: 16px;
+  overflow-x: auto; /* Scroll horizontal en caso de contenido desbordado */
+}
+
+/* Tabla */
+#resultado-accesos table {
+  width: 100%;
+  border-collapse: collapse; /* Evita espacio entre celdas */
+  text-align: center; /* Centra el contenido */
+  color: black; /* Contenedor
+  background: #fff; /* Fondo blanco */
+  border: 1px solid #ddd; /* Bordes suaves */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ligera sombra */
+}
+
+#resultado-accesos table thead {
+  background-color: #007bff; /* Azul primario */
+  color: white; /* Texto blanco */
+}
+
+#resultado-accesos table th,
+#resultado-accesos table td {
+  padding: 8px 12px; /* Espaciado interno */
+  border: 1px solid #ddd; /* Bordes entre celdas */
+  font-size: 14px; /* Tamaño de texto más pequeño */
+}
+
+#resultado-accesos table tbody tr:nth-child(odd) {
+  background-color: #f1f1f1; /* Fondo gris claro para filas impares */
+}
+
+/* Media Query para pantallas pequeñas */
+@media (max-width: 500px) {
+  #resultado-accesos {
+    padding: 8px; /* Reduce el padding */
+  }
+
+  #resultado-accesos canvas {
+    max-width: 300px; /* Reduce el tamaño del gráfico */
+    max-height: 200px; /* Reduce la altura */
+  }
+
+  #resultado-accesos table th,
+  #resultado-accesos table td {
+    font-size: 12px; /* Reduce el tamaño del texto */
+    padding: 6px 8px; /* Reduce el espaciado interno */
+  }
 }

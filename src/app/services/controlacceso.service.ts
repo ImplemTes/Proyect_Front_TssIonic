@@ -36,5 +36,9 @@ export class ControlaccesoService {
   deletAcces(idprogra: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${idprogra}`);
   }
+  ObtenerDatos(filtro: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/cargardata/`, filtro);
+
+  }
 }
 
