@@ -1,0 +1,98 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start" style="color: white">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Informes</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <div class="vehiculos-lista" style="padding: 16px">
+    <br><br>
+    <form [formGroup]="filtroForm" (ngSubmit)="filtrarDatos()" style="padding: 16px;">
+      <ion-text class="header-text">Buscar Detalle</ion-text>
+     <!-- Contenedor para los filtros --> 
+      <ion-item>
+        <ion-label position="stacked">Almacen</ion-label>
+        <ion-select formControlName="almacen" placeholder="Seleccione un almacen">
+          <ion-select-option *ngFor="let almacene of almacenes" [value]="almacene.nombre_almacen">
+            {{ almacene.nombre_almacen }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Fecha de Inicio</ion-label><br>
+        <ion-input  type="date"   formControlName="fechaInicio" displayFormat="YYYY-MM-DD HH:mm"placeholder="Fecha de Inicio"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Fecha de Fin</ion-label><br>
+        <ion-input  type="date"     formControlName="fechaFin" displayFormat="YYYY-MM-DD HH:mm" placeholder="Fecha de Fin"></ion-input>
+      </ion-item>
+
+      <div class="ion-text-center" style="margin-top: 20px">
+        <ion-button color="primary" type="submit">Filtrar</ion-button>
+        <ion-button color="secondary" (click)="limpiarFiltros()" type="button">Limpiar</ion-button>
+        <ion-button color="danger" (click)="generarpdf()" type="button">Generar pdf</ion-button>
+      </div>
+    </form>
+ 
+    <br><br>
+    <!-- Título de la sección -->
+    <ion-text class="header-text">Control de acceso vehicular a los almacenes</ion-text><br>
+    <!-- Contenedor para los vehiculos -->
+    <ng-container *ngIf="accesos.length > 0; else noAccesos">
+      <ion-grid class="vehiculos-grid">
+                <!-- Diseño de Tabla para Pantallas Grandes -->
+        <ng-container *ngIf="!isMobileView">
+                  <ion-row class="table-header">
+                    <ion-col size="1">N°</ion-col>
+                    <ion-col size="1">Programacion</ion-col>
+                    <ion-col size="2">Vehiculo</ion-col>
+                    <ion-col size="2">Transportista</ion-col>
+                    <ion-col size="2">Entrada</ion-col>    <!-- 2024-11-18T09:38:00 -->
+                    <ion-col size="2">Salida</ion-col>   <!-- 2024-11-27T10:40:00 -->
+                    <ion-col size="1">Almacen</ion-col>
+                    <ion-col size="1">Capacidad</ion-col>
+                  </ion-row>
+                  <ion-row *ngFor="let acceso of accesos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row">
+                    <ion-col size="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
+                    <ion-col size="1">{{ acceso.idprogramacion }}</ion-col>
+                    <ion-col size="2">{{ acceso.marca }}-{{ acceso.placa }}</ion-col>
+                    <ion-col size="2">{{ acceso.apellidos }}-{{ acceso.nombres }}</ion-col>
+                    <ion-col size="2">{{ acceso.fechaEntrada }}</ion-col>    <!-- 2024-11-18T09:38:00 -->
+                    <ion-col size="2">{{ acceso.fechaSalida }}</ion-col>      <!-- 2024-11-27T10:40:00 -->
+                    <ion-col size="1">{{ acceso.nombre_almacen }}</ion-col>
+                    <ion-col size="1">{{ acceso.capacidad }}</ion-col>
+                  </ion-row>
+        </ng-container>
+
+        <!-- Diseño de Tarjeta para Pantallas Pequeñas -->
+        <ng-container *ngIf="isMobileView">
+          <ion-row *ngFor="let acceso of accesos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row mobile-card">
+            <div class="card-content">
+              <p><strong>N°:</strong> {{ i + 1 + (p - 1) * itemsPerPage }}</p>
+              <p><strong>Programacion:</strong> {{ acceso.idprogramacion }}</p>
+              <p><strong>Vehiculo:</strong> {{ acceso.marca }}-{{ acceso.placa }}</p>
+              <p><strong>Transportista:</strong> {{ acceso.apellidos }}-{{ acceso.nombres }}</p>
+              <p><strong>Entrada:</strong> {{ acceso.fechaEntrada }}</p>
+              <p><strong>Salida:</strong> {{ acceso.fechaSalida }}</p>
+              <p><strong>Almacen:</strong> {{ acceso.nombre_almacen }}</p>
+              <p><strong>Capacidad:</strong>{{ acceso.capacidad }}</p>
+            </div>
+          </ion-row>
+        </ng-container>
+      </ion-grid>
+        <!-- Paginador -->
+        <div class="paginador-container">
+              <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+        </div>
+    </ng-container>
+    <!-- Mensaje  -->
+    <ng-template #noAccesos>
+      <ion-label class="no-data-message">No se encontraron detalles.</ion-label>
+    </ng-template>
+  </div>
+
+</ion-content>

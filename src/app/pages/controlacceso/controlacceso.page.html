@@ -27,8 +27,10 @@
                     <ion-col size="1">Programacion</ion-col>
                     <ion-col size="2">Vehiculo</ion-col>
                     <ion-col size="2">Transportista</ion-col>
-                    <ion-col size="2">Almacen</ion-col>
-                    <ion-col size="2">Capacidad</ion-col>
+                    <ion-col size="1">H. Entrada</ion-col>
+                    <ion-col size="1">H. Salida</ion-col>
+                    <ion-col size="1">Almacen</ion-col>
+                    <ion-col size="1">Capacidad</ion-col>
                     <ion-col size="2">Opciones</ion-col>
                   </ion-row>
                   <ion-row *ngFor="let acceso of accesos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row">
@@ -36,8 +38,10 @@
                     <ion-col size="1">{{ acceso.idprogramacion }}</ion-col>
                     <ion-col size="2">{{ acceso.marca }}-{{ acceso.placa }}</ion-col>
                     <ion-col size="2">{{ acceso.apellidos }}-{{ acceso.nombres }}</ion-col>
-                    <ion-col size="2">{{ acceso.nombre_almacen }}</ion-col>
-                    <ion-col size="2">{{ acceso.capacidad }}</ion-col>
+                    <ion-col size="1">{{ acceso.fechaEntrada }}</ion-col>
+                    <ion-col size="1">{{ acceso.fechaSalida }}</ion-col>
+                    <ion-col size="1">{{ acceso.nombre_almacen }}</ion-col>
+                    <ion-col size="1">{{ acceso.capacidad }}</ion-col>
                     <ion-col size="2" class="options">
 
                       <ion-button (click)="openModalEditar(acceso)" fill="clear" color="primary" class="action-button">
@@ -58,6 +62,8 @@
               <p><strong>Programacion:</strong> {{ acceso.idprogramacion }}</p>
               <p><strong>Vehiculo:</strong> {{ acceso.marca }}-{{ acceso.placa }}</p>
               <p><strong>Transportista:</strong> {{ acceso.apellidos }}-{{ acceso.nombres }}</p>
+              <p><strong>H. Entrada:</strong> {{ acceso.fechaEntrada }}</p>
+              <p><strong>H. Salida:</strong> {{ acceso.fechaSalida }}</p>
               <p><strong>Almacen:</strong> {{ acceso.nombre_almacen }}</p>
               <p><strong>Capacidad:</strong>{{ acceso.capacidad }}</p>
               <div class="options">

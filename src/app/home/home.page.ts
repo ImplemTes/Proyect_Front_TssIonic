@@ -1,18 +1,20 @@
 import { Component } from '@angular/core';
 import { AppComponent } from '../app.component'; // Ajusta la ruta según tu estructura de carpetas
 import { PageTitleService } from '../shared/page-title.service'; // Asegúrate de importar el servicio
-
+import { Chart } from 'chart.js/auto';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
+
 export class HomePage {
   public selectedPageTitle: string = 'Inicio'; 
 
-  constructor(private pageTitleService: PageTitleService) {
-    
+  constructor(private pageTitleService: PageTitleService
+
+  ) {  
   }
   abrirPDF() {
     // Ruta del archivo PDF

@@ -68,7 +68,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/controlacceso-create/controlacceso-create.module').then( m => m.ControlaccesoCreatePageModule)
   },
 
-
+  {
+    path: 'home/informes',
+    loadChildren: () => import('./pages/informes/informes.module').then( m => m.InformesPageModule)
+  },
   /*
   {
     path: 'home/ajustes',
@@ -94,6 +97,7 @@ const routes: Routes = [
     path: 'controlacceso-create',
     loadChildren: () => import('./pages/controlacceso-create/controlacceso-create.module').then( m => m.ControlaccesoCreatePageModule)
   },
+
 
 ];
 
