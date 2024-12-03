@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { InformesPageRoutingModule } from './informes-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { InformesPage } from './informes.page';
-
 @NgModule({
   imports: [
     CommonModule,

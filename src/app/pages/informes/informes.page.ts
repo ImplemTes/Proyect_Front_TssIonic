@@ -5,17 +5,22 @@ import { ControlaccesoService } from 'src/app/services/controlacceso.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { AlmacenService } from 'src/app/services/almacen.service';
 import { Router } from '@angular/router';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
+import { AccesoModelo } from 'src/app/models/acceso.model';
 @Component({
   selector: 'app-informes',
   templateUrl: './informes.page.html',
   styleUrls: ['./informes.page.scss'],
 })
+
 export class InformesPage implements OnInit {
   isModalOpen: boolean = false;
   accesos: any = [];
   programaciones: any = [];
   selectedProgra: any = [];
   personas: any = [];
+  accesosModelo: AccesoModelo[] = [];
   almacenes: any = [];
   vehiculos: any = [];
   filtroForm: FormGroup;
@@ -108,6 +113,7 @@ export class InformesPage implements OnInit {
     this.controlaccesoService.list().subscribe(
       (resp: any) => {
         this.accesos = resp;
+        this.accesosModelo = this.accesos;
       },
       (error) => {
         console.error('Error al mostrar los detalles', error);
@@ -115,40 +121,32 @@ export class InformesPage implements OnInit {
     );
   }
 
-  filtrarDatos() {
-    const fechaInicio = this.filtroForm.value.fechaInicio;
-    const fechaFin = this.filtroForm.value.fechaFin;
-    const almacenSeleccionado = this.filtroForm.value.almacen;
-
-    // Validar que al menos una opción esté seleccionada
-    if (!fechaInicio && !fechaFin && !almacenSeleccionado) {
-      console.warn("Debe seleccionar al menos un criterio para filtrar.");
-      return;
-    }
-
-    // Filtrar registros
-    this.accesos = this.accesos.filter((acceso: any) => {
-      // Convertir fechaEntrada a una fecha sin tiempo para comparar
-      const fechaEntrada = new Date(acceso.fechaEntrada).setHours(0, 0, 0, 0);
-      const inicio = fechaInicio ? new Date(fechaInicio).setHours(0, 0, 0, 0) : null;
-      const fin = fechaFin ? new Date(fechaFin).setHours(23, 59, 59, 999) : null; // Incluye todo el día
-
-      // Filtrar por rango de fechas
-      const enRangoFecha =
-        (!inicio || fechaEntrada >= inicio) &&
-        (!fin || fechaEntrada <= fin);
-
-      // Filtrar por almacén
-      const coincideAlmacen = almacenSeleccionado
-        ? acceso.nombre_almacen === almacenSeleccionado
-        : true;
-
-      // Retornar true si cumple con los criterios
-      return enRangoFecha && coincideAlmacen;
-    });
+  filtrarDatos(): void {
+    const filtros = this.filtroForm.value;
+    this.controlaccesoService.list().subscribe(
+      (resp: any) => {
+        this.accesos = resp.filter((acceso: any) => {
+          const fechaInicio = filtros.fechaInicio ? new Date(filtros.fechaInicio) : null;
+          const fechaFin = filtros.fechaFin ? new Date(filtros.fechaFin) : null;
+          const fechaEntrada = new Date(acceso.fechaEntrada);
+  
+          const cumpleAlmacen = filtros.almacen ? acceso.nombre_almacen.includes(filtros.almacen) : true;
+          const cumpleFechaInicio = fechaInicio ? fechaEntrada >= fechaInicio : true;
+          const cumpleFechaFin = fechaFin ? fechaEntrada <= fechaFin : true;
+  
+          return cumpleAlmacen && cumpleFechaInicio && cumpleFechaFin;
+        });
+              // Asignar los datos filtrados a accesosModelo
+        this.accesosModelo = this.accesos;  // Asignar a accesosModelo si es lo que usas para generar el PDF
+        console.log('Datos después del filtro:', this.accesos);  // Para depuración
+      },
+      (error) => {
+        console.error('Error al mostrar los detalles filtrados', error);
+      }
+    );
   }
-
-  limpiarFiltros() {
+  
+  limpiarFiltros(): void  {
     this.filtroForm.patchValue({
       almacen: '',
       fechaInicio: '',
@@ -156,8 +154,51 @@ export class InformesPage implements OnInit {
     });
     this.getaccesos(); // Recargar todos los accesos originales
   }
-  generarpdf(){
 
-    
+  // Método para generar el PDF
+
+  generarPdf() {
+    const filtros = this.filtroForm.value;
+    console.log('Filtros aplicados:', filtros);
+  
+    const accesosFiltrados = this.accesosModelo;
+  
+    const doc = new jsPDF();
+  
+    // Encabezado del PDF
+    doc.setFontSize(16);
+    doc.text('Informe de Acceso Vehicular a los Almacenes', 10, 10);
+    doc.setFontSize(12);
+    doc.text(`Fecha de generación: ${new Date().toLocaleString()}`, 10, 20);
+  
+    let currentY = 30; // Posición inicial Y
+  
+    // Imprimir los datos
+    accesosFiltrados.forEach((acceso: any, index: number) => {
+      if (currentY > 270) { // Controlar el salto de página si el contenido excede el espacio
+        doc.addPage();
+        currentY = 20;
+      }
+  
+      // Imprimir cada registro con formato
+      doc.setFontSize(10);
+      doc.text(`N°: ${index + 1}`, 10, currentY);
+      currentY += 6;
+      doc.text(`Almacén: ${acceso.nombre_almacen}`, 10, currentY);
+      currentY += 6;
+      doc.text(`Ubicación: ${acceso.ubicacion_almacen || 'No especificada'}`, 10, currentY);
+      currentY += 6;
+      doc.text(`Transportista: ${acceso.apellidos  || 'Sin descripción'}`, 10, currentY);
+      currentY += 6;
+      doc.text(`Auto Placa: ${ acceso.placa || 'N/A'}`, 10, currentY);
+      currentY += 6;
+      doc.text(`F. Entrada: ${acceso.fechaEntrada || 'N/A'}`, 10, currentY);
+      currentY += 6;
+      doc.text(`F. Salida: ${acceso.fechaSalida || 'N/A'}`, 10, currentY);
+      currentY += 10; // Espaciado adicional entre registros
+    });
+  
+    // Guardar el archivo
+    doc.save('Informe_Acceso_Vehicular.pdf');
   }
 }
