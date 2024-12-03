@@ -24,6 +24,8 @@ export class ControlaccesoCreatePage implements OnInit {
   selectedProgra: any = [];
   vehiculos: any = [];
   urlobtenida: string = '';
+  fechaInicioRegistro: string = '';
+  fechaAsignada: boolean = false; // Controla si la fecha ya fue asignada
   public selectedPageTitle: string = 'Registro Detalle';
   detalleForm: FormGroup;
   imagePath: string | null | undefined = null;
@@ -38,7 +40,7 @@ export class ControlaccesoCreatePage implements OnInit {
     private programacionService: ProgramacionService,
     private fb: FormBuilder,
     private router: Router
-  ) { 
+  ) {
     this.detalleForm = this.fb.group({
       //Para un nuevo formulario Acceso
       idprogramacion: [0],
@@ -51,6 +53,7 @@ export class ControlaccesoCreatePage implements OnInit {
       marca: ['', Validators.required],
       modelo: ['', Validators.required],
       color: ['', Validators.required],
+      fecha: [this.fechaInicioRegistro],
     });
   }
 
@@ -61,9 +64,27 @@ export class ControlaccesoCreatePage implements OnInit {
     this.listaralmacenes();
     this.listarprogramaciones();
     this.listarvehiculos();
-
+    // Solo asigna la fecha si no ha sido asignada antes
+    if (!this.fechaAsignada) {
+      this.fechaInicioRegistro = this.getFechaActual();
+      this.fechaAsignada = true; // Marca como asignada
+      // Asignamos la fecha al campo 'fecha' del formulario
+      this.detalleForm.patchValue({
+        fecha: this.fechaInicioRegistro // Esto establece la fecha en el formulario
+      });
+    }
   }
+  getFechaActual(): string {
+    const ahora = new Date();
+    const year = ahora.getFullYear();
+    const month = String(ahora.getMonth() + 1).padStart(2, '0'); // Meses van de 0-11
+    const day = String(ahora.getDate()).padStart(2, '0');
+    const hours = String(ahora.getHours()).padStart(2, '0');
+    const minutes = String(ahora.getMinutes()).padStart(2, '0');
+    const seconds = String(ahora.getSeconds()).padStart(2, '0');
 
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
 
   listarpersonas(): void {
     this.controlaccesoService.listPersonas().subscribe(
@@ -100,6 +121,7 @@ export class ControlaccesoCreatePage implements OnInit {
     this.programacionService.list().subscribe(
       (resp: any) => {
         this.programaciones = resp;
+
       },
       (error) => {
         console.error('Error al mostrar las programaciones', error);
@@ -208,6 +230,7 @@ export class ControlaccesoCreatePage implements OnInit {
       fechaEntrada: '',
       fechaSalida: '',
       observacion: '',
+      
     });
   };
   // Función para enviar la imagen al backend
@@ -252,62 +275,64 @@ export class ControlaccesoCreatePage implements OnInit {
   }
 
   seleccionarprogra(idprogramacion: any): void {
-    if (idprogramacion!=0 || idprogramacion!=null) {
-    console.log('ID de programación seleccionado:', idprogramacion); // Debugging
-    this.programacionService.getProgra(idprogramacion).subscribe(
+    if (idprogramacion != 0 || idprogramacion != null) {
+      console.log('ID de programación seleccionado:', idprogramacion); // Debugging
+      this.programacionService.getProgra(idprogramacion).subscribe(
         (resp: any) => {
-            // Capturar datos del vehiculo asimismo de la programacion
-            this.vehiculoService.getVehiculo(resp.idvehiculo).subscribe(
-                (resp2: any) => {
-                    console.log('Datos del vehículo:', resp2.idvehiculo);  // Verifica los datos del vehículo
-                    this.detalleForm.patchValue({
-                        // Llenamos datos del vehiculo
-                        placa: resp2.placa,
-                        marca: resp2.marca,
-                        modelo: resp2.modelo,
-                        color: resp2.color,
-                        // Llenamos datos de la programacion
-                        fechaEntrada: resp.fechaEntrada,
-                        fechaSalida: resp.fechaSalida,
-                        observacion: resp.observacion,
-                    });
-                    console.log('Formulario después de patchValue:', this.detalleForm.value);
-                },
-                (error) => {
-                    console.error('Error al obtener el vehículo', error);
-                }
-            );
+          // Capturar datos del vehiculo asimismo de la programacion
+          this.vehiculoService.getVehiculo(resp.idvehiculo).subscribe(
+            (resp2: any) => {
+              console.log('Datos del vehículo:', resp2.idvehiculo);  // Verifica los datos del vehículo
+              this.detalleForm.patchValue({
+                // Llenamos datos del vehiculo
+                placa: resp2.placa,
+                marca: resp2.marca,
+                modelo: resp2.modelo,
+                color: resp2.color,
+                // Llenamos datos de la programacion
+                fechaEntrada: resp.fechaEntrada,
+                fechaSalida: resp.fechaSalida,
+                observacion: resp.observacion,
+              });
+              console.log('Formulario después de patchValue:', this.detalleForm.value);
+            },
+            (error) => {
+              console.error('Error al obtener el vehículo', error);
+            }
+          );
         },
         (error) => {
-            console.error('Error al obtener el vehículo', error);
+          console.error('Error al obtener el vehículo', error);
         }
-    );
-  }else{
-    this.LimpiarData();
+      );
+    } else {
+      this.LimpiarData();
+    }
   }
-}
 
-createdata(): void {
+  createdata(): void {
 
-  if (this.detalleForm.valid) {
-    console.log('Datos enviados al backend:', this.detalleForm.value); // Imprime los datos enviados
-    this.controlaccesoService.create(this.detalleForm.value).subscribe(
-      (resp: any) => {
-        console.log('Respuesta del backend:', resp);
-        this.closeModal();
-        this.router.navigate(['/home/controlacceso']).then(() => {
-          // Una vez que llegues a la página, la recargas
-          window.location.reload();
-        });
+    if (this.detalleForm.valid) {
+      //const fechaValor = this.detalleForm.get('fecha')?.value;
+     // console.log('Valor de la fecha:', fechaValor);
+     // console.log('Datos enviados al backend:', this.detalleForm.value); // Imprime los datos enviados
+      this.controlaccesoService.create(this.detalleForm.value).subscribe(
+        (resp: any) => {
+          console.log('Respuesta del backend:', resp);
+          this.closeModal();
+          this.router.navigate(['/home/controlacceso']).then(() => {
+          //Una vez que llegues a la página, la recargas
+           window.location.reload();
+          });
 
-      },
-      (error) => {
-        console.error('Error al registrar'+error.message);
-      }
-    );
-  } else {
-    console.error('Formulario inválido');
+        },
+        (error) => {
+          console.error('Error al registrar' + error.message);
+        }
+      );
+    } else {
+      console.error('Formulario inválido');
+    }
   }
-}
 
 }

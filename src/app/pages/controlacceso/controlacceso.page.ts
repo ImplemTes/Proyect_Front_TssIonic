@@ -19,6 +19,8 @@ export class ControlaccesoPage implements OnInit {
   personas: any = [];
   almacenes: any = [];
   vehiculos: any = [];
+  fechaInicioRegistro: string = '';
+  fechaAsignada: boolean = false; // Controla si la fecha ya fue asignada
   detalleForm: FormGroup;
   selectedAcceso: any = null;
   isModalOpenEliminar: boolean = false;
@@ -47,6 +49,7 @@ export class ControlaccesoPage implements OnInit {
       marca: ['', Validators.required],
       modelo: ['', Validators.required],
       color: ['', Validators.required],
+      fecha: [this.fechaInicioRegistro],
     });
    }
 
@@ -69,7 +72,17 @@ export class ControlaccesoPage implements OnInit {
       }
     );
   }
+  getFechaActual(): string {
+    const ahora = new Date();
+    const year = ahora.getFullYear();
+    const month = String(ahora.getMonth() + 1).padStart(2, '0'); // Meses van de 0-11
+    const day = String(ahora.getDate()).padStart(2, '0');
+    const hours = String(ahora.getHours()).padStart(2, '0');
+    const minutes = String(ahora.getMinutes()).padStart(2, '0');
+    const seconds = String(ahora.getSeconds()).padStart(2, '0');
 
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
   listaralmacenes(): void {
     this.almacenService.list().subscribe(
       (resp: any) => {
@@ -181,6 +194,7 @@ export class ControlaccesoPage implements OnInit {
       marca: '',
       modelo: '',
       color: '',
+      fecha:'',
       // Llenamos datos de la programacion
       fechaEntrada: '',
       fechaSalida: '',
@@ -197,6 +211,7 @@ export class ControlaccesoPage implements OnInit {
       marca: '',
       modelo: '',
       color: '',
+      fecha:'',
       fechaEntrada: '',
       fechaSalida: '',
       observacion: '',
@@ -225,6 +240,7 @@ export class ControlaccesoPage implements OnInit {
       fechaEntrada: acceso.fechaEntrada,
       fechaSalida:acceso.fechaSalida,
       observacion: acceso.observacion, // Convertimos booleano a cadena
+      fecha: this.fechaInicioRegistro,
     });
   }
 
@@ -248,8 +264,6 @@ export class ControlaccesoPage implements OnInit {
     } else {
       console.error('Formulario inválido');
     }
-
-
   }
 
 }
