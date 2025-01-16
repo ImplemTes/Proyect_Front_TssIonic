@@ -195,8 +195,6 @@ export class InformesPage implements OnInit {
             }
           );
         }
-
-
       },
       (error) => {
         console.error('Error al mostrar los detalles filtrados', error);
