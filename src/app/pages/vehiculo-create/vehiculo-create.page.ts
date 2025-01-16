@@ -13,12 +13,14 @@ import { Capacitor } from '@capacitor/core';
 export class VehiculoCreatePage implements OnInit {
 
   public selectedPageTitle: string = 'Registro Vehiculo';
-
+  fechaInicioRegistro: string = '';
+  fechaAsignada: boolean = false; // Controla si la fecha ya fue asignada
   vehiculoForm: FormGroup = this.fb.group({
     placa: ['', Validators.required],
     marca: ['', Validators.required],
     modelo: ['', Validators.required],
     color: ['', Validators.required],
+    fecha: [this.fechaInicioRegistro],
   });
   constructor(
     private vehiculoService: VehiculoService,
@@ -27,7 +29,26 @@ export class VehiculoCreatePage implements OnInit {
   ) { }
 
   ngOnInit() {
+    // Solo asigna la fecha si no ha sido asignada antes
+    if (!this.fechaAsignada) {
+      this.fechaInicioRegistro = this.getFechaActual();
+      this.fechaAsignada = true; // Marca como asignada
+      // Asignamos la fecha al campo 'fecha' del formulario
+      this.vehiculoForm.patchValue({
+        fecha: this.fechaInicioRegistro // Esto establece la fecha en el formulario
+      });
+    }
+  }
+  getFechaActual(): string {
+    const ahora = new Date();
+    const year = ahora.getFullYear();
+    const month = String(ahora.getMonth() + 1).padStart(2, '0'); // Meses van de 0-11
+    const day = String(ahora.getDate()).padStart(2, '0');
+    const hours = String(ahora.getHours()).padStart(2, '0');
+    const minutes = String(ahora.getMinutes()).padStart(2, '0');
+    const seconds = String(ahora.getSeconds()).padStart(2, '0');
 
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
 
   CreateVehiculo(): void {

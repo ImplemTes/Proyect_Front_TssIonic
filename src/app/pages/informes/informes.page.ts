@@ -24,6 +24,7 @@ export class InformesPage implements OnInit {
   almacenes: any = [];
   vehiculos: any = [];
   filtroForm: FormGroup;
+  capdats: FormGroup;
   selectedAcceso: any = null;
   isModalOpenEliminar: boolean = false;
   isMobileView: boolean = false;
@@ -31,6 +32,10 @@ export class InformesPage implements OnInit {
   // Paginación
   p: number = 1; // Página actual
   itemsPerPage: number = 6; // Elementos por página
+
+  //PARA FECHAS:
+  fechaInicioRegistro: string = '';
+  fechaAsignada: boolean = false; // Controla si la fecha ya fue asignada
   constructor(
     private controlaccesoService: ControlaccesoService,
     private vehiculoService: VehiculoService,
@@ -45,6 +50,11 @@ export class InformesPage implements OnInit {
       fechaInicio: [''],
       fechaFin: [''],
     });
+
+    this.capdats= this.fb.group({
+      tarea: ['nada'],
+      fecha: [this.fechaInicioRegistro],
+    });
   }
 
   ngOnInit() {
@@ -54,6 +64,15 @@ export class InformesPage implements OnInit {
     this.listarvehiculos();
     this.listarprogramaciones();
     this.checkScreenSize();
+    // Solo asigna la fecha si no ha sido asignada antes
+        if (!this.fechaAsignada) {
+          this.fechaInicioRegistro = this.getFechaActual();
+          this.fechaAsignada = true; // Marca como asignada
+          // Asignamos la fecha al campo 'fecha' del formulario
+          this.capdats.patchValue({
+            fecha: this.fechaInicioRegistro
+          });
+        }
   }
 
   // Detectar cambios en el tamaño de pantalla
@@ -121,6 +140,18 @@ export class InformesPage implements OnInit {
     );
   }
 
+  getFechaActual(): string {
+    const ahora = new Date();
+    const year = ahora.getFullYear();
+    const month = String(ahora.getMonth() + 1).padStart(2, '0'); // Meses van de 0-11
+    const day = String(ahora.getDate()).padStart(2, '0');
+    const hours = String(ahora.getHours()).padStart(2, '0');
+    const minutes = String(ahora.getMinutes()).padStart(2, '0');
+    const seconds = String(ahora.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
   filtrarDatos(): void {
     const filtros = this.filtroForm.value;
     this.controlaccesoService.list().subscribe(
@@ -136,14 +167,42 @@ export class InformesPage implements OnInit {
   
           return cumpleAlmacen && cumpleFechaInicio && cumpleFechaFin;
         });
-              // Asignar los datos filtrados a accesosModelo
-        this.accesosModelo = this.accesos;  // Asignar a accesosModelo si es lo que usas para generar el PDF
-        console.log('Datos después del filtro:', this.accesos);  // Para depuración
+        if (
+          this.filtroForm.get('almacen')?.value ||  // Verifica si almacen tiene algún valor
+          this.filtroForm.get('fechaInicio')?.value ||  // Verifica si fechaInicio tiene algún valor
+          this.filtroForm.get('fechaFin')?.value  // Verifica si fechaFin tiene algún valor
+        ) {
+          // Asignar los datos filtrados a accesosModelo
+          this.accesosModelo = this.accesos;  // Asignar a accesosModelo si es lo que usas para generar el PDF
+          console.log('Datos después del filtro:', this.accesos);  // Para depuración
+        
+          this.capdats.patchValue({
+            tarea: 'filtro',
+          });
+        
+          this.controlaccesoService.retornadata(this.capdats.value).subscribe(
+            (respx: any) => {
+              console.log("Se enviaron los datos", respx);
+        
+              // Limpiar los datos después de un envío exitoso
+              this.capdats.patchValue({
+                tarea: 'nada',
+                fecha: this.getFechaActual(), // Asegúrate de que este método devuelva una fecha válida
+              });
+            },
+            (error) => {
+              console.error('Error al enviar los datos', error);
+            }
+          );
+        }
+
+
       },
       (error) => {
         console.error('Error al mostrar los detalles filtrados', error);
       }
     );
+
   }
   
   limpiarFiltros(): void  {
@@ -152,6 +211,10 @@ export class InformesPage implements OnInit {
       fechaInicio: '',
       fechaFin: '',
     });
+    this.capdats.patchValue({
+      tarea: 'nada',
+      fecha: this.getFechaActual(),
+    }); 
     this.getaccesos(); // Recargar todos los accesos originales
   }
 
@@ -200,5 +263,21 @@ export class InformesPage implements OnInit {
   
     // Guardar el archivo
     doc.save('Informe_Acceso_Vehicular.pdf');
+    this.capdats.patchValue({
+      tarea: 'reporte',
+    }); 
+    this.controlaccesoService.retornadata(this.capdats.value).subscribe(
+      (respx: any) => {
+        console.log("Se envio los datos", respx);
+        // Limpiar los datos después de un envío exitoso
+        this.capdats.patchValue({
+          tarea: 'nada',
+          fecha: this.getFechaActual(), // Asegúrate de que este método devuelva una fecha válida
+        });
+      },
+      (error) => {
+        console.error('Error al enviar los datos', error);
+      }
+    );
   }
 }

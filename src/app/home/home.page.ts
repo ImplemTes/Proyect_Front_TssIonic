@@ -11,6 +11,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 })
 
 export class HomePage {
+
   @ViewChild('barCanvas', { static: true }) barCanvas!: ElementRef;
   barChart: any;
   filtroForm: FormGroup;
@@ -26,6 +27,8 @@ export class HomePage {
       fechaFin: [''],
     });
   }
+
+
   abrirPDF() {
     // Ruta del archivo PDF
     const rutaPDF = 'assets/docs/Manual.pdf';
