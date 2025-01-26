@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ChatbotService } from 'src/app/services/chatbot.service';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular'; // Importación de AlertController
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-chat',
   templateUrl: './chatbot.page.html',
@@ -20,25 +20,24 @@ export class ChatbotPage {
   ) {}
 
 
+  // Método para enviar un mensaje
   sendMessage() {
-    if (!this.userInput.trim()) return;
+    if (!this.userInput.trim()) return; // Evitar mensajes vacíos
 
-    this.isLoading = true;
-    this.addMessage(this.userInput, true); 
-    const userMessage = this.userInput.trim();
-    this.userInput = '';
+    this.isLoading = true; // Mostrar indicador de carga
+    this.addMessage(this.userInput, true); // Agregar mensaje del usuario
+    const userMessage = this.userInput.trim(); // Limpiar espacios extra
+    this.userInput = ''; // Limpiar el campo de entrada
 
-      this.requestText(userMessage);
+    this.requestText(userMessage); // Enviar el mensaje al backend
   }
 
+  // Método para hacer la solicitud a la API
   private requestText(message: string) {
-    this.chatbotService.generateContent(message).subscribe(
-      (response) => {
-        let botResponse = response?.candidates?.[0]?.content?.parts?.[0]?.text || 'No se recibió una respuesta';
-        
-        botResponse = this.formatText(botResponse);
-
-        this.addMessage(botResponse, false);
+    this.chatbotService.generateContent({ mensaje: message }).subscribe(
+      (response: any) => {
+        response = this.formatText(response);
+        this.addMessage(response, false);
         this.isLoading = false;
       },
       (error) => {
