@@ -15,6 +15,8 @@ export class VehiculosPage implements OnInit {
   isModalOpenEliminar: boolean = false;
   isModalOpenEditar: boolean = false;
   isMobileView: boolean = false;
+  filteredVehiculos = [...this.vehiculos];
+  searchPlaca: string = '';
   // Paginación
   p: number = 1; // Página actual
   itemsPerPage: number = 6; // Elementos por página
@@ -33,6 +35,7 @@ export class VehiculosPage implements OnInit {
 
   ngOnInit() {
     this.getVehiculos();
+    this.filteredVehiculos = this.vehiculos;
   }
 
 
@@ -51,12 +54,25 @@ export class VehiculosPage implements OnInit {
     this.vehiculoService.list().subscribe(
       (resp: any) => {
         this.vehiculos = resp;
+        this.filteredVehiculos = this.vehiculos;
       },
       (error) => {
         console.error('Error al mostrar los vehiculos', error);
       }
     );
   }
+
+  filtrarVehiculo() {
+    const searchTerm = this.searchPlaca.toLowerCase().trim();
+    if (searchTerm === '') {
+      this.filteredVehiculos = this.vehiculos; // Mostrar todos si no hay búsqueda
+    } else {
+      this.filteredVehiculos = this.vehiculos.filter((vehiculo: any) =>
+        vehiculo.placa.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+  
   openModalEliminar(vehiculo: any = null): void {
     this.isModalOpenEliminar = true;
     this.selectedVehiculo = vehiculo;

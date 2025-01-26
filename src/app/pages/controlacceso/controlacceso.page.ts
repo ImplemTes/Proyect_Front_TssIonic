@@ -26,6 +26,12 @@ export class ControlaccesoPage implements OnInit {
   isModalOpenEliminar: boolean = false;
   isMobileView: boolean = false;
   isModalOpenEditar: boolean = false;
+
+
+
+  filteredAccesos = [...this.accesos];
+  searchPlaca: string = '';
+
   // Paginación
   p: number = 1; // Página actual
   itemsPerPage: number = 6; // Elementos por página
@@ -54,12 +60,13 @@ export class ControlaccesoPage implements OnInit {
    }
 
   ngOnInit() {
-    this.getaccesos();
     this.listarpersonas();
     this.listaralmacenes();
     this.listarvehiculos();
     this.listarprogramaciones();
     this.checkScreenSize();
+    this.getaccesos();
+    this.filteredAccesos = this.accesos;
   }
 
   listarpersonas(): void {
@@ -83,6 +90,19 @@ export class ControlaccesoPage implements OnInit {
 
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
+
+  filtrarAcceso() {
+    const searchTerm = this.searchPlaca.toLowerCase().trim();
+    if (searchTerm === '') {
+      this.filteredAccesos = this.accesos; // Mostrar todos si no hay búsqueda
+    } else {
+      this.filteredAccesos = this.accesos.filter((acceso: any) =>
+        acceso.placa.toLowerCase().includes(searchTerm)
+      );
+    }
+  }
+
+
   listaralmacenes(): void {
     this.almacenService.list().subscribe(
       (resp: any) => {
@@ -93,6 +113,7 @@ export class ControlaccesoPage implements OnInit {
       }
     );
   }
+
   listarvehiculos(): void {
     this.vehiculoService.list().subscribe(
       (resp: any) => {
@@ -129,6 +150,7 @@ export class ControlaccesoPage implements OnInit {
     this.controlaccesoService.list().subscribe(
       (resp: any) => {
         this.accesos = resp;
+        this.filteredAccesos = this.accesos;
       },
       (error) => {
         console.error('Error al mostrar los detalles', error);

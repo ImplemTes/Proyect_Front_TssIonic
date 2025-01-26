@@ -17,8 +17,19 @@
       <ion-button [routerLink]="['/home/vehiculos']"  color="primary" class="register-button" style="max-width: medium;" >+Ver Vehiculos</ion-button>
     </div>
 
+    <!--Campo para filtrar por placa al momento de digitar -->
+    <div class="search-bar">
+          <ion-input
+            type="text"
+            placeholder="🔍 Buscar por placa"
+            [(ngModel)]="searchPlaca"
+            (ionInput)="filtrarAcceso()"
+            clearInput
+            class="search-input"
+          ></ion-input>
+    </div>
     <!-- Contenedor para los vehiculos -->
-    <ng-container *ngIf="accesos.length > 0; else noAccesos">
+    <ng-container *ngIf="filteredAccesos.length > 0; else noAccesos">
       <ion-grid class="vehiculos-grid">
                 <!-- Diseño de Tabla para Pantallas Grandes -->
         <ng-container *ngIf="!isMobileView">
@@ -33,7 +44,7 @@
                     <ion-col size="1">Capacidad</ion-col>
                     <ion-col size="2">Opciones</ion-col>
                   </ion-row>
-                  <ion-row *ngFor="let acceso of accesos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row">
+                  <ion-row *ngFor="let acceso of filteredAccesos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row">
                     <ion-col size="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
                     <ion-col size="1">{{ acceso.idprogramacion }}</ion-col>
                     <ion-col size="2">{{ acceso.marca }}-{{ acceso.placa }}</ion-col>
@@ -56,7 +67,7 @@
 
         <!-- Diseño de Tarjeta para Pantallas Pequeñas -->
         <ng-container *ngIf="isMobileView">
-          <ion-row *ngFor="let acceso of accesos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row mobile-card">
+          <ion-row *ngFor="let acceso of filteredAccesos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row mobile-card">
             <div class="card-content">
               <p><strong>N°:</strong> {{ i + 1 + (p - 1) * itemsPerPage }}</p>
               <p><strong>Programacion:</strong> {{ acceso.idprogramacion }}</p>

@@ -18,66 +18,106 @@
       <ion-button [routerLink]="['/home/controlacceso']" color="primary" class="register-button" style="max-width: medium;"  >+Ver Control de acceso</ion-button>
       <ion-button [routerLink]="['/home/programaciones']" color="primary" class="register-button" style="max-width: medium;"  >+Ver programaciones</ion-button>
     </div>
-    <!-- Contenedor para los vehiculos -->
-    <ng-container *ngIf="vehiculos.length > 0; else noVehiculos">
-      <ion-grid class="vehiculos-grid">
-                <!-- Diseño de Tabla para Pantallas Grandes -->
-        <ng-container *ngIf="!isMobileView">
-                  <ion-row class="table-header">
-                    <ion-col size="1">N°</ion-col>
-                    <ion-col size="1">Placa</ion-col>
-                    <ion-col size="2">Marca</ion-col>
-                    <ion-col size="2">Modelo</ion-col>
-                    <ion-col size="2">Color</ion-col>
-                    <ion-col size="2">fecha Registro</ion-col>
-                    <ion-col size="2">Opciones</ion-col>
-                  </ion-row>
-                  <ion-row *ngFor="let vehiculo of vehiculos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row">
-                    <ion-col size="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
-                    <ion-col size="1">{{ vehiculo.placa }}</ion-col>
-                    <ion-col size="2">{{ vehiculo.marca }}</ion-col>
-                    <ion-col size="2">{{ vehiculo.modelo }}</ion-col>
-                    <ion-col size="2">{{ vehiculo.color }}</ion-col>
-                    <ion-col size="2">{{ vehiculo.fecha_registro }}</ion-col>
-                    <ion-col size="2" class="options">
-
-                      <ion-button (click)="openModalEditar(vehiculo)" fill="clear" color="primary" class="action-button">
-                        <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
-                      </ion-button>
-                      <ion-button (click)="openModalEliminar(vehiculo)" fill="clear" color="danger" class="action-button">
-                        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-                      </ion-button>
-                    </ion-col>
-                  </ion-row>
-        </ng-container>
-
-        <!-- Diseño de Tarjeta para Pantallas Pequeñas -->
-        <ng-container *ngIf="isMobileView">
-          <ion-row *ngFor="let vehiculo of vehiculos | paginate: { itemsPerPage: itemsPerPage, currentPage: p }; let i = index" class="table-row mobile-card">
-            <div class="card-content">
-              <p><strong>N°:</strong> {{ i + 1 + (p - 1) * itemsPerPage }}</p>
-              <p><strong>Placa:</strong> {{ vehiculo.placa }}</p>
-              <p><strong>Marca:</strong> {{ vehiculo.marca }}</p>
-              <p><strong>Modelo:</strong> {{ vehiculo.modelo }}</p>
-              <p><strong>Color:</strong> {{ vehiculo.color }}</p>
-              <p><strong>Fecha Registro:</strong> {{ vehiculo.fecha_registro }}</p>
-              <div class="options">
-                <ion-button (click)="openModalEditar(vehiculo)" fill="clear" color="primary" class="action-button">
-                  <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
-                </ion-button>
-                <ion-button (click)="openModalEliminar(vehiculo)" fill="clear" color="danger" class="action-button">
-                  <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-                </ion-button>
-              </div>
-            </div>
-          </ion-row>
-        </ng-container>
-      </ion-grid>
-        <!-- Paginador -->
-        <div class="paginador-container">
-              <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
-        </div>
+    <!--Campo para filtrar por placa al momento de digitar -->
+    <div class="search-bar">
+      <ion-input
+        type="text"
+        placeholder="🔍 Buscar por placa"
+        [(ngModel)]="searchPlaca"
+        (ionInput)="filtrarVehiculo()"
+        clearInput
+        class="search-input"
+      ></ion-input>
+    </div>
+<!-- Contenedor para los vehículos filtrados -->
+<ng-container *ngIf="filteredVehiculos.length > 0; else noVehiculos">
+  <ion-grid class="vehiculos-grid">
+    <ng-container *ngIf="!isMobileView">
+      <ion-row class="table-header">
+        <ion-col size="1">N°</ion-col>
+        <ion-col size="1">Placa</ion-col>
+        <ion-col size="2">Marca</ion-col>
+        <ion-col size="2">Modelo</ion-col>
+        <ion-col size="2">Color</ion-col>
+        <ion-col size="2">Fecha Registro</ion-col>
+        <ion-col size="2">Opciones</ion-col>
+      </ion-row>
+      <ion-row
+        *ngFor="
+          let vehiculo of filteredVehiculos | paginate: { itemsPerPage: itemsPerPage, currentPage: p };
+          let i = index
+        "
+        class="table-row"
+      >
+        <ion-col size="1">{{ i + 1 + (p - 1) * itemsPerPage }}</ion-col>
+        <ion-col size="1">{{ vehiculo.placa }}</ion-col>
+        <ion-col size="2">{{ vehiculo.marca }}</ion-col>
+        <ion-col size="2">{{ vehiculo.modelo }}</ion-col>
+        <ion-col size="2">{{ vehiculo.color }}</ion-col>
+        <ion-col size="2">{{ vehiculo.fecha_registro }}</ion-col>
+        <ion-col size="2" class="options">
+          <ion-button
+            (click)="openModalEditar(vehiculo)"
+            fill="clear"
+            color="primary"
+            class="action-button"
+          >
+            <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+          </ion-button>
+          <ion-button
+            (click)="openModalEliminar(vehiculo)"
+            fill="clear"
+            color="danger"
+            class="action-button"
+          >
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+      </ion-row>
     </ng-container>
+
+    <ng-container *ngIf="isMobileView">
+      <ion-row
+        *ngFor="
+          let vehiculo of filteredVehiculos | paginate: { itemsPerPage: itemsPerPage, currentPage: p };
+          let i = index
+        "
+        class="table-row mobile-card"
+      >
+        <div class="card-content">
+          <p><strong>N°:</strong> {{ i + 1 + (p - 1) * itemsPerPage }}</p>
+          <p><strong>Placa:</strong> {{ vehiculo.placa }}</p>
+          <p><strong>Marca:</strong> {{ vehiculo.marca }}</p>
+          <p><strong>Modelo:</strong> {{ vehiculo.modelo }}</p>
+          <p><strong>Color:</strong> {{ vehiculo.color }}</p>
+          <p><strong>Fecha Registro:</strong> {{ vehiculo.fecha_registro }}</p>
+          <div class="options">
+            <ion-button
+              (click)="openModalEditar(vehiculo)"
+              fill="clear"
+              color="primary"
+              class="action-button"
+            >
+              <ion-icon slot="icon-only" name="pencil-outline"></ion-icon>
+            </ion-button>
+            <ion-button
+              (click)="openModalEliminar(vehiculo)"
+              fill="clear"
+              color="danger"
+              class="action-button"
+            >
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-button>
+          </div>
+        </div>
+      </ion-row>
+    </ng-container>
+  </ion-grid>
+          <!-- Paginador -->
+          <div class="paginador-container">
+            <pagination-controls (pageChange)="p = $event" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+      </div>
+</ng-container>
     <!-- Mensaje de no hay almacenes -->
     <ng-template #noVehiculos>
       <ion-label class="no-data-message">No se encontraron vehiculos.</ion-label>
