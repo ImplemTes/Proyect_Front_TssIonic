@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Component, OnInit,OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Camera, CameraDirection, CameraResultType } from '@capacitor/camera';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Capacitor } from '@capacitor/core';
@@ -14,23 +14,27 @@ import { ProgramacionService } from 'src/app/services/programacion.service';
   templateUrl: './controlacceso-create.page.html',
   styleUrls: ['./controlacceso-create.page.scss'],
 })
-export class ControlaccesoCreatePage implements OnInit {
-  @ViewChild('video') videoElement!: ElementRef;
-  @ViewChild('canvas') canvasElement!: ElementRef;
+export class ControlaccesoCreatePage implements OnInit, OnDestroy  {
+  //MANEJO DE LA CAMARA 
+  @ViewChild('video') videoElement!: ElementRef<HTMLVideoElement>;
+  @ViewChild('canvas') canvasElement!: ElementRef<HTMLCanvasElement>;
+  imagePath: string | null | undefined = null;
+  verCamara: boolean = true;
+  verbtnCapt: boolean = true;
+  mediaStream!: MediaStream;  // Para la transmisión en vivo 
+  isWeb: boolean = !Capacitor.isNativePlatform();  // Detecta si es web o móvil
+  urlobtenida: string = '';
+  detalleForm: FormGroup;
+
   placaobtenida: string = '';
   personas: any = [];
   almacenes: any = [];
   programaciones: any = [];
   selectedProgra: any = [];
   vehiculos: any = [];
-  urlobtenida: string = '';
   fechaInicioRegistro: string = '';
   fechaAsignada: boolean = false; // Controla si la fecha ya fue asignada
   public selectedPageTitle: string = 'Registro Detalle';
-  detalleForm: FormGroup;
-  imagePath: string | null | undefined = null;
-  verCamara: boolean = true;
-  verbtnCapt: boolean = true;
 
 
   constructor(
@@ -56,8 +60,15 @@ export class ControlaccesoCreatePage implements OnInit {
       fecha: [this.fechaInicioRegistro],
     });
   }
+  ngOnDestroy() {
+    // Detener la cámara si está activa al destruir el componente (solo para Web)
+    if (this.isWeb && this.mediaStream) {
+      this.mediaStream.getTracks().forEach(track => track.stop());
+    }
+  }
 
   ngOnInit() {
+    this.activarCamara();
     this.placaobtenida;
     this.urlobtenida;
     this.listarpersonas();
@@ -143,6 +154,9 @@ export class ControlaccesoCreatePage implements OnInit {
     this.imagePath = null;
     this.verCamara = true;
     this.verbtnCapt = true;
+    if (this.isWeb && this.mediaStream) {
+      this.detenerCamara();  // Detenemos la cámara al cerrar el modal
+    }
     this.router.navigate(['/home/controlacceso']);
   }
 
@@ -155,67 +169,111 @@ export class ControlaccesoCreatePage implements OnInit {
     }
   }
 
-
   // Función para abrir la cámara en dispositivos móviles
+  // 📱 Capturar imagen en dispositivos móviles
   async abrirCamaraMovil() {
     try {
       const image = await Camera.getPhoto({
         quality: 100,
         allowEditing: false,
-        resultType: CameraResultType.Base64,
-        source: CameraSource.Camera,
+        resultType: CameraResultType.DataUrl,
+        direction: CameraDirection.Rear,
       });
-      this.imagePath = `data:image/png;base64,${image.base64String}`;
+      if (!image.dataUrl) {
+        throw new Error('No se pudo obtener la imagen en formato DataUrl.');
+      }
+      // Redimensionamos la imagen a 640x500
+      const resizedImage = await this.resizeImage(image.dataUrl, 640, 500);
+     // Guardamos la imagen redimensionada
+      this.imagePath = resizedImage;
       this.verCamara = false;
-
-      this.EnviarCaptura();
     } catch (error) {
-      console.error("Error al capturar la imagen", error);
+      console.error('Error al capturar imagen en móvil:', error);
+      alert('Error al acceder a la cámara móvil');
     }
   }
-
-  // Función para abrir la cámara en la web
+  resizeImage(dataUrl: string, width: number, height: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = dataUrl;
+      img.onload = () => {
+        // Crear un canvas para redimensionar
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        if (context) {
+          canvas.width = width;
+          canvas.height = height;
+          context.drawImage(img, 0, 0, width, height);
+          // Convertimos el canvas a DataURL
+          resolve(canvas.toDataURL('image/png'));
+        } else {
+          reject('Error al crear contexto en el canvas');
+        }
+      };
+      img.onerror = () => reject('Error al cargar la imagen');
+    });
+  }
+  // 🌐 Activar cámara en la web
   async abrirCamaraWeb() {
     const video = this.videoElement.nativeElement;
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      video.srcObject = stream;
+    try {
+      this.mediaStream = await navigator.mediaDevices.getUserMedia({   video: { 
+        width: { ideal: 640 }, 
+        height: { ideal: 500 },  
+      } });
+      video.srcObject = this.mediaStream;
       video.play();
+      this.verbtnCapt = true;
+      this.verCamara = false;
+    } catch (error) {
+      console.error('Error al acceder a la cámara en la web:', error);
+      alert('Error al acceder a la cámara web');
     }
-    this.verbtnCapt = true;
-    this.verCamara = false;
   }
 
-  // Función para capturar la imagen desde el video y mostrarla en un canvas
-  CapturarImagenWeb() {
-    const video = this.videoElement.nativeElement;
-    const canvas = this.canvasElement.nativeElement;
-    this.verbtnCapt = false;
-    const context = canvas.getContext('2d');
-    if (context) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-      this.imagePath = canvas.toDataURL('image/png');  // Exporta la imagen en formato PNG
-    }
-    this.EnviarCaptura();
+  // 📸 Capturar imagen en la web
+ CapturarImagenWeb() {
+  if (!this.isWeb) return;
+
+  const video = this.videoElement.nativeElement;
+  const canvas = this.canvasElement.nativeElement;
+  const context = canvas.getContext('2d');
+  if (context) {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    this.imagePath = canvas.toDataURL('image/png');
+    this.detenerCamara();  // Detenemos la cámara después de capturar la imagen
   }
+  this.EnviarCaptura();
+}
+
 
   // Función para limpiar la imagen capturada y detener la cámara
   LimpiarCaptura() {
     this.imagePath = null;
+    this.verbtnCapt = true;
     this.verCamara = true;
     this.urlobtenida = '';
     this.placaobtenida = '';
     this.selectedProgra = '';
+    if (this.isWeb && this.mediaStream) {
+      this.detenerCamara();
+    }
     this.detalleForm.patchValue({ placa: '' });
-    this.verbtnCapt = true;
     const video = this.videoElement.nativeElement;
     const stream = video.srcObject as MediaStream;
     const tracks = stream.getTracks();
     // Detener cada pista de la cámara
     tracks.forEach(track => track.stop());
     video.srcObject = null;
+  }
+    // Función para detener la cámara en la web
+  detenerCamara() {
+      if (this.isWeb && this.mediaStream) {
+        this.mediaStream.getTracks().forEach(track => track.stop());
+        this.videoElement.nativeElement.srcObject = null;
+      }
   }
   LimpiarData() {
     this.selectedProgra = null;
@@ -233,6 +291,7 @@ export class ControlaccesoCreatePage implements OnInit {
       
     });
   };
+  
   // Función para enviar la imagen al backend
   EnviarCaptura(): void {
     if (this.imagePath) {
@@ -249,6 +308,7 @@ export class ControlaccesoCreatePage implements OnInit {
         },
         (error) => {
           console.error("Error al enviar la captura", error);
+          alert("Error al enviar la imagen");
         }
       );
     } else {

@@ -16,18 +16,19 @@
         <ion-label position="stacked">CAMARA DE SEGURIDAD</ion-label>
 
          <!-- Video en vivo de la cámara web (solo para web) -->
-         <div *ngIf="!imagePath"  > 
-              <video #video   autoplay class="video-preview"></video>
+         <div *ngIf="isWeb && !imagePath"  > 
+          <video #video   autoplay class="video-preview"></video>
         </div>
 
-        <canvas #canvas class="canvas-preview" style="display: none;"></canvas>
+        <!-- Canvas para capturar la imagen  -->
+        <canvas #canvas class="canvas-preview" hidden></canvas>
 
 
         <!-- Botones para manejo de la cámara -->
         <div class="camera-buttons">
-          <ion-button *ngIf="verCamara" color="medium" (click)="activarCamara()">Ver Cámara</ion-button>
-          <ion-button *ngIf="verbtnCapt" color="medium" (click)="CapturarImagenWeb()">Capturar / Enviar</ion-button>
-          <ion-button color="medium" (click)="LimpiarCaptura()">Limpiar</ion-button>
+          <ion-button *ngIf="verCamara" color="primary" (click)="activarCamara()">Ver Cámara</ion-button>
+          <ion-button *ngIf="verbtnCapt" color="secondary" (click)="CapturarImagenWeb()">Capturar / Enviar</ion-button>
+          <ion-button color="danger" (click)="LimpiarCaptura()">Limpiar</ion-button>
         </div>
       </div>
       <div *ngIf="!urlobtenida" class="no-image">

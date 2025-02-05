@@ -238,19 +238,23 @@ ion-item {
 .image-container img {
   max-width: 100%;
   height: auto;
+  max-width: 640px; /* Limita el tamaño máximo de la imagen */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .video-preview {
   width: 100%;
   height: auto;
-  background-color: #f0f0f0; /* Fondo gris claro antes de activar la cámara */
+  background-color: #000000; /* Fondo gris claro antes de activar la cámara */
   border-radius: 8px;
   margin-bottom: 10px;
+  
 }
 .image-preview img {
   width: 100px;
   height: auto;
   border-radius: 8px;
+  text-align: center;
   margin-top: 10px;
 }
 
@@ -260,10 +264,20 @@ ion-item {
   align-items: center;
   padding: 2%;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 8px;
+  flex: 1;
 }
 
-
+/* Responsive para móviles */
+@media (max-width: 600px) {
+  .video-preview {
+    height: 50vh;
+  }
+  
+  .image-container img { /* SE PUEDE BORRAR*/
+    max-width: 90%; /* Permite que la imagen ocupe más espacio en pantallas pequeñas */
+  }
+}
 
 /*ESTILO FECHAS*/
 /* Contenedor principal para centrar */
