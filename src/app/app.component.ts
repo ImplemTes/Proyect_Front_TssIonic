@@ -18,7 +18,7 @@ export class AppComponent {
     //falta completar
    { title: 'Vehículos', url: '/home/controlacceso', icon: 'car-sport-outline' },
     { title: 'Abastecimiento', url: '/home/abastecimiento', icon: 'cart-outline' }, 
-    { title: 'Informes', url: '/home/informes', icon: 'analytics-outline' }
+    { title: 'Reportes', url: '/home/informes', icon: 'analytics-outline' }
   ]
 
   constructor(private router: Router, private pageTitleService: PageTitleService) {}

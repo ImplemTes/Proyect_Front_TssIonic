@@ -167,34 +167,6 @@ export class InformesPage implements OnInit {
   
           return cumpleAlmacen && cumpleFechaInicio && cumpleFechaFin;
         });
-        if (
-          this.filtroForm.get('almacen')?.value ||  // Verifica si almacen tiene algún valor
-          this.filtroForm.get('fechaInicio')?.value ||  // Verifica si fechaInicio tiene algún valor
-          this.filtroForm.get('fechaFin')?.value  // Verifica si fechaFin tiene algún valor
-        ) {
-          // Asignar los datos filtrados a accesosModelo
-          this.accesosModelo = this.accesos;  // Asignar a accesosModelo si es lo que usas para generar el PDF
-          console.log('Datos después del filtro:', this.accesos);  // Para depuración
-        
-          this.capdats.patchValue({
-            tarea: 'filtro',
-          });
-        
-          this.controlaccesoService.retornadata(this.capdats.value).subscribe(
-            (respx: any) => {
-              console.log("Se enviaron los datos", respx);
-        
-              // Limpiar los datos después de un envío exitoso
-              this.capdats.patchValue({
-                tarea: 'nada',
-                fecha: this.getFechaActual(), // Asegúrate de que este método devuelva una fecha válida
-              });
-            },
-            (error) => {
-              console.error('Error al enviar los datos', error);
-            }
-          );
-        }
       },
       (error) => {
         console.error('Error al mostrar los detalles filtrados', error);

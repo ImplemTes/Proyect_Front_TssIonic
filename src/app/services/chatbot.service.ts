@@ -12,8 +12,8 @@ export class ChatbotService {
   constructor(private http: HttpClient) {}
 
   //metodo para enviar texto a mi api 
-  generateContent(mensaje: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/geminix/`, mensaje);
+  generateContent(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/geminix/`, data);
   }
 
 }
