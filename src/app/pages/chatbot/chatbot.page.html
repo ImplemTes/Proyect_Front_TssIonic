@@ -10,6 +10,7 @@
   <div id="chat-assistant-container"  >
     <div id="chat-container">
       <div *ngFor="let message of messages">
+        
         <div [ngClass]="message.isUser ? 'envio-message' : 'genera-message'">
           <p [innerHTML]="message.text"></p>
         </div>
